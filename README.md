@@ -10,13 +10,15 @@ https://www.youtube.com/watch?v=W2wlguQvdXQ&t
 
 A community project for H1Z1's August 2017 client. Its Cranberry Local Windows package includes the server and launcher. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
 
-This is a community preview prepared from the running `20260913-landing-fall-grace` server and launcher `2026.9.13.3`. Startup, account persistence, the encrypted connection and client installation have automated verification. Native game playtesting of this local package is still pending.
+This is a community preview prepared from the running `20260913-landing-fall-grace` server and launcher `2026.9.13.3`. Preview.2 corrects the startup logging, owner inventory and local queue problems found during preview.1 playtesting. Automated checks cover menu inventory and match entry; the corrected package still needs a native game playtest.
 
 ## Play
 
 Download the **Cranberry Local Windows x64 ZIP** from [Releases](https://github.com/Mixcria/h1z1-pre-season-5-project/releases). Extract the entire ZIP and open `Cranberry.Launcher.exe`. Register your first local account with **Make this the local administrator** selected, then use **Install / repair** and **Play**. See [PLAYER-GUIDE.txt](PLAYER-GUIDE.txt).
 
 The package includes the launcher, server and their .NET runtimes. The game download is approximately 14.6 GB. Installation verifies every client file against the release's SHA-256 manifest. Installed files are reused; only missing or changed files need downloading. A complete installation can be verified with every download request blocked.
+
+Solo, Duos and Fives accept one local player and start five seconds after the pre-game world finishes loading. Every local account, including the administrator, receives all catalogue skins, 200,000 starter Crowns and 500 locked crates in each of 31 families. Existing accounts receive missing local entitlements on upgrade; spent starter currency and crates are not refilled.
 
 Local data is stored in `%LOCALAPPDATA%\CranberryCommunity`, outside the release folder. Close the launcher before switching releases. Extract a newer ZIP into a new folder and launch it to reuse your existing accounts, preferences and game installation. Back up the data folder before testing changes to persistent data formats. This preview uses loopback only; it is intended for local development and does not provide LAN hosting.
 

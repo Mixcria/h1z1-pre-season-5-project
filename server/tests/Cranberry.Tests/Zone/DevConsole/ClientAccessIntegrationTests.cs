@@ -197,4 +197,38 @@ public partial class ConsoleIntegrationTests
             if (Directory.Exists(root)) Directory.Delete(root, recursive: true);
         }
     }
+
+    [Theory]
+    [InlineData("owner-account")]
+    [InlineData("client-account")]
+    public void LocalAdmissionPublishesEverySkinAndCrateFamilyForBothAccountLevels(string accountId)
+    {
+        string root = Path.Combine(Path.GetTempPath(), "cranberry-local-access", Guid.NewGuid().ToString("N"));
+        try
+        {
+            var options = new ZoneOptions
+            { Console = TestConsole, EconomyStoreRoot = root, ProvisionStarterAccounts = true, ProvisionLocalAccounts = true };
+            var (service, connection, recorder) = Admit(options, accountId: accountId, localOwnerAccountId: "owner-account");
+            SendClientIsReady(service, connection);
+            byte[] packet = Assert.Single(Sent(recorder), p => p.Length >= 3
+                && p[1] == SetAccountItemManager.Opcode && p[2] == SetAccountItemManager.SubOpcode);
+            var reader = new PacketReader(packet.AsSpan(3));
+            int count = reader.ReadInt32();
+            var items = new Dictionary<uint, uint>();
+            for (int i = 0; i < count; i++)
+            {
+                ulong instance = reader.ReadUInt64();
+                Assert.Equal(instance, reader.ReadUInt64());
+                uint id = reader.ReadUInt32(); reader.ReadUInt32();
+                items.Add(id, reader.ReadUInt32());
+            }
+            Assert.All(EconomyCatalog.Default.Skins.Keys, id => Assert.True(items.ContainsKey(id), $"Missing menu skin {id}"));
+            Assert.All(StarterAccountProfile.CrateFamilies, crate => Assert.Equal(500u, items[crate.ItemId]));
+            var store = new AccountEconomyStore(root);
+            long revision = store.GetOrCreate(accountId).Revision;
+            Admit(options, accountId: accountId, localOwnerAccountId: "owner-account");
+            Assert.Equal(revision, store.GetOrCreate(accountId).Revision);
+        }
+        finally { if (Directory.Exists(root)) Directory.Delete(root, recursive: true); }
+    }
 }

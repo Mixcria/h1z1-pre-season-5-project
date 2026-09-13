@@ -138,6 +138,8 @@ public sealed record ZoneOptions
 
     /// <summary>The production host provisions a durable starter package for non-owner accounts.</summary>
     public bool ProvisionStarterAccounts { get; init; }
+    /// <summary>Bundled local edition: grant the full skin catalogue and starter crates to every account, including its owner.</summary>
+    public bool ProvisionLocalAccounts { get; init; }
     public MatchAdmissionRegistry MatchAdmissions { get; init; } = MatchAdmissionRegistry.Default;
 
     /// <summary>Production rolling admission policy. Null keeps the immediate staging API used by

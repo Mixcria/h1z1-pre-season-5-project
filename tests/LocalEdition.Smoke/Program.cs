@@ -77,6 +77,14 @@ try
         var launch = (await response.Content.ReadFromJsonAsync<GameLaunch>(deadline.Token))!;
         Check(launch.BuildId == bundled.BuildId && launch.LoginAddress.StartsWith("127.0.0.1:") && launch.Ticket.Length > 0,
             "Authenticated local game tunnel issues a launch ticket for the bundled build");
+        // Prepare the actual launch configuration without starting the native game.
+        GameProcess.StartInfo(edition.Settings.InstallDirectory, launch);
+        Check(Directory.Exists(Path.Combine(edition.Settings.InstallDirectory, "Logs"))
+            && File.ReadAllText(Path.Combine(edition.Settings.InstallDirectory, "CranberryClient.ini")).Contains("LocalLogLevel=9"),
+            "Fresh client launch enables the local startup log required by the door readiness helper");
+        using var ready = await http.PostAsJsonAsync("api/client/doors-ready",
+            new DoorClientReadyRequest(launch.Ticket, BidirectionalDoors.ProtocolVersion), deadline.Token);
+        Check(ready.IsSuccessStatusCode, "Bundled host accepts readiness for the authenticated game launch");
     }
     // A complete installation must not contact any origin, even when CDN discovery is configured.
     string installed = Path.Combine(evidence, "offline-fixture");

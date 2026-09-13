@@ -2,7 +2,7 @@
 
 The baseline is the live release observed on 2026-09-13 at 10:43:40 UTC. All 369 retained live runtime files matched the deployed runtime by hash. The server's build inventory verified 578 source documents; the independently published launcher inventory verified 67 files. `live-baseline.json` records the original hashes before adaptation.
 
-Runtime behavior changes for local packaging are limited to these existing source files:
+The original local packaging changes include:
 
 - `server/src/Cranberry.Host/Program.cs`: a managed local host accepts `stop` or EOF on its redirected input and follows its existing listener shutdown and score-flush path.
 - `launcher/src/Cranberry.Launcher/Program.cs`: discovers a complete local package, uses a separate persistent player profile, starts the managed host and suppresses the production auto-updater in local mode.
@@ -15,7 +15,13 @@ Additional editorial changes shorten references to archived research paths in pa
 
 Accounts, characters, rankings, wardrobe data and configuration are created or retained in the player's own data folder. They are never imported from the live server. The runtime appearance file is a static compatibility input; its hash matches the one used by the live release. The data-directory defaults match the live gameplay overrides, with production telemetry disabled.
 
-No gameplay packet or match logic was changed. The public queue still expects multiple players; the local administrator can use the existing `/startmatch` command for solo development. Native playtesting of this local distribution remains a separate verification step.
+Preview.2 fixes problems found in the first local playtest:
+
+- Both `Cranberry.Launcher.Core/GameProcess.cs` copies create the client `Logs` directory and enable `LocalLogLevel=9` in the generated configuration. The original fallback used level 1, suppressing the run-state log required by the verified door helper and blocking match admission. Original `ClientConfig.ini` files are retained. The door verification and authenticated readiness gate remain active.
+- `LocalAccountProfile`, `ZoneOptions`, `ZoneService.Economy.cs` and the host grant the full catalogue plus receipt-protected starter Crowns/crates to local accounts, including the owner previously excluded by the production policy. Existing progress and purchase receipts are retained. Production Client account exclusions remain in place outside the managed local edition.
+- `PublicQueueOptions.ForLocalPlay()` permits one player in Solo, Duos and Fives with a five-second countdown after world readiness. The host applies this after loading configuration, so preview.1 data folders also receive the fix. Ordinary public-server population rules remain unchanged.
+
+Tests cover the launch configuration, actual gateway menu inventory for both account levels, saved purchases across restart, and normal Play admission through launcher readiness, world loading and the drop sequence in all three modes. A native game playtest of preview.2 remains a separate verification step.
 
 The older duplicate GUI and production launcher publishing tools in the server snapshot are excluded from the community Git export. The server solution retains its launcher-service tests. Historical design-document references remain in code; this first export includes the generated configuration reference, not the full private operations journal.
 

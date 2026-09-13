@@ -16,6 +16,8 @@ public static partial class GameProcess
         string config = File.Exists(original) ? File.ReadAllText(original) : DefaultConfig;
         if (Regex.IsMatch(config, @"(?m)^Server=.*$")) config = Regex.Replace(config, @"(?m)^Server=.*$", "Server=" + launch.LoginAddress);
         else config = "Server=" + launch.LoginAddress + "\r\n" + config;
+        config = WithStartupLogging(config);
+        Directory.CreateDirectory(GameInstaller.SafePath(directory, "Logs"));
         File.WriteAllText(configPath, config);
         var info = new ProcessStartInfo(GameInstaller.SafePath(directory, "H1Z1.exe"))
         { WorkingDirectory = Path.GetFullPath(directory), UseShellExecute = false };
@@ -23,6 +25,20 @@ public static partial class GameProcess
             "Internationalization:Locale=en_US", "LaunchPad:Ufp=0", "LaunchPad:SessionId=0", "LaunchPad:Locale=en_US" })
             info.ArgumentList.Add(arg);
         return info;
+    }
+
+    private static string WithStartupLogging(string config)
+    {
+        // The verified startup helpers read TransitionClientRunState from the local game log.
+        // Level 1 suppresses it and leaves the server waiting for doors-ready indefinitely.
+        const string section = @"(?ims)^\[Logging\][^\r\n]*\r?\n(?<body>.*?)(?=^\[|\z)";
+        if (!Regex.IsMatch(config, section)) return config + "\r\n[Logging]\r\nAddress=\r\nLocalLogLevel=9\r\n";
+        return Regex.Replace(config, section, match =>
+        {
+            string body = match.Groups["body"].Value;
+            body = Regex.Replace(body, @"(?im)^\s*LocalLogLevel\s*=[^\r\n]*\r?\n?", "");
+            return "[Logging]\r\nLocalLogLevel=9\r\n" + body;
+        });
     }
 
     public const string DefaultConfig = """
@@ -57,7 +73,7 @@ NoUploadFromInit=1
 Collecting=0
 [Logging]
 Address=
-LocalLogLevel=1
+LocalLogLevel=9
 [InfiniteLoopMonitor]
 TimeoutSeconds=60
 [LodBins]

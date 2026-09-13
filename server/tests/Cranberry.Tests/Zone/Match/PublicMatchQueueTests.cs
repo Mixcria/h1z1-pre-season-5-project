@@ -5,6 +5,28 @@ namespace Cranberry.Tests.Zone.MatchLobby;
 
 public sealed class PublicMatchQueueTests
 {
+    [Theory]
+    [InlineData(MatchMode.Solo, 1u)]
+    [InlineData(MatchMode.Duos, 6u)]
+    [InlineData(MatchMode.Fives, 7u)]
+    public void LocalPolicyStartsEachModeAloneFiveSecondsAfterLoadingEvenWithOldSavedSettings(MatchMode mode, uint world)
+    {
+        var saved = PublicQueueOptions.FromEnvironment(key => key switch
+        { "CRANBERRY_QUEUE_WAIT_MS" => "180000", "CRANBERRY_QUEUE_MIN_PLAYERS" => "2", _ => null });
+        var queue = new PublicMatchQueue(saved.ForLocalPlay());
+        ulong match = Add(queue, 1, world: world, mode: mode);
+        queue.Poll(0); queue.Poll(300000);
+        Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.SetReadyPlayers(match, [1], 300000);
+        queue.Poll(304999);
+        Assert.Equal(PublicMatchPhase.PRE_GAME, queue.Snapshots.Single().Phase);
+        queue.Poll(305000);
+        Assert.Equal(PublicMatchPhase.ROSTER_FROZEN, queue.Snapshots.Single().Phase);
+        Assert.Equal(new ulong[] { 1 }, queue.Snapshots.Single().Roster);
+        Assert.False(saved.AllowSinglePlayer);
+        Assert.Equal(2, saved.MinPlayers);
+    }
+
     private static ulong Add(PublicMatchQueue queue, ulong first, int size = 1, uint world = 1, MatchMode mode = MatchMode.Solo, long now = 0)
     {
         Assert.True(queue.TryReserve(world, mode, Enumerable.Range(0, size).Select(i => first + (ulong)i).ToArray(), now, out ulong id));
@@ -101,6 +123,33 @@ public sealed class PublicMatchQueueTests
 
 public sealed partial class BountyGatewayTests
 {
+    [Theory]
+    [InlineData(MatchMode.Solo, 1u)]
+    [InlineData(MatchMode.Duos, 6u)]
+    [InlineData(MatchMode.Fives, 7u)]
+    public void LocalPlayUsesNormalMenuTransferAndStartsAloneAfterLauncherAndWorldReadiness(MatchMode mode, uint world)
+    {
+        using var f = new Fixture(mode: mode, lobby: ArrivalLobby,
+            admissions: MatchAdmissionRegistry.Default,
+            publicQueue: new PublicQueueOptions().ForLocalPlay() with { WaitMs = 100 });
+        var player = f.Connect("local-player");
+        bool initialized = false;
+        f.Service.DoorSwingClientReady = _ => initialized;
+        f.Transfer(player, world);
+        Assert.Empty(f.Service.PublicMatches);
+        Assert.Equal("Menu", f.Service.ForTest(player).Step);
+        initialized = true;
+        f.Pump(() => f.Sent(player).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning));
+        f.Send(player, w => w.WriteByte(ZoneOpcodes.ClientIsReady));
+        Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
+        f.Ready(player);
+        f.Pump(() => f.Service.ForTest(player).Step == "Dropping");
+        Assert.Contains(f.Sent(player), p => Hud(p, 0x16));
+        Assert.DoesNotContain(f.Sent(player), p => Hud(p, 0x18)); // No immediate victory with one player.
+        Assert.Equal(mode, Assert.Single(f.Service.PublicMatches).Mode);
+        Assert.Single(f.Service.PublicMatches.Single().Roster);
+    }
+
     [Theory]
     [InlineData("play")]
     [InlineData("menu")]

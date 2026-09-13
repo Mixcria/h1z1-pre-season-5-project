@@ -13,9 +13,15 @@ public sealed record PublicQueueOptions
     public int WaitMs { get; init; } = 180_000;
     public int MaxPlayers { get; init; } = 150;
     public int MinPlayers { get; init; } = 2;
+    /// <summary>Local practice may start without an opposing team. Public hosts keep this off.</summary>
+    public bool AllowSinglePlayer { get; init; }
     public int MaxAllocatedMatches { get; init; } = 2;
     public int AcceptTimeoutMs { get; init; } = 60_000;
     public int LoadTimeoutMs { get; init; } = 180_000;
+
+    // Apply after saved settings, including preview.1's multiplayer minimum and three-minute wait.
+    public PublicQueueOptions ForLocalPlay() => this with
+    { AllowSinglePlayer = true, MinPlayers = 1, WaitMs = 5_000 };
 
     public static PublicQueueOptions FromEnvironment(Func<string, string?> read)
     {
@@ -130,7 +136,7 @@ public sealed class PublicMatchQueue(PublicQueueOptions options)
         else round.CountdownDeadline ??= now + options.WaitMs;
     }
 
-    private int MinimumPlayers(Round round) => Math.Max(options.MinPlayers,
+    private int MinimumPlayers(Round round) => options.AllowSinglePlayer ? Math.Max(1, options.MinPlayers) : Math.Max(options.MinPlayers,
         (round.Mode switch { MatchMode.Duos => 2, MatchMode.Fives => 5, _ => 1 }) + 1);
 
     /// <summary>Explicit host override; the caller must enforce owner authorization and readiness.</summary>

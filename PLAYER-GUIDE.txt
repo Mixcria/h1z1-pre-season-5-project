@@ -6,8 +6,13 @@ Cranberry Local - community preview
    your first account. These credentials belong only to this installation.
 4. Choose INSTALL / REPAIR to download the matching client from Cloudflare.
    In Settings, you can instead select an existing matching game installation.
-5. Press PLAY. Select Solo in the game. For solo development, enter /startmatch
-   in the development console to start without waiting for a second player.
+5. Press PLAY. Select Solo, Duos or Fives in the game. Each mode accepts one
+   local player and starts five seconds after the pre-game world finishes loading.
+   The launcher must finish initializing the game before it can enter a world.
+
+All local accounts, including the administrator, receive the complete skin
+catalogue, 200,000 starter Crowns and 500 locked crates from each of 31 families.
+These are one-time grants; restarting does not refill spent Crowns or crates.
 
 After a complete installation, the local server and game can run without an
 Internet connection. Installation, repairs and new release files need downloads.
@@ -25,7 +30,7 @@ Install / repair fetches files that changed for the selected release.
 Do not share the private data folder, its registration codes or certificate.
 
 This edition uses a server from the 2026-09-13 landing-fall-grace live release
-and the 2026.9.13.3 launcher source, with local startup and shutdown support.
+and the 2026.9.13.3 launcher source, with local startup, inventory and match fixes.
 It is a separate local server. Online accounts and saves are not imported.
 Friends, parties and matches involve only accounts on the same server; this
 preview binds to loopback and does not expose a public or LAN service.
@@ -34,6 +39,7 @@ If startup fails, read the message and the logs beneath the local data folder.
 Only one local edition may use a data folder at a time. Another running
 server is never stopped to claim its ports. No SDK is needed to play.
 
-Preview verification: local startup, account persistence, the encrypted game
-connection and client installation passed automated checks. Native gameplay
-has not yet been playtested with this local package.
+Preview.2 corrects the missing startup log, local owner inventory grants and
+multiplayer queue minimum found during preview.1 playtesting. Automated checks
+cover local startup, persistence, menu inventory and match entry. A native
+game playtest of this corrected package remains necessary.

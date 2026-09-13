@@ -34,6 +34,7 @@ using Cranberry.Zone.World.Doors;
 // The positional arguments still win over both file and environment, because run-host.ps1 passes
 // seven of them on every launch. An absent file is not an error: it means every default.
 CranberryConfig config = CranberryConfig.Load(args);
+bool isLocalEdition = Environment.GetEnvironmentVariable("CRANBERRY_LOCAL_MANAGED") == "1";
 
 string root = config.Root.Path;
 int loginPort = config.Ports.Login;
@@ -252,11 +253,18 @@ if (newDevelopmentCharacter is not null)
     localAccounts.BindCharacter(localAccounts.LocalAccountId, newDevelopmentCharacter.EntityKey);
 
 // Repair existing playtest accounts before admitting players. Future accounts take the same
-// receipt-protected path at their first gateway login. The owner's wallet/items are excluded.
+// receipt-protected path at their first gateway login. Local owners receive the local package too.
 var starterAccounts = new AccountEconomyStore(Path.Combine(root, "state", "economy"), log.Warn);
 foreach (string accountId in localAccounts.CharacterOwnersSnapshot().Values.Distinct()
-    .Where(accountId => accountId != localAccounts.LocalAccountId))
+    .Where(accountId => isLocalEdition || accountId != localAccounts.LocalAccountId))
 {
+    if (isLocalEdition)
+    {
+        var local = LocalAccountProfile.Apply(starterAccounts, accountId);
+        if (!local.Succeeded)
+            throw new AccountEconomyStoreException(local.Error ?? "Local account provisioning failed.");
+        continue;
+    }
     var starter = StarterAccountProfile.Apply(starterAccounts, accountId);
     if (!starter.Succeeded)
         throw new AccountEconomyStoreException(starter.Error ?? "Starter account provisioning failed.");
@@ -293,6 +301,7 @@ var zoneOptions = new ZoneOptions
     MenuTopBar = menuTopBar,
     EconomyStoreRoot = Path.Combine(root, "state", "economy"),
     ProvisionStarterAccounts = true,
+    ProvisionLocalAccounts = isLocalEdition,
     HostedGames = new Cranberry.Zone.HostedGames.HostedGameStore(Path.Combine(root, "state", "hosted-games.json")),
     SpawnPosition = menuActor.SpawnPosition,
     ZoneName = zoneName,
@@ -383,7 +392,7 @@ var zoneOptions = new ZoneOptions
     // the service runs so a test can still shorten it; Lobby owns when it arms, the minimum
     // population, the two HUD labels and the ce 14 banner steps.
     LobbyCountdownMs = config.Lobby.Options.CountdownMs,
-    PublicQueue = config.PublicQueue,
+    PublicQueue = isLocalEdition ? config.PublicQueue.ForLocalPlay() : config.PublicQueue,
     Lobby = config.Lobby.Options,
     // docs/113 (D251-D254): Backing your Match. CRANBERRY_BOUNTY=0 removes every byte of it.
     Bounty = config.Bounty.Options,
@@ -534,7 +543,7 @@ if (metrics is not null) log.Info($"production metrics enabled: {metrics.FilePre
 var stop = new ManualResetEventSlim();
 // Local distribution only: the launcher owns this redirected input pipe. Closing it also
 // stops the server after a launcher crash, through the normal score-flush/disposal path.
-if (Environment.GetEnvironmentVariable("CRANBERRY_LOCAL_MANAGED") == "1")
+if (isLocalEdition)
     _ = Task.Run(async () =>
     {
         while (!stop.IsSet)

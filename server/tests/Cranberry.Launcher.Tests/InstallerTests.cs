@@ -71,5 +71,23 @@ public sealed class InstallerTests : IDisposable
         Assert.Contains("Server=127.0.0.1:40404", File.ReadAllText(Path.Combine(_root, "CranberryClient.ini")));
     }
 
+    [Theory]
+    [InlineData(null)]
+    [InlineData("Server=old:42\n[Logging]\nAddress=\nLocalLogLevel=1\n[GameSettings]\nFirstPerson=1\n")]
+    [InlineData("Server=old:42\n[Logging]\nAddress=\n[GameSettings]\nFirstPerson=1\n")]
+    public void FreshAndExistingClientsEnableTheLocalLogRequiredForMatchAdmission(string? original)
+    {
+        Directory.CreateDirectory(_root);
+        if (original is not null) File.WriteAllText(Path.Combine(_root, "ClientConfig.ini"), original);
+        GameProcess.StartInfo(_root, new("cb1." + new string('A', 64), "127.0.0.1:40404", "test"));
+        string generated = File.ReadAllText(Path.Combine(_root, "CranberryClient.ini"));
+        Assert.True(Directory.Exists(Path.Combine(_root, "Logs")));
+        Assert.Contains("LocalLogLevel=9", generated);
+        Assert.DoesNotContain("LocalLogLevel=1", generated);
+        Assert.Single(generated.Split('\n').Where(line => line.Trim() == "[Logging]"));
+        Assert.Contains("FirstPerson=1", generated);
+        if (original is not null) Assert.Equal(original, File.ReadAllText(Path.Combine(_root, "ClientConfig.ini")));
+    }
+
     public void Dispose() { if (Directory.Exists(_root)) Directory.Delete(_root, true); }
 }

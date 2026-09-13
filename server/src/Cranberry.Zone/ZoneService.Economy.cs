@@ -28,7 +28,15 @@ public sealed partial class ZoneService
             var seed = new AccountEconomySeed(_options.MenuTopBar.CurrencyRecords()
                 .ToDictionary(row => row.CurrencyId, row => row.Amount));
             _economy.GetOrCreate(state.AccountId, seed);
-            if (_options.ProvisionStarterAccounts && state.AccountId != LocalOwnerAccountId)
+            if (_options.ProvisionLocalAccounts)
+            {
+                var local = LocalAccountProfile.Apply(_economy, state.AccountId);
+                if (!local.Succeeded)
+                    throw new AccountEconomyStoreException(local.Error ?? "Local account provisioning failed.");
+                if (!local.Replayed)
+                    _log.Info($"{connection} provisioned local skins, Crowns and locked crate families");
+            }
+            else if (_options.ProvisionStarterAccounts && state.AccountId != LocalOwnerAccountId)
             {
                 var starter = StarterAccountProfile.Apply(_economy, state.AccountId);
                 if (!starter.Succeeded)
