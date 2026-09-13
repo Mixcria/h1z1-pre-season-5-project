@@ -24,7 +24,7 @@ public sealed class FullAppearanceTableTests
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void NautilusUsesOnlyShippedTexturesAndPreservesItsOtherShaderParameters(bool whole)
+    public void NautilusRepairsMissingTextureAndPreservesItsOtherShaderParameters(bool whole)
     {
         var table = Load(whole, out _);
         using var source = File.OpenRead(Source);
@@ -42,10 +42,6 @@ public sealed class FullAppearanceTableTests
         Assert.Equal("Octopus_01_SS.dds", Assert.Single(nautilus, p => p.Name == "DecalTint").Texture);
         Assert.Equal(oldNautilus.Where(p => p.Name != missing.Name).Select(p => Convert.ToHexString(p.Bytes)),
             nautilus.Where(p => p.Name != missing.Name).Select(p => Convert.ToHexString(p.Bytes)));
-        var assets = File.ReadLines(@"C:\Aug2017\out\data_aug\pack-index-aug.tsv")
-            .Select(line => line.Split('\t')[0]).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        Assert.DoesNotContain(missing.Texture, assets);
-        Assert.All(nautilus.Where(p => p.Texture.Length > 0), p => Assert.Contains(p.Texture, assets));
         Assert.Equal(1102u, AugustMaterialEffects.EffectIdFor(4032));
         foreach (uint gender in new uint[] { 1, 2 })
         {
@@ -70,20 +66,35 @@ public sealed class FullAppearanceTableTests
     [InlineData(false, 1718u, 1747u, 9840u)]
     [InlineData(true, 1997u, 1919u, 9848u)]
     [InlineData(false, 1997u, 1919u, 9848u)]
-    public void EquippedPistolsResolveTheirModelsWithOnlyShippedTextures(bool whole, uint item, uint group, uint model)
+    public void EquippedPistolsResolveTheirModelsAndRepairMissingTextures(bool whole, uint item, uint group, uint model)
     {
         var table = Load(whole, out _);
         var parameters = ShaderParameters(table.CreateReferenceData().Payload).Where(p => p.Group == group).ToArray();
         Assert.Equal("black.dds", Assert.Single(parameters, p => p.Name == "PatternTintMask").Texture);
-        var assets = File.ReadLines(@"C:\Aug2017\out\data_aug\pack-index-aug.tsv")
-            .Select(line => line.Split('\t')[0]).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        Assert.All(parameters.Where(p => p.Texture.Length > 0), p => Assert.Contains(p.Texture, assets));
         foreach (uint gender in new uint[] { 1, 2 })
         {
             Assert.Equal(group, table.ShaderGroupFor(item, gender));
             Assert.NotEmpty(table.RowsForItem(item, gender));
             Assert.All(table.RowsForItem(item, gender), row => Assert.Equal(model, row.ModelId));
         }
+    }
+
+    [ClientPackIndexTheory]
+    [InlineData(true, 1862u)]
+    [InlineData(false, 1862u)]
+    [InlineData(true, 1747u)]
+    [InlineData(false, 1747u)]
+    [InlineData(true, 1919u)]
+    [InlineData(false, 1919u)]
+    public void RepairedWeaponTexturesExistInTheClientPackIndex(bool whole, uint group)
+    {
+        var table = Load(whole, out _);
+        var parameters = ShaderParameters(table.CreateReferenceData().Payload).Where(p => p.Group == group).ToArray();
+        var assets = File.ReadLines(TestData.ClientPackIndex!)
+            .Select(line => line.Split('\t')[0]).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (group == 1862) Assert.DoesNotContain("Wood_01_PT.dds", assets);
+        Assert.NotEmpty(parameters);
+        Assert.All(parameters.Where(p => p.Texture.Length > 0), p => Assert.Contains(p.Texture, assets));
     }
 
     private static List<(uint Group, string Name, string Texture, byte[] Bytes)> ShaderParameters(ReadOnlySpan<byte> payload)

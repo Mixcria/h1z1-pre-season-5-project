@@ -30,7 +30,7 @@ dotnet run --project ./tests/LocalEdition.Smoke -c Release -- ./artifacts/Cranbe
 
 Choose new output and smoke directories for another run. The package smoke test starts only an isolated local server; it never starts the native game. Historical live-host/capture tests skip unless their opt-in fixtures are configured.
 
-Appearance tests use the bundled `compatibility/dynamicAppearance.bin` fixture. One historical crate-data comparison requires an external `AccountCrates.json`; set `CRANBERRY_ACCOUNT_CRATES_REFERENCE` to its path to run that comparison. It is reported as skipped when the reference is not configured. The ordinary crate behavior tests still run.
+Appearance tests use the bundled `compatibility/dynamicAppearance.bin` fixture. Historical comparisons against external research files are opt-in: set `CRANBERRY_ACCOUNT_CRATES_REFERENCE` to an `AccountCrates.json` path, or `CRANBERRY_CLIENT_PACK_INDEX` to a `pack-index-aug.tsv` path. Unconfigured comparisons are reported as skipped. The ordinary crate, appearance, shader and model behavior tests still run.
 
 An optional full client check downloads the release's game files and verifies the completed installation with downloads forbidden. It needs about 15 GB of disk space without an existing client:
 

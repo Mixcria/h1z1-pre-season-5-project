@@ -7,6 +7,18 @@ internal static class TestData
 
     public static string? AccountCratesReference =>
         Environment.GetEnvironmentVariable("CRANBERRY_ACCOUNT_CRATES_REFERENCE");
+
+    public static string? ClientPackIndex =>
+        Environment.GetEnvironmentVariable("CRANBERRY_CLIENT_PACK_INDEX");
+}
+
+public sealed class ClientPackIndexTheoryAttribute : TheoryAttribute
+{
+    public ClientPackIndexTheoryAttribute()
+    {
+        if (string.IsNullOrWhiteSpace(TestData.ClientPackIndex))
+            Skip = "Set CRANBERRY_CLIENT_PACK_INDEX to an external pack-index-aug.tsv to compare texture names with the game client.";
+    }
 }
 
 public sealed class AccountCratesReferenceFactAttribute : FactAttribute
