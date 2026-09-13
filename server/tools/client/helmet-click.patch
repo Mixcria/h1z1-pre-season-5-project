@@ -1,0 +1,53 @@
+--- views/inventory/InventoryWindow.as
++++ views/inventory/InventoryWindow.as
+@@ -13,6 +13,7 @@
+    import scaleform.gfx.TextFieldEx;
+    import ui.bindings.UIBindingItem;
+    import ui.bindings.UIBindingLocale;
++   import ui.bindings.UIBindingLoadouts;
+    import ui.bindings.UIBindingPlayer;
+    import ui.constants.BindingNames;
+    import ui.constants.Colors;
+@@ -478,7 +479,7 @@
+             {
+                this.m_savedForClickRenderer.removeEventListener(MouseEvent.MOUSE_UP,this.onRendererMouseUp);
+             }
+-            if(_loc2_ == this.m_inspectedPanel.list || _loc2_ == this.m_vehiclePanel.list || _loc2_ == this.m_vehiclePanel.list2)
++            if(_loc2_ == this.mc_inventoryList || _loc2_ == this.m_inspectedPanel.list || _loc2_ == this.m_vehiclePanel.list || _loc2_ == this.m_vehiclePanel.list2)
+             {
+                this.m_savedForClickItemData = _loc2_.dataProvider.requestItemAt(param1.index) as InventoryItemData;
+                this.m_savedForClickRenderer = _loc2_.getRendererAt(param1.index,_loc2_.scrollPosition);
+@@ -502,6 +503,13 @@
+             _loc2_ = this.m_savedForClickItemData as INoDragDrop;
+             if(!_loc2_.noDragDrop)
+             {
++               if(this.m_savedForClickItemData.containerOwnerGuid == UIBindingPlayer.GetPlayerGuid() && this.m_savedForClickItemData.containerGuid != "-1")
++               {
++                  this.equipCarriedHelmetOnClick(this.m_savedForClickItemData);
++                  this.m_savedForClickItemData = null;
++                  this.m_savedForClickRenderer = null;
++                  return;
++               }
+                _loc3_ = new MoveItemData(this.m_savedForClickItemData.itemDefinitionId,this.m_savedForClickItemData.containerOwnerGuid,this.m_savedForClickItemData.guid,UIBindingPlayer.GetPlayerGuid(),"0",-1,this.m_savedForClickItemData.stackCount,this.m_savedForClickItemData.isInPseudoStack,this.m_savedForClickItemData.pseudoStacksId,this.m_savedForClickItemData.pseudoStackCount);
+                if(this.m_savedForClickItemData.isInPseudoStack)
+                {
+@@ -517,6 +525,19 @@
+          this.m_savedForClickRenderer = null;
+       }
+       
++      private function equipCarriedHelmetOnClick(item:InventoryItemData) : void
++      {
++         if(!item.canMutate || !item.isArmor || item.stackCount != 1 || !UIBindingLoadouts.CanSelectSlotItem(UIBindingPlayer.GetPlayerGuid(),11,item.itemDefinitionId))
++         {
++            return;
++         }
++         var worn:Array = uiDBManager.query("SELECT a.ItemId FROM PlayerInventory a INNER JOIN ItemDefinitions b ON b.ItemId = a.ItemId WHERE a.ContainerGuid == '-1' AND a.ContainerSlotId == 11 AND b.IsArmor == '1'") || [];
++         if(worn.length == 0)
++         {
++            UIBindingLoadouts.MoveItem2(item.containerOwnerGuid,item.guid,UIBindingPlayer.GetPlayerGuid(),"-1",11,1);
++         }
++      }
++
+       private function showItemDetail(param1:TileList, param2:int) : *
+       {
+          var _loc3_:LoadoutListData = null;

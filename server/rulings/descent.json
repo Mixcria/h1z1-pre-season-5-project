@@ -1,0 +1,181 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "descent",
+  "class": "Descent",
+  "home": "src/Cranberry.Zone/Descent/DescentSettings.cs, DescentTuning.cs, DescentDeadline.cs",
+  "summary": "The parachute ride. Cranberry cannot change how FAST the player falls - the August client simulates the parachute itself off its own MoveInfo rows 130 and 4001 for vehicle 13 - and the 2026-09-03 audit proved the rate is not even a constant: it is a PLAYER-CONTROLLED 10-56 m/s band, 43.5-45.8 m/s flown hard and 9.8 m/s hands-off. So the only server lever is the release altitude. D238 ships ClientSkySpawn850 - the client's own KotK.SkySpawn slab centre, an absolute 850 m - replacing D125's Legacy36 design number, which was reverse-engineered from the friend's emulator's 1500 m and not from retail. Legacy36 stays reachable by name as the revert. D239 rebuilds the descent deadline around the 10 m/s hands-off worst case and gates the forced handover on the chute actually being near the ground.",
+  "rulings": ["D66", "D125", "D127", "D128", "D238", "D239", "D240"],
+  "rows": [
+    {
+      "key": "DescentTuning.MinimumRate",
+      "value": 10.0,
+      "ruling": "none",
+      "source": "the client's own MoveInfo row 4001 MIN_TERM_VELOCITY for vehicle 13",
+      "grade": "CLIENT",
+      "note": "NOT a ruling - a client rail, transcribed into C# as a validation bound. D239 promotes it: it is also the HANDS-OFF descent rate, measured at 9.81 / 9.85 / 9.82 m/s in logs/host-20260903-082114, -082424 and -083422, so every server TIMEOUT reasons with this number and not with the dived mean.",
+      "csharp": { "name": "MinimumRate", "type": "float" }
+    },
+    {
+      "key": "DescentTuning.MaximumRate",
+      "value": 56.0,
+      "ruling": "none",
+      "source": "the client's own MoveInfo row 4001 MAX_TERM_VELOCITY for vehicle 13",
+      "grade": "CLIENT",
+      "note": "NOT a ruling - a client rail. Every 'too fast' check must use this number.",
+      "csharp": { "name": "MaximumRate", "type": "float" }
+    },
+    {
+      "key": "DescentSettings.MeasuredHandsOffMetresPerSecond",
+      "value": 9.8,
+      "ruling": "none",
+      "source": "AUDIT-parachute R7 - logs/host-20260903-082114.log:165-201 (9.81 m/s), -082424.log (9.85), -083422.log (9.82); X frozen for the whole 84 s and Z drifting 15 m in all three",
+      "grade": "CAPTURED",
+      "note": "UNRULED - a measurement. It is MIN_TERM_VELOCITY 10 within 2 %, which is the proof that the client's own floor is reachable and that a player who lets go of the controls really does take (fall / 10) seconds to land. Pinned so a later lane cannot re-derive 40.4 as 'the' rate.",
+      "csharp": { "name": "MeasuredHandsOffMetresPerSecond", "type": "float" }
+    },
+    {
+      "key": "DescentSettings.MeasuredFlownMetresPerSecond",
+      "value": 45.8,
+      "ruling": "none",
+      "source": "AUDIT-parachute R7/section 2 - steady windows of the two 2026-09-03 17:50 / 17:59 rides, 43.5-45.8 m/s; out/audit/descent-measurements-20260903.md",
+      "grade": "CAPTURED",
+      "note": "UNRULED - the top of the measured flown band, and the number a 'shortest possible ride' estimate uses. The first ~5 s of every ride is 14.8-22.0 m/s while the canopy opens.",
+      "csharp": { "name": "MeasuredFlownMetresPerSecond", "type": "float" }
+    },
+    {
+      "key": "DescentSettings.PlannedDescentMetresPerSecond",
+      "value": 40.4,
+      "ruling": "none",
+      "source": "docs/56 s2.2 - the mean of six live drops measured off this project's own captures: 39.5, 40.8, 41.3, 41.5, 42.5, 40.9 m/s, from 850 m, 1,533 m and 2,006 m alike",
+      "grade": "CAPTURED",
+      "note": "UNRULED, and RENAMED BY D239 (was ClientDescentMetresPerSecond). CORRECTION 2026-09-03: it is NOT a constant of the client. All six of those drops were flown hard, so 40.4 is the mean of DIVED rides inside a player-controlled 10-56 m/s band; hands-off the same client descends at 9.8 m/s (AUDIT-parachute R7). It survives as the PLANNING mean - the right number for turning 'seconds under canopy' into an altitude - and for nothing else. Every timeout uses MinimumRate; every 'too fast' check uses MaximumRate.",
+      "csharp": { "name": "PlannedDescentMetresPerSecond", "type": "float" }
+    },
+    {
+      "key": "DescentSettings.Default.TargetDescentSeconds",
+      "value": 0.0,
+      "ruling": "D238",
+      "source": "src/Cranberry.Zone/Descent/DescentSettings.cs - zero means 'release at the client's own KotK.SkySpawn slab and raise nothing'",
+      "grade": "RULING",
+      "note": "A sentinel, not a tuning - and since D238 it is also THE SHIPPED RIDE: DescentTuning.ShippedDefault is ClientSkySpawn850, which is this record by reference, so an unset environment releases at the absolute 850 m the client itself authored.",
+      "csharp": { "name": "DefaultTargetDescentSeconds", "type": "float" }
+    },
+    {
+      "key": "DropOptions.SkySpawnAltitude",
+      "value": 850.0,
+      "ruling": "D238",
+      "source": "the client's own out/world_aug/Z2Areas.xml: <AreaDefinition id=\"429116895\" name=\"KotK.SkySpawn\" shape=\"box\" x1=\"-2000\" y1=\"845\" z1=\"-2000\" x2=\"2000\" y2=\"855\" z2=\"2000\" rotY=\"-3.141593\"/> - a bare 10 m slab with no <Property> child, y-centre 850.0 absolute (docs/48 s2a, AUDIT-parachute R1)",
+      "grade": "CLIENT",
+      "note": "THE SHIPPED RELEASE ALTITUDE since D238. Retail's own release altitude is [U] - not published, not on disk, never measured (AUDIT-parachute R3) - so the owner's ruling of 2026-09-03 ('do whatever retail is; our current dropzone height is a guess') resolves to the one altitude the client itself states. The client never READS the name (exeview findstr finds no SkySpawn string in H1Z1.exe), so 850 is level-designer metadata a retail server consumed: usable as the best available design input, never citable as client behaviour. Declared here, LEFT AS A LITERAL in Match/DropOptions.cs - the Match namespace is another lane's (docs/101 s5).",
+      "csharp": null
+    },
+    {
+      "key": "DescentTuning.Legacy36.TargetDescentSeconds",
+      "value": 36.0,
+      "ruling": "D125",
+      "source": "docs/88 s2, s6 E1; the retired ZoneOptions.DropAltitude = 1500f delivered 36 s under canopy; Z1 C:/Z1/Server/Zone/ZoneMatchFlow.cs:162 and ZoneRetailSpawn.cs:140-152",
+      "grade": "RULING",
+      "note": "SUPERSEDED AS THE DEFAULT BY D238; kept by name as the one-word revert (CRANBERRY_DESCENT_PRESET=Legacy36). About 1,454 m of air over Z2's highest anchor, 1,212 m over its lowest. PROVENANCE CORRECTION (D239, AUDIT-parachute R5/G12): the 1500 m figure does NOT come from the 2026-08-22 admin capture - that capture has no parachute, no vehicleId 13 and no Y above 506.91 - it comes from C:/Project/out/zonedecode_entities/ops/cPacketIdAddLightweightVehicle.txt:3,5, an earlier decode of the friend's server. The value is still the owner's own capture of the friend's server; only the citation was wrong.",
+      "csharp": { "name": "Legacy36Seconds", "type": "float" }
+    },
+    {
+      "key": "DescentTuning.Owner30.TargetDescentSeconds",
+      "value": 30.0,
+      "ruling": "none",
+      "source": "docs/56 s2.5 - a taste value chosen to sit between the 850 m that feels rushed and the 1,500 m docs/48 retired as unsourced",
+      "grade": "RULING",
+      "note": "UNRULED. Nothing in the August client says 30; it is opt-in and not the default. D125 chose 36 over it and D238 chose the client's own 850 m over both.",
+      "csharp": { "name": "Owner30Seconds", "type": "float" }
+    },
+    {
+      "key": "DescentTuning.MaximumSeconds",
+      "value": 120.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Descent/DescentTuning.cs - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. A validation rail on the environment knob, not a gameplay number.",
+      "csharp": { "name": "MaximumSeconds", "type": "float" }
+    },
+    {
+      "key": "DescentDeadline.ExpectedRideMultiple",
+      "value": 2.0,
+      "ruling": "D127",
+      "source": "docs/88 - a descent deadline of 2 x ExpectedSecondsFor + 15 s forces the landing handover",
+      "grade": "RULING",
+      "note": "SUPERSEDED BY D239 and kept only as the revert (CRANBERRY_DESCENT_LANDING_GUARD=0). It reasoned about a real elapsed time with the DIVED mean, so at 1,454 m it expired at 87.0 s against a hands-off ride that honestly lasts ~148 s - and it force-dismounted three live players roughly 600 m in the air on 2026-09-03 (host-20260903-082114 / -082424 / -083422).",
+      "csharp": { "name": "ExpectedRideMultiple", "type": "double" }
+    },
+    {
+      "key": "DescentDeadline.SlackSeconds",
+      "value": 15.0,
+      "ruling": "D127",
+      "source": "docs/88 - the additive half of the same deadline",
+      "grade": "RULING",
+      "note": "SUPERSEDED BY D239's HandsOffSlackSeconds; kept for the revert path.",
+      "csharp": { "name": "DeadlineSlackSeconds", "type": "double" }
+    },
+    {
+      "key": "DescentDeadline.HandsOffRideMultiple",
+      "value": 1.5,
+      "ruling": "D239",
+      "source": "AUDIT-parachute G1 - the deadline must be computed at DescentTuning.MinimumRate (10 m/s), the measured hands-off rate, and not at the dived mean",
+      "grade": "RULING",
+      "note": "UNRULED as a number, DESIGN. 1.5 rather than 2 because the hands-off ride is already the worst case the client's own MIN_TERM_VELOCITY allows; the extra half covers the 14.8-22.0 m/s canopy-opening seconds and the 250 ms pump granularity. Nothing that completes normally can reach it, and unlike D127's multiple it is never the thing that dismounts a rider - the near-ground gate is (GroundProximityMetres).",
+      "csharp": { "name": "HandsOffRideMultiple", "type": "double" }
+    },
+    {
+      "key": "DescentDeadline.HandsOffSlackSeconds",
+      "value": 30.0,
+      "ruling": "D239",
+      "source": "AUDIT-parachute G1 - '(airY - groundY) / 10 + 30'",
+      "grade": "RULING",
+      "note": "UNRULED, DESIGN. The additive half of the rebuilt deadline: mount-burst to first-movement latency, the AutoMount echo (+2.1 to +2.5 s measured), and a hover.",
+      "csharp": { "name": "HandsOffSlackSeconds", "type": "double" }
+    },
+    {
+      "key": "DescentDeadline.GroundProximityMetres",
+      "value": 40.0,
+      "ruling": "D239",
+      "source": "2 x the client's own Vehicles.txt row 13 LANDING_HEIGHT 20 (the binary reads that column name at 0x14360ddc0); AUDIT-parachute R19, G1",
+      "grade": "CLIENT+RULING",
+      "note": "THE GATE THAT MAKES D239 SAFE. A chute whose last reported Y is more than this above the drop's ground is flying, whatever the clock says, and is never dismounted by the server. The doubling is Cranberry's, to absorb the terrain difference between the planned marker and where the player actually glided to (587-672 m away, measured).",
+      "csharp": { "name": "GroundProximityMetres", "type": "float" }
+    },
+    {
+      "key": "DescentDeadline.StreamSilenceSeconds",
+      "value": 20.0,
+      "ruling": "D239",
+      "source": "AUDIT-parachute G1 - the five archived rides this guard exists for are the ones where the client went silent mid-descent",
+      "grade": "RULING",
+      "note": "UNRULED, DESIGN. A chute whose channel-3 pose stream has been silent this long is not being flown by anybody, so forcing the handover cannot interrupt a live ride. Twenty seconds is 200 pump ticks and ~20 missed 10 Hz managed records.",
+      "csharp": { "name": "StreamSilenceSeconds", "type": "double" }
+    },
+    {
+      "key": "DescentDeadline.StuckClientMultiple",
+      "value": 2.0,
+      "ruling": "D239",
+      "source": "AUDIT-parachute G1 - 'a generous absolute timeout only as a stuck-client fallback'",
+      "grade": "RULING",
+      "note": "UNRULED, DESIGN. The last resort, on top of DeadlineSeconds: 316 s at the shipped 850 m release against an 85 s hands-off ride. It exists so a client that streams forever without ever descending cannot wedge the match; it is not reachable by any ride the client's own physics can produce.",
+      "csharp": { "name": "StuckClientMultiple", "type": "double" }
+    },
+    {
+      "key": "DropOptions.RingFactor",
+      "value": 1.5,
+      "ruling": "D66",
+      "source": "docs/77 Built B6 - measured, not assumed: at 1.0 with the play area at 4,400 m and the centre walk capped, 41 of the 92 named drop places are permanently undroppable",
+      "grade": "RULING",
+      "note": "Declared here, LEFT AS A LITERAL in Match/DropOptions.cs: the Match namespace is owned by another lane this wave (docs/101 s5). The cost is that a player may land up to 1,375 m outside the first circle - 2.1 m/s of walking against a schedule that is not lethal until 4:30. AUDIT-parachute G8 leaves it alone.",
+      "csharp": null
+    },
+    {
+      "key": "DropOptions.JitterFloorFraction",
+      "value": 0.5,
+      "ruling": "D240",
+      "source": "AUDIT-parachute G5 - the 2026-09-03 17:59 drop accepted a jittered marker with 74 neighbours inside PalaminoTrailsCampground, whose anchor has 472 (docs/48 s4.5 row 57): a 6.4x density loss bought purely by an absolute floor of 64",
+      "grade": "RULING",
+      "note": "UNRULED as a number, DESIGN. The jitter floor becomes max(MinimumMarkers, JitterFloorFraction x anchorNeighbours), so a rich place keeps a rich landing and a poor place is unaffected (its anchor is near the floor already). 0 restores the absolute-only floor. Declared here, LEFT AS A LITERAL in Match/DropOptions.cs alongside RingFactor.",
+      "csharp": null
+    }
+  ]
+}

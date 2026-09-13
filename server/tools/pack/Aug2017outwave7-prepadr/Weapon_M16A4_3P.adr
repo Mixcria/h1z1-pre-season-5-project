@@ -1,0 +1,31 @@
+<ActorRuntime>
+    <AnimationNetwork fileName="Weapons.mrn" animSetName="M164A_3P" />
+    <AnimationEnumerations>
+        <AnimationEnumeration hash="2031026762" value="10" />
+        <AnimationEnumeration hash="3009471212" value="2" />
+    </AnimationEnumerations>
+    <AnimationValues />
+    <Base fileName="Weapon_M16A4_3P_LOD0.dme" paletteName="Weapon_M16A4_3P_Lod0.dma" updateRadius="150.000000" waterDisplacementHeight="0.000000" objectTerrainDataId="0" sharedTextureAliases="" />
+    <TextureAliases>
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="0" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="0" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="0" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="0" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="M16A4_N_3P.dds" modelType="0" materialIndex="0" semanticHash="789998085" defaultTextureAlias="0" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="M16A4_C_3P.dds" modelType="0" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="0" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="M16A4_S_3P.dds" modelType="0" materialIndex="0" semanticHash="67211600" defaultTextureAlias="0" occlusionSlotBitmask="0" />
+    </TextureAliases>
+    <TintAliases />
+    <Lods>
+        <Lod fileName="Weapon_M16A4_3P_LOD1.dme" paletteName="Weapon_M16A4_3P_Lod1.dma" distance="3" />
+        <Lod fileName="Weapon_M16A4_3P_LOD2.dme" paletteName="Weapon_M16A4_3P_Lod2.dma" distance="20" />
+        <Lod distance="65" />
+    </Lods>
+    <CollisionType type="3099813281" />
+    <Usage actorUsage="3" borrowSkeleton="0" boneAttachmentName="R_weapon" validatePcNpc="1" />
+    <Shadows CheckShadowVisibility="0" />
+    <EquipType />
+    <ChildAttachSlotsEx />
+    <OcclusionData SimpleVisibility="0" />
+    <MaterialType type="METAL" />
+    <Invisible value="0" />
+    <DecalTintTranslations />
+</ActorRuntime>

@@ -1,0 +1,21 @@
+{
+  "grade": "CLIENT",
+  "clientBuild": "0.0.118.208059",
+  "generator": "tools/world/airdrop_terrain.py",
+  "chunks": 1024,
+  "bounds": [
+    -4096,
+    4096
+  ],
+  "sampleSpacingMetres": 1,
+  "heightScale": 0.03125,
+  "heightRangeMetres": [
+    -68.28125,
+    687.09375
+  ],
+  "sourceDigestAlgorithm": "sha256(concat(ascii(assetName),NUL,sha256(assetBytes))) in Z-major order",
+  "sourceDigest": "bc2594c5ecb21095fe0a4fefd5c3fa639055910cdbbb2bb8c829ebe3a5dfc3f5",
+  "outputSha256": "5124d0421a42ea04bb48412883e21891595c7b9f61b98be3caa7d7bfe646a1a3",
+  "outputBytes": 90990838,
+  "generatorSha256": "be2b3c7822368ea1d09756e144df557d23b6f9fc153a22c10be5bdd30c3cbeef"
+}

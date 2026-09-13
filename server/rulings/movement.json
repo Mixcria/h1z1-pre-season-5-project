@@ -1,0 +1,196 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "movement",
+  "class": "Movement",
+  "home": "src/Cranberry.Zone/Movement/MovementProfile.cs",
+  "summary": "Every scalar of MovementProfile.Default. The August client ships NO speed table (D32, docs/40 s4.1), so not one number here is the client's; speed scalars derive from the owner's Z1 values; startup ramps are 0.35 seconds and stopping ramps are zero under the 2026-09-08 request.",
+  "rulings": ["D32", "D53", "D54", "D55", "D56", "D59", "D60"],
+  "rows": [
+    {
+      "key": "MovementProfile.MaxMovementSpeed",
+      "value": 4.10,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneMovement.cs:162 (RetailJogSpeed = 4.10f)",
+      "grade": "Z1",
+      "note": "The owner's own stopwatch calibration against a metre Cranberry re-derived from its own client (docs/76 s2.3). Z1's wire stat 2 is the integer 1; 4.10 is the layer above it.",
+      "csharp": { "name": "MaxMovementSpeed", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.SprintSpeedModifier",
+      "value": 1.40,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 5 (docs/76 s2.1)",
+      "grade": "Z1",
+      "note": "The headline. ZoneSpeed.cs:553's RetailSprintMultiplier = 1.30 is dead code and must not be used; 1.40 x 4.10 = 5.74 m/s.",
+      "csharp": { "name": "SprintSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.WalkSpeedModifier",
+      "value": 0.30,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 86",
+      "grade": "Z1",
+      "note": "1.23 m/s.",
+      "csharp": { "name": "WalkSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.CrouchSpeedModifier",
+      "value": 0.70,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 4",
+      "grade": "Z1",
+      "note": "2.87 m/s.",
+      "csharp": { "name": "CrouchSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.BackpedalSpeedModifier",
+      "value": 0.75,
+      "ruling": "D59",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 3",
+      "grade": "Z1",
+      "note": "D59 adopts 0.75 (3.08 m/s) over wave 4's 0.50 even though the owner once called backpedal too fast; the base drop from 5.50 to 4.10 pays for the ratio rise. Two owner rulings genuinely conflict here and D59 flags it rather than resolving it silently.",
+      "csharp": { "name": "BackpedalSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.StrafeSpeedModifier",
+      "value": 0.75,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 7",
+      "grade": "Z1",
+      "note": "Triple-anchored and already Cranberry's before the port (docs/76 s2.3); equal to backpedal on purpose, so the posture ladder is walk < crouch < backpedal == strafe < run < sprint.",
+      "csharp": { "name": "StrafeSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.ProneSpeedModifier",
+      "value": 0.40,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 67",
+      "grade": "Z1",
+      "note": "1.64 m/s.",
+      "csharp": { "name": "ProneSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.ProneRollSpeedModifier",
+      "value": 2.50,
+      "ruling": "none",
+      "source": "User request 2026-09-06: Shift while prone must roll faster; docs/movement-input-20260906.md",
+      "grade": "RULING",
+      "note": "Policy: roll equals base jog speed (4.10 m/s): base 4.10 x prone 0.40 x roll 2.50. Native 14158ffb0 sets the roll qualifier for held Sprint; 1411ad740 consumes stat 84 on the lateral axis. Supersedes the unobserved 0.50 default that made a roll slower than ordinary prone strafing.",
+      "csharp": { "name": "ProneRollSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.SwimSpeedModifier",
+      "value": 0.55,
+      "ruling": "D56",
+      "source": "docs/76 s2.7; Cranberry's own value, Z1's 0 explicitly REFUSED",
+      "grade": "RULING",
+      "note": "Z1 ships SwimSpeedModifier = 0, harmless on an unused 1087 branch; at 1148 swim is a live stance branch and a zero freezes the swimmer. D56 keeps 0.55.",
+      "csharp": { "name": "SwimSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.WaterSpeedModifier",
+      "value": 0.80,
+      "ruling": "D54",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSendSelf.cs:1563-1646 row 85",
+      "grade": "Z1",
+      "note": "Wading, not swimming.",
+      "csharp": { "name": "WaterSpeedModifier", "type": "float" }
+    },
+    {
+      "key": "MovementProfile.SprintAccelerationTime",
+      "value": 0.35,
+      "ruling": "none",
+      "source": "User request 2026-09-08: try 0.35 seconds startup; docs/gameplay-20260908.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SprintAccelerationTime",
+        "type": "float"
+      },
+      "note": "350 ms startup ramp; terminal speeds and stopping times unchanged."
+    },
+    {
+      "key": "MovementProfile.SprintDecelerationTime",
+      "value": 0.0,
+      "ruling": "none",
+      "source": "User request 2026-09-06: immediate, responsive movement; docs/responsiveness-20260906.md",
+      "grade": "RULING",
+      "note": "Server policy: zero blend time snaps this input axis to its target. Supersedes the historical D55 ramp; terminal speeds retain their existing values.",
+      "csharp": {
+        "name": "SprintDecelerationTime",
+        "type": "float"
+      }
+    },
+    {
+      "key": "MovementProfile.ForwardAccelerationTime",
+      "value": 0.35,
+      "ruling": "none",
+      "source": "User request 2026-09-08: try 0.35 seconds startup; docs/gameplay-20260908.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "ForwardAccelerationTime",
+        "type": "float"
+      },
+      "note": "350 ms startup ramp; terminal speeds and stopping times unchanged."
+    },
+    {
+      "key": "MovementProfile.ForwardDecelerationTime",
+      "value": 0.0,
+      "ruling": "none",
+      "source": "User request 2026-09-06: immediate, responsive movement; docs/responsiveness-20260906.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "ForwardDecelerationTime",
+        "type": "float"
+      },
+      "note": "Server policy: zero blend time snaps this input axis to its target. Supersedes the historical D55 ramp; terminal speeds retain their existing values."
+    },
+    {
+      "key": "MovementProfile.BackAccelerationTime",
+      "value": 0.35,
+      "ruling": "none",
+      "source": "User request 2026-09-08: try 0.35 seconds startup; docs/gameplay-20260908.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "BackAccelerationTime",
+        "type": "float"
+      },
+      "note": "350 ms startup ramp; terminal speeds and stopping times unchanged."
+    },
+    {
+      "key": "MovementProfile.BackDecelerationTime",
+      "value": 0.0,
+      "ruling": "none",
+      "source": "User request 2026-09-06: immediate, responsive movement; docs/responsiveness-20260906.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "BackDecelerationTime",
+        "type": "float"
+      },
+      "note": "Server policy: zero blend time snaps this input axis to its target. Supersedes the historical D55 ramp; terminal speeds retain their existing values."
+    },
+    {
+      "key": "MovementProfile.StrafeAccelerationTime",
+      "value": 0.35,
+      "ruling": "none",
+      "source": "User request 2026-09-08: try 0.35 seconds startup; docs/gameplay-20260908.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "StrafeAccelerationTime",
+        "type": "float"
+      },
+      "note": "350 ms startup ramp; terminal speeds and stopping times unchanged."
+    },
+    {
+      "key": "MovementProfile.StrafeDecelerationTime",
+      "value": 0.0,
+      "ruling": "none",
+      "source": "User request 2026-09-06: immediate, responsive movement; docs/responsiveness-20260906.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "StrafeDecelerationTime",
+        "type": "float"
+      },
+      "note": "Server policy: zero blend time snaps this input axis to its target. Supersedes the historical D55 ramp; terminal speeds retain their existing values."
+    }
+  ]
+}

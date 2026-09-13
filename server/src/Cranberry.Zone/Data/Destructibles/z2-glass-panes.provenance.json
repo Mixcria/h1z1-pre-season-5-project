@@ -1,0 +1,47 @@
+{
+  "grade": "CLIENT ADR/DME planar bounds and Z2 placement transforms",
+  "models": {
+    "Common_Props_GlassWindow01.adr": {
+      "mesh": "Common_Props_GlassWindow01_LOD0.dme",
+      "bounds": [
+        0.0,
+        -1.5258788721439487e-07,
+        -1.3257567882537842,
+        0.0,
+        2.1756534576416016,
+        0.0
+      ],
+      "adrSha256": "dd58f0ec1b3f7734672d828956a4eee291df049a82f975240b2c2a0bf15722fc",
+      "meshSha256": "5a7b38a7e45c7077ddae6e4d4728470701b1dd9671f82a3919e43c4231895304"
+    },
+    "Common_Props_TintedWindow01.adr": {
+      "mesh": "Common_Props_TintedWindow01_LOD0.dme",
+      "bounds": [
+        0.0,
+        -1.5258788721439487e-07,
+        -1.3257567882537842,
+        0.0,
+        2.1756534576416016,
+        0.0
+      ],
+      "adrSha256": "016a43d9d692d0b7eb6264336ef0a5b65eff3ff0df21f68be94b1d72804efaca",
+      "meshSha256": "bb1e13d3b4d08bcf94dd3118da7ed92c25eed40465f448e37712c6d9b114b405"
+    }
+  },
+  "count": 15407,
+  "sources": [
+    {
+      "path": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+      "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3"
+    },
+    {
+      "path": "C:\\Aug2017\\Server\\tools\\world\\glass_melee.py",
+      "sha256": "ae651ef5eec77c478d538554b65dacb4bad8823b52935a020e46296a14a108b2"
+    },
+    {
+      "path": "C:\\Aug2017\\Server\\tools\\world\\vehicle_geometry.py",
+      "sha256": "49171de6e1cb3a9fb5769a3a34056380c799bf46ff6d6b5c1fe8050af2a830c9"
+    }
+  ],
+  "outputSha256": "cd970659a46a25f67ecebc9deb7db1fc5b7dca9680cd2387799098b61fd0567b"
+}

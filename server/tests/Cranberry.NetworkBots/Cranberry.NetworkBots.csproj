@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Cranberry.Harness/Cranberry.Harness.csproj" />
+    <ProjectReference Include="../../src/Cranberry.Launcher.Core/Cranberry.Launcher.Core.csproj" />
+    <ProjectReference Include="../../src/Cranberry.Launcher.Service/Cranberry.Launcher.Service.csproj" />
+  </ItemGroup>
+</Project>

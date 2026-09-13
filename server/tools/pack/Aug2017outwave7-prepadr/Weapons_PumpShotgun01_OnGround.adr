@@ -1,0 +1,28 @@
+<ActorRuntime>
+    <AnimationNetwork fileName="" animSetName="" />
+    <AnimationEnumerations />
+    <AnimationValues />
+    <Base fileName="Weapons_PumpShotgun01_OnGround_LOD0.dme" paletteName="Weapons_PumpShotgun01_OnGround_Lod0.dma" updateRadius="150.000000" waterDisplacementHeight="0.000000" objectTerrainDataId="0" sharedTextureAliases="" />
+    <TextureAliases>
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="0" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="0" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_PumpShotgun01_N_3P.dds" modelType="0" materialIndex="0" semanticHash="789998085" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_PumpShotgun01_C_3P.dds" modelType="0" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_PumpShotgun01_S_3P.dds" modelType="0" materialIndex="0" semanticHash="67211600" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+    </TextureAliases>
+    <TintAliases />
+    <Lods>
+        <Lod fileName="Weapons_PumpShotgun01_OnGround_LOD1.dme" paletteName="Weapons_PumpShotgun01_OnGround_Lod1.dma" distance="3" />
+        <Lod fileName="Weapons_PumpShotgun01_OnGround_LOD2.dme" paletteName="Weapons_PumpShotgun01_OnGround_Lod2.dma" distance="10" />
+        <Lod distance="50" />
+    </Lods>
+    <CollisionType type="4119585228" />
+    <CollisionData fileName="Weapons_PumpShotgun01_OnGround.cdt" createAsKinematic="0" useBoundingBox="0" />
+    <Usage actorUsage="0" borrowSkeleton="0" validatePcNpc="1" />
+    <Shadows CheckShadowVisibility="0" Shadowless="0" />
+    <EquipType EquippedSlotName="None" ParentAttachSlot="None" />
+    <ChildAttachSlotsEx />
+    <OcclusionData SimpleVisibility="0" UseAsOccluder="1" />
+    <MaterialType type="METAL" />
+    <Invisible value="0" />
+</ActorRuntime>

@@ -1,0 +1,234 @@
+{
+ "format": "cranberry.airdrop",
+ "formatVersion": 1,
+ "generator": "tools/data/gen-loot-tables.py",
+ "zone": "Z2",
+ "clientBuild": "0.0.118.208059",
+ "ruling": "D274",
+ "note": "Retail's second loot channel (AUDIT-loot.md G4). The crate, its models and its container definition are the client's own; the roster and every weight are a RULING - the client ships no loot table and the owner's Z1 tree has no airdrop implementation to adopt (ZoneRetailSpawn.cs:690 RetailAirdrops = false).",
+ "crate": {
+  "itemDefinitionId": 1501,
+  "name": "Military Crate",
+  "nameId": 1344,
+  "itemClass": 25016,
+  "containerDefinitionId": 51,
+  "groundModelId": 9218,
+  "groundModel": "Common_Props_MilitaryCrate.adr",
+  "descendingModelId": 9219,
+  "descendingModel": "Common_Props_MilitaryCrate_Parachute.adr",
+  "planeModelId": 9215,
+  "planeModel": "Vehicle_C130.adr",
+  "landingEffectName": "PFX_Impact_AirDrop_Large",
+  "why": "Models.txt 9218 'Crate.Military for air drops.', 9219 'Crate.Military.Parachute for air drops.', 9215 'AirDropC130'; ClientItemDefinitions 1501 'Military Crate' ITEM_CLASS 25016 PARAM1 51; ContainerDefinitions 51 = 100 slots, WITHDRAWAL_ONLY, REMOVE_WHEN_EMPTY."
+ },
+ "guaranteed": [
+  {
+   "weight": 1,
+   "why": "Laminated Tactical Body Armor - GUARANTEED in every drop from 2017-06-29 (web-research-aug2017-kotk.md:136, High). This is the only route to a vest that is not subject to D275's 5 % world chance.",
+   "items": [
+    {
+     "itemDefinitionId": 2271,
+     "name": "Laminated Tactical Body Armor",
+     "nameId": 12072,
+     "groundModelId": 9583,
+     "groundModel": "Common_Props_Armor_Kevlar_Basic.adr",
+     "count": 1,
+     "kind": "BodyArmor",
+     "itemClass": 25041,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 100
+    }
+   ]
+  },
+  {
+   "weight": 1,
+   "why": "Two Tactical First Aid Kits - retail's 'plus medkits'. The COUNT is a RULING; listing the row twice rather than asking for a stack of two is the client's own rule, not a style choice: 2424's MAX_STACK_SIZE is 1, so a count of 2 would be clamped to 1 and the crate would quietly hold half what this table says.",
+   "items": [
+    {
+     "itemDefinitionId": 2424,
+     "name": "Tactical First Aid Kit",
+     "nameId": 12301,
+     "groundModelId": 9221,
+     "groundModel": "Common_Props_FirstAidKit.adr",
+     "count": 1,
+     "kind": "Medical",
+     "itemClass": 16053,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 0
+    },
+    {
+     "itemDefinitionId": 2424,
+     "name": "Tactical First Aid Kit",
+     "nameId": 12301,
+     "groundModelId": 9221,
+     "groundModel": "Common_Props_FirstAidKit.adr",
+     "count": 1,
+     "kind": "Medical",
+     "itemClass": 16053,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 0
+    }
+   ]
+  }
+ ],
+ "rifle": [
+  {
+   "weight": 1,
+   "why": ".308 Hunting Rifle + one magazine's worth of ammunition. Item 1373 and NOT 1899: 1899 carries PASSIVE_EQUIP_SLOT_ID 0 and so can never auto-equip, exactly as docs/39 7 rules for the M1911's second row. Ground form 9204 Weapon_M24_OnGround, DESCRIPTION 'NPC_Spawn_Weapon_M24_OnGround'; the .308 box prop is 10190 Common_Props_AmmoBoxes_Sniper. Twelve rounds is the retail Steam guide's own count for a crate ('Hunting Rifle ... ammo (12)').",
+   "items": [
+    {
+     "itemDefinitionId": 1373,
+     "name": ".308 Hunting Rifle",
+     "nameId": 1054,
+     "groundModelId": 9204,
+     "groundModel": "Weapon_M24_OnGround.adr",
+     "count": 1,
+     "kind": "Weapon",
+     "itemClass": 25036,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 76
+    },
+    {
+     "itemDefinitionId": 1469,
+     "name": ".308 Round",
+     "nameId": 1364,
+     "groundModelId": 10190,
+     "groundModel": "Common_Props_AmmoBoxes_Sniper.adr",
+     "count": 12,
+     "kind": "Ammunition",
+     "itemClass": 16053,
+     "maxStackSize": 9999,
+     "passiveEquipSlotId": 0
+    }
+   ]
+  }
+ ],
+ "pool": [
+  {
+   "weight": 20,
+   "why": "AR-15 with 60 rounds - the Steam guide's top of 'ammo (30-60)'.",
+   "items": [
+    {
+     "itemDefinitionId": 10,
+     "name": "AR-15",
+     "nameId": 32,
+     "groundModelId": 23,
+     "groundModel": "Weapon_M16A4_OnGround.adr",
+     "count": 1,
+     "kind": "Weapon",
+     "itemClass": 25036,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 76
+    },
+    {
+     "itemDefinitionId": 1429,
+     "name": ".223 Round",
+     "nameId": 1169,
+     "groundModelId": 10,
+     "groundModel": "Common_Props_AmmoBox02.adr",
+     "count": 60,
+     "kind": "Ammunition",
+     "itemClass": 16053,
+     "maxStackSize": 9999,
+     "passiveEquipSlotId": 0
+    }
+   ]
+  },
+  {
+   "weight": 20,
+   "why": "AK-47 with 60 rounds.",
+   "items": [
+    {
+     "itemDefinitionId": 2229,
+     "name": "AK-47",
+     "nameId": 12126,
+     "groundModelId": 9490,
+     "groundModel": "Weapon_AK47_OnGround.adr",
+     "count": 1,
+     "kind": "Weapon",
+     "itemClass": 25036,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 76
+    },
+    {
+     "itemDefinitionId": 2325,
+     "name": "7.62x39 Round ",
+     "nameId": 12131,
+     "groundModelId": 10132,
+     "groundModel": "Common_Props_AmmoBoxes_AK47.adr",
+     "count": 60,
+     "kind": "Ammunition",
+     "itemClass": 16053,
+     "maxStackSize": 9999,
+     "passiveEquipSlotId": 0
+    }
+   ]
+  },
+  {
+   "weight": 20,
+   "why": "12GA Pump Shotgun with 24 shells - the top of 'shotgun shells (12-24)'.",
+   "items": [
+    {
+     "itemDefinitionId": 1374,
+     "name": "12GA Pump Shotgun",
+     "nameId": 1055,
+     "groundModelId": 9286,
+     "groundModel": "Weapons_PumpShotgun01_OnGround.adr",
+     "count": 1,
+     "kind": "Weapon",
+     "itemClass": 25036,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 76
+    },
+    {
+     "itemDefinitionId": 1511,
+     "name": "12 Gauge Buckshot Shell",
+     "nameId": 1450,
+     "groundModelId": 8023,
+     "groundModel": "Common_Props_AmmoBoxe01.adr",
+     "count": 24,
+     "kind": "Ammunition",
+     "itemClass": 16053,
+     "maxStackSize": 9999,
+     "passiveEquipSlotId": 0
+    }
+   ]
+  },
+  {
+   "weight": 15,
+   "why": "Light Blue Tactical Helmet - the roster's tactical helmet.",
+   "items": [
+    {
+     "itemDefinitionId": 2172,
+     "name": "Light Blue Tactical Helmet",
+     "nameId": 9943,
+     "groundModelId": 9418,
+     "groundModel": "Common_Props_Clothes_TacticalHelmet.adr",
+     "count": 1,
+     "kind": "Helmet",
+     "itemClass": 25000,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 1
+    }
+   ]
+  },
+  {
+   "weight": 15,
+   "why": "Tan Military Backpack - the +2000 bulk bag.",
+   "items": [
+    {
+     "itemDefinitionId": 2124,
+     "name": "Tan Military Backpack",
+     "nameId": 1019,
+     "groundModelId": 9093,
+     "groundModel": "BackpackOnGround001.adr",
+     "count": 1,
+     "kind": "Backpack",
+     "itemClass": 25004,
+     "maxStackSize": 1,
+     "passiveEquipSlotId": 10
+    }
+   ]
+  }
+ ]
+}

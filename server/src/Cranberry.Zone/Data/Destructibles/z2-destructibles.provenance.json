@@ -1,0 +1,36 @@
+{
+  "grade": "CLIENT placements/effects; SERVER health tuning",
+  "count": 45932,
+  "explosiveBarrelPolicy": "User request 2026-09-08: red industrial barrels explode when shot; 1000 health is server tuning.",
+  "wallBlockerPolicy": {
+    "modelId": 9810,
+    "effectId": 5298,
+    "health": 4000,
+    "grade": "August authored actor/effect verified; health is declared server tuning",
+    "note": "Only WallHoleBlocked01 is removed. Surrounding WallHole01 model9809 is not destructible. Reference segment0001 71.75-72.5s shows a shotgun wall break; initial health and pellet count are unknown. Wall damage uses the existing weapon damage rules, not the fence five-bullet rule."
+  },
+  "healthSource": {
+    "path": "C:\\h1z1project\\reference\\h1z1-server\\src\\servers\\ZoneServer2016\\entities\\destroyable.ts",
+    "sha256": "9514a1d680e3e474199d0801b9eeeaf4d480b81fe8486716e9ba9d78263ad53c",
+    "note": "getMaxHealth: 2000 window / 5000 default, adopted tuning under D329; not retail proof"
+  },
+  "sources": [
+    {
+      "path": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+      "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3"
+    },
+    {
+      "path": "C:\\Aug2017\\out\\data_aug\\derived\\effects.json",
+      "sha256": "ad7b48a80af07beb678b1f967ac64e4ed2e9b10fa73c0bcb0172f9fff0a5e7e8"
+    },
+    {
+      "path": "C:\\Aug2017\\out\\world_aug\\Z2.zone",
+      "sha256": "742613f79b1b48e64ea78653dd03f3bbc08d27a1d95d9af3f6946d8c80f1c6b2"
+    },
+    {
+      "path": "C:\\Aug2017\\parallel\\z1br-parity-20260912\\workspaces\\coordinator\\tools\\world\\destructibles.py",
+      "sha256": "48582ff462b1e3ffb874619907283b6a4d1dc2ec7c6fd11dab89553a8e1f48df"
+    }
+  ],
+  "outputSha256": "b2aa523b7bf1d639c4a18c7427ce69feab216e7ac493a8bb4aefc9f62c2947ee"
+}

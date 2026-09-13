@@ -1,0 +1,145 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "starter",
+  "class": "Starter",
+  "home": "src/Cranberry.Zone/Inventory/StarterOutfit.cs, PlayerInventory.cs, SurvivorSlots.cs, SelfRecord.cs",
+  "summary": "Starting physical outfit: Grey Henley, Blue Jeans, Fingerless Gloves and Green Zeds. August item IDs; owner starter-account correction of 2026-09-09 supersedes the early J!nx shirt and camo-pants placeholders. Loadout 17 and gameplay quantities are unchanged.",
+  "rulings": [
+    "D37",
+    "D61",
+    "D72",
+    "D141",
+    "D351",
+    "D352"
+  ],
+  "rows": [
+    {
+      "key": "SurvivorStarterOutfit.Gloves",
+      "value": 2324,
+      "ruling": "D37",
+      "source": "the client's own skin catalogue: a row whose mesh string is byte-identical to Survivor<gender>_Hands_Gloves_Fingerless.adr, ITEM_CLASS 25008, PASSIVE_EQUIP_SLOT_ID 2",
+      "grade": "CLIENT+RULING",
+      "note": "Granting it changes nothing visually; it only gives the inventory panel something to show. D37: the panel and the visual dress are two different data paths.",
+      "csharp": {
+        "name": "OutfitGloves",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "SurvivorStarterOutfit.Shirt",
+      "value": 3533,
+      "ruling": "D352",
+      "source": "August ClientItemDefinitions 3533 / AccountRecipe 3652 Grey Henley; docs/starter-accounts-20260909.md",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "OutfitShirt",
+        "type": "uint"
+      },
+      "note": "Replaces the early J!nx T-Shirt placeholder 2144; uses Shirt_Henley mesh."
+    },
+    {
+      "key": "SurvivorStarterOutfit.Pants",
+      "value": 2177,
+      "ruling": "D352",
+      "source": "August ClientItemDefinitions 2177 / AccountRecipe 3656 Blue Jeans; docs/starter-accounts-20260909.md",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "OutfitPants",
+        "type": "uint"
+      },
+      "note": "Replaces the Brown Camo Pants placeholder 2065 with basic jeans."
+    },
+    {
+      "key": "SurvivorStarterOutfit.Boots",
+      "value": 3711,
+      "ruling": "D351",
+      "source": "August ClientItemDefinitions row 3711, passive ability 1111709; local reference starter equipment",
+      "grade": "CLIENT+RULING",
+      "note": "Stealth footwear, Survivor<gender>_Feet_Jeds.adr. Default pre-game and match footwear, per owner request.",
+      "csharp": {
+        "name": "OutfitBoots",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "SurvivorStarterOutfit.order",
+      "value": [
+        2324,
+        3533,
+        2177,
+        3711
+      ],
+      "ruling": "D37",
+      "source": "src/Cranberry.Zone/Inventory/StarterOutfit.cs:88 - the order PlayerInventory.Bootstrap grants them",
+      "grade": "RULING",
+      "note": "No body slot is bound: the pieces are granted with no equipmentSlotId, so the zoning 94 01 stays byte-identical to the capture the client accepted (docs/32, regression guards 2-4).",
+      "csharp": {
+        "name": "OutfitOrder",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "SurvivorLoadout.Id",
+      "value": 17,
+      "ruling": "D141",
+      "source": "the client's own Loadouts.txt / LoadoutSlots.txt rows for loadout 17 (docs/41)",
+      "grade": "CLIENT+RULING",
+      "note": "Supersedes the earlier loadout-3 choice: loadout 3 has no slot 5 at all, so the binoculars tile cannot exist on it. Declared here, LEFT AS A LITERAL in SurvivorSlots.cs (see the summary).",
+      "csharp": null
+    },
+    {
+      "key": "PlayerInventory.SurvivorFistsItemDefinitionId",
+      "value": 85,
+      "ruling": "D141",
+      "source": "the client's own LoadoutSlots (17, 7) FLAG_REQUIRED 1, FLAG_AUTO_EQUIP 1, ITEM_ID 85, and its own config Inventory.SpecialEmptyHandsItemId = 85",
+      "grade": "CLIENT+RULING",
+      "note": "The client names the id twice; the RULING is that Cranberry honours the required-hand rule rather than leaving slot 7 empty. Declared here, LEFT AS A LITERAL in PlayerInventory.cs (see the summary).",
+      "csharp": null
+    },
+    {
+      "key": "PlayerInventory.SurvivorBinocularsItemDefinitionId",
+      "value": 1542,
+      "ruling": "D141",
+      "source": "the client's own ClientItemDefinitions row 1542, bound to loadout-17 slot 5 (the binocular hotbar tile)",
+      "grade": "CLIENT+RULING",
+      "note": "Declared here, LEFT AS A LITERAL in PlayerInventory.cs (see the summary).",
+      "csharp": null
+    },
+    {
+      "key": "PlayerInventory.StarterBandageItemDefinitionId",
+      "value": 2423,
+      "ruling": "D141",
+      "source": "the client's own ClientItemDefinitions row 2423 (Field Bandage), bound to the Q quick-use slots",
+      "grade": "CLIENT+RULING",
+      "note": "The same id as rulings/crafting.json CraftingCatalog.FieldBandage. Declared here, LEFT AS A LITERAL in PlayerInventory.cs (see the summary).",
+      "csharp": null
+    },
+    {
+      "key": "PlayerInventory.starterBandageCount",
+      "value": 4,
+      "ruling": "D141",
+      "source": "src/Cranberry.Zone/Inventory/PlayerInventory.cs:596 - Cranberry design",
+      "grade": "RULING",
+      "note": "The one number in the starter loadout with no client source at all: the client says a bandage exists, not how many you start with. Declared here, LEFT AS A LITERAL in PlayerInventory.cs (see the summary).",
+      "csharp": null
+    },
+    {
+      "key": "CharacterResource.Starter.health",
+      "value": 10000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/SelfRecord.cs CharacterResource.Starter, resource 1 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. The bar every damage number in the server is expressed against (see rulings/gas.json GasSettings.MaxHitpoints, which must equal it). Declared here, LEFT AS A LITERAL in SelfRecord.cs, which is out of this lane's scope.",
+      "csharp": null
+    },
+    {
+      "key": "CharacterResource.Starter.stamina",
+      "value": 600,
+      "ruling": "D61",
+      "source": "the client's own Resources.txt row 6; D61 pins it at 600/600 and revises it from nowhere",
+      "grade": "CLIENT+RULING",
+      "note": "NO STAMINA is confirmed satisfied and needs no server work: nothing revises resource 6 after the self record, so the client's own bar never drains. Declared here, LEFT AS A LITERAL in SelfRecord.cs, which is out of this lane's scope.",
+      "csharp": null
+    }
+  ]
+}

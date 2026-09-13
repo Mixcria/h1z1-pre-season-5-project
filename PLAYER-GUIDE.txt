@@ -1,0 +1,39 @@
+Cranberry Local - community preview
+
+1. Extract the complete ZIP to a folder you can keep. Windows 10/11 x64 is required.
+2. Open Cranberry.Launcher.exe. It starts the bundled server on your own PC.
+3. Create a local account. Leave "Make this the local administrator" selected for
+   your first account. These credentials belong only to this installation.
+4. Choose INSTALL / REPAIR to download the matching client from Cloudflare.
+   In Settings, you can instead select an existing matching game installation.
+5. Press PLAY. Select Solo in the game. For solo development, enter /startmatch
+   in the development console to start without waiting for a second player.
+
+After a complete installation, the local server and game can run without an
+Internet connection. Installation, repairs and new release files need downloads.
+Keep the launcher open while playing; it carries the local game connection.
+Closing it shuts down the bundled server and flushes saved rankings.
+
+Accounts, saves, settings and the default Game folder are kept in:
+  %LOCALAPPDATA%\CranberryCommunity
+This is separate from the normal Cranberry online launcher's settings.
+Back up this folder before experimenting with community changes.
+
+Updates are manual. Close the launcher, extract a newer release into a new
+folder and open it. It reuses your local accounts, settings and installed game.
+Install / repair fetches files that changed for the selected release.
+Do not share the private data folder, its registration codes or certificate.
+
+This edition uses a server from the 2026-09-13 landing-fall-grace live release
+and the 2026.9.13.3 launcher source, with local startup and shutdown support.
+It is a separate local server. Online accounts and saves are not imported.
+Friends, parties and matches involve only accounts on the same server; this
+preview binds to loopback and does not expose a public or LAN service.
+
+If startup fails, read the message and the logs beneath the local data folder.
+Only one local edition may use a data folder at a time. Another running
+server is never stopped to claim its ports. No SDK is needed to play.
+
+Preview verification: local startup, account persistence, the encrypted game
+connection and client installation passed automated checks. Native gameplay
+has not yet been playtested with this local package.

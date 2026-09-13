@@ -1,0 +1,593 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "loot-gates",
+  "class": "LootGates",
+  "home": "src/Cranberry.Zone/Loot/LootDensityOptions.cs, src/Cranberry.Zone/Loot/LootStreamOptions.cs, src/Cranberry.Zone/Loot/AirdropOptions.cs",
+  "summary": "How much loot is on the floor, how much of it a player is shown, the 2017-06-29 laminated armour rules and the airdrop channel. D270/D271/D272 (2026-09-03) raised the floor to the ruled 0.27 density, made Gear01's gate the clothing gate and cut the gun cluster to one box; that retired three of the six THIRD_PARTY_SHAPED rows this file used to carry. D286 (2026-09-03 evening) then reversed D272, putting the gun cluster back to TWO boxes after the owner played the one-box world. The two that remain - FirstAidKit01 0.30 and Ammo01 0.60 - are the owner's own gates that already sat ABOVE the ruled density, so the ruling left them where he put them; docs/39 s1.1 and docs/65 s2.2 trace their shape to a reference server's Z2 ground tables and D68 adopted them under D53, and they are recorded THIRD_PARTY_SHAPED here rather than being silent about it (S8 s5.1, docs/96 s5).",
+  "rulings": [
+    "D20",
+    "D31",
+    "D42",
+    "D53",
+    "D68",
+    "D69",
+    "D70",
+    "D73",
+    "D270",
+    "D271",
+    "D272",
+    "D274",
+    "D275",
+    "D281",
+    "D286"
+  ],
+  "rows": [
+    {
+      "key": "LootDensityOptions.Weapons01SpawnChance",
+      "value": 0.27,
+      "ruling": "D270",
+      "source": "docs/39 s4.2 / D31 - Cranberry's own solve, ruled the floor density by the owner on 2026-09-03",
+      "grade": "RULING",
+      "note": "D270 (2026-09-03), the owner's floor-density ruling: spawn chance 0.27 replacing the weighted 0.1223. The value itself is docs/39 s4.2's own solve (D31) - Cranberry's measurement of the client's marker spacing, 12.45 markers to a 4 m room over 4,000 samples, against the owner's retail-footage census of 0-6 loose items per room, mean about 3. AUDIT-loot.md G1 measured the shortfall his gates produced: 1.50 items in a 4 m room against that counted mean of 3. Was 0.1267 (his 18 % over a 405-weight pool with a 120 \"empty\" row, D68, THIRD_PARTY_SHAPED); the ruling raises it to the ruled density and retires the grade with it. Mirrors SPAWN_CHANCES in tools/data/gen-loot-tables.py, which is what the runtime actually reads through z2-loot-tables.json.",
+      "csharp": {
+        "name": "Weapons01SpawnChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "LootDensityOptions.Gear01SpawnChance",
+      "value": 0.27,
+      "ruling": "D271",
+      "source": "AUDIT-loot.md G3 - Gear01's own marker share, 96,722 of 168,322 = 57.5 %",
+      "grade": "RULING",
+      "csharp": {
+        "name": "Gear01SpawnChance",
+        "type": "double"
+      },
+      "note": "D271 (2026-09-03), THE CLOTHING GATE, the owner's ruling: \"raise the clothing gate so shirts/boots are common on floors\" against his own note \"floors covered in folded shirts and work boots\", with the number to come from the audit's Gear01 marker share. A family gated at the flat ruled density produces its own share of the MARKERS as its share of the FLOOR, so ruling Gear01 to 0.27 is exactly the statement \"Gear01 gets the 57.5 % of the floor the client's own marker field gives it\". Was 0.0850 - the LOWEST of the five gates on the family that owns 57.5 % of the markers, which is why clothing was 6.8 % of the floor. Measured at seed 1: Gear01 40.1 % -> 57.2 % of items, clothing 6.9 % -> 12.3 % of ground objects (2,060 -> 6,145 garments map-wide)."
+    },
+    {
+      "key": "LootDensityOptions.Backpack01SpawnChance",
+      "value": 0.27,
+      "ruling": "D270",
+      "source": "docs/39 s4.2 / D31 - Cranberry's own solve, ruled the floor density on 2026-09-03",
+      "grade": "RULING",
+      "csharp": {
+        "name": "Backpack01SpawnChance",
+        "type": "double"
+      },
+      "note": "D270 (2026-09-03), the owner's floor-density ruling: spawn chance 0.27 replacing the weighted 0.1223. The value itself is docs/39 s4.2's own solve (D31) - Cranberry's measurement of the client's marker spacing, 12.45 markers to a 4 m room over 4,000 samples, against the owner's retail-footage census of 0-6 loose items per room, mean about 3. AUDIT-loot.md G1 measured the shortfall his gates produced: 1.50 items in a 4 m room against that counted mean of 3. Was 0.2500 (his 25 %, no empty row, D68)."
+    },
+    {
+      "key": "LootDensityOptions.FirstAidKit01SpawnChance",
+      "value": 0.3,
+      "ruling": "D68",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json - his 30 %, no empty row",
+      "grade": "THIRD_PARTY_SHAPED",
+      "csharp": {
+        "name": "FirstAidKit01SpawnChance",
+        "type": "double"
+      },
+      "note": "UNCHANGED by D270: his 0.30 already sits ABOVE the ruled density, and the ruling raises the floor rather than flattening it. Still THIRD_PARTY_SHAPED - one of the two rows of that grade left in the server."
+    },
+    {
+      "key": "LootDensityOptions.Ammo01SpawnChance",
+      "value": 0.6,
+      "ruling": "D68",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json - his 60 %, no empty row, on 72 markers",
+      "grade": "THIRD_PARTY_SHAPED",
+      "csharp": {
+        "name": "Ammo01SpawnChance",
+        "type": "double"
+      },
+      "note": "UNCHANGED by D270/D272: his 0.60 already sits above the ruled density, and D272's own words are \"the client's own markers pair ammo only at the 72 Ammo01 spots - keep those as they are\". Still THIRD_PARTY_SHAPED."
+    },
+    {
+      "key": "LootDensityOptions.WeightedSpawnChance",
+      "value": 0.2721,
+      "ruling": "D270",
+      "source": "derived from the five gates above over the August field's 166,781 item markers: (96,722 + 47,967 + 11,041) x 0.27 + 10,979 x 0.30 + 72 x 0.60 = 45,384",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "Documentation and a test anchor; nothing gates against it. Inherits the grade of its inputs, and two of the five (FirstAidKit01 0.30, Ammo01 0.60) are still THIRD_PARTY_SHAPED. 0.1223 before D270.",
+      "csharp": {
+        "name": "WeightedSpawnChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "LootDensityOptions.PreWave8SpawnChance",
+      "value": 0.27,
+      "ruling": "D31",
+      "source": "docs/39 s4.2 - Cranberry's own solve: 12.45 markers per 4 m room over 4,000 samples against the owner's retail-footage census of 0-6 loose items per room, mean about 3",
+      "grade": "RULING",
+      "note": "THE ONE GATE WITH NO THIRD-PARTY ANCESTRY - and since D270 it is also the SHIPPED density for three of the five families. Kept as its own constant because it is the flat all-families override (SpawnChanceOverride = 0.27), which is a different statement from \"no family sits below 0.27\": the override also pulls FirstAidKit01 down from 0.30 and Ammo01 down from 0.60.",
+      "csharp": {
+        "name": "PreWave8SpawnChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "LootDensityOptions.RoomRadiusMetres",
+      "value": 4.0,
+      "ruling": "D20",
+      "source": "owner-authored; mirrors ROOM_RADIUS_METRES in tools/data/gen-loot-tables.py:203",
+      "grade": "Z1",
+      "note": "At the owner's gates the room caps go nearly inert - 30 items suppressed out of 20,158 - but they stay as the guard against his own 'sixteen items in one small room' report (docs/78 s2.2).",
+      "csharp": {
+        "name": "RoomRadiusMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootDensityOptions.RoomHeightMetres",
+      "value": 2.0,
+      "ruling": "D20",
+      "source": "owner-authored; mirrors ROOM_HEIGHT_METRES in tools/data/gen-loot-tables.py:204",
+      "grade": "Z1",
+      "note": "Height tolerance, so a first floor's loot is not counted against a ground floor's.",
+      "csharp": {
+        "name": "RoomHeightMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootDensityOptions.MaxItemsPerRoom",
+      "value": 6,
+      "ruling": "D20",
+      "source": "the top of the owner's counted retail range; mirrors MAX_ITEMS_PER_ROOM in tools/data/gen-loot-tables.py:205",
+      "grade": "Z1",
+      "csharp": {
+        "name": "MaxItemsPerRoom",
+        "type": "int"
+      },
+      "note": "D270 makes this cap live again. At the wave-8 gates it suppressed 683 of 20,158 gated markers (3.4 %); at the ruled density it suppresses 5,186 of 45,205 (11.5 %), which is the guard doing the job AUDIT-loot.md s4 'Not to change' predicted it would have to."
+    },
+    {
+      "key": "LootDensityOptions.MaxWeaponsPerRoom",
+      "value": 2,
+      "ruling": "D20",
+      "source": "owner-authored; mirrors MAX_WEAPONS_PER_ROOM in tools/data/gen-loot-tables.py:206",
+      "grade": "Z1",
+      "csharp": {
+        "name": "MaxWeaponsPerRoom",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootDensityOptions.SingletonKinds",
+      "value": [
+        "Backpack",
+        "BodyArmor",
+        "Helmet"
+      ],
+      "ruling": "D20",
+      "source": "owner-authored; mirrors SINGLETON_KINDS in tools/data/gen-loot-tables.py:207",
+      "grade": "Z1",
+      "note": "Kinds a room may hold at most one of. Held as a LootItemKindSet bit mask in C#; the JSON names the members so the file stays readable.",
+      "csharp": {
+        "name": "SingletonKindNames",
+        "type": "string[]"
+      }
+    },
+    {
+      "key": "LootTables.BoxesPerGun",
+      "value": 2,
+      "ruling": "D286",
+      "source": "the owner, 2026-09-03 evening, reversing D272: \"there's only one ammo box now next to guns? It should be two\"",
+      "grade": "RULING",
+      "note": "D286 REVERSES D272 back to TWO boxes per gun: the owner played the one-box world and ruled it back to two. D272 had cut the pair to one on the strength of AUDIT-loot.md G2, which measured the two-box world: 34.7 % of every ground object was an ammunition box, boxes outnumbered weapons 1.77:1, the median nearest-neighbour distance on the whole floor was exactly 0.50 m (the cluster offset) and the dominant non-singleton cluster was size 3 - a gun and its two boxes. That is the world the owner has chosen back. The client corroborates PAIRING only for the 72 Ammo01 markers (36 pairs 0.65-0.68 m apart) and those are marker rolls, untouched by either ruling. Measured at seed 1 with D270's gates: two boxes put ammunition at ~34.8 % of ground objects (one box was 20.2 %). The number ships inside z2-loot-tables.json's clusters block so it is retunable without a rebuild; LootRosterRulingsTests pins the two copies equal.",
+      "csharp": {
+        "name": "BoxesPerGun",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootDensityOptions.LaminatedArmourItemDefinitionId",
+      "value": 2271,
+      "ruling": "D275",
+      "source": "client ClientItemDefinitions.txt row 2271 'Laminated Tactical Body Armor'",
+      "grade": "CLIENT",
+      "note": "The id is the client's; naming it as THE item the 2017-06-29 rules apply to is the ruling. Models.txt 9583's DESCRIPTION is literally 'Ground spawn kevlar vest'.",
+      "csharp": {
+        "name": "LaminatedArmourItemDefinitionId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "LootDensityOptions.LaminatedArmourWorldChance",
+      "value": 0.05,
+      "ruling": "D275",
+      "source": "retail, dated 2017-06-29, High confidence: C:/Aug2017/out/stage1-assessment/web-research-aug2017-kotk.md:136 \"Laminated (Tactical) Armor - cannot be crafted; from June 29 2017: world spawn chance cut 10 % -> 5 %, 250 m anti-cluster radius, max 3 per map square, bulk 500 -> 1000, guaranteed in every airdrop; absorbs 2 bullets.\"",
+      "grade": "RULING",
+      "note": "AUDIT-loot.md G5: Cranberry had a flat weight of 18/608 inside Gear01 and no spacing rule at all. Expressed here as retail expressed it - an explicit world chance applied AFTER the marker has already rolled the vest, drawn from the marker's own third sub-stream so changing it never re-shuffles the rest of the map. Measured at seed 1 under D270/D271: 700 vests roll, 35 pass this chance, 11 are then refused by the 250 m radius, 0 by the per-square cap - 24 vests on the whole map.",
+      "csharp": {
+        "name": "LaminatedArmourWorldChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "LootDensityOptions.LaminatedArmourSpacingMetres",
+      "value": 250.0,
+      "ruling": "D275",
+      "source": "the same 2017-06-29 sentence: \"250 m anti-cluster radius\"",
+      "grade": "RULING",
+      "note": "Enforced in Z2LootLayout's deterministic layout pass, in ascending ZONE instance-id order so the same seed keeps the same 24 vests on any machine. It is the rule that actually binds at the ruled chance (11 refusals at seed 1).",
+      "csharp": {
+        "name": "LaminatedArmourSpacingMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootDensityOptions.LaminatedArmourMaxPerSquare",
+      "value": 3,
+      "ruling": "D275",
+      "source": "the same 2017-06-29 sentence: \"max 3 per map square\"",
+      "grade": "RULING",
+      "note": "A ceiling guard rather than the binding rule: at the ruled 5 % the 250 m radius has already spaced the vests below it and this suppresses none at seed 1. LootArmourTests proves it binds by driving the chance to 1.0.",
+      "csharp": {
+        "name": "LaminatedArmourMaxPerSquare",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootDensityOptions.LaminatedArmourMapSquareMetres",
+      "value": 1024.0,
+      "ruling": "D275",
+      "source": "Cranberry's own: the Z2 terrain's +-4,096 m extent (docs/29 s2.1) in an 8 x 8 grid",
+      "grade": "RULING",
+      "note": "UNPROVEN SIZE. Retail's sentence says \"per map square\" and this build ships no map-grid definition of any kind - searched Models.txt, the datasheets and out/world_aug. The client's own terrain squares are the 128 m .cnk chunks (docs/29 s2), which are far smaller than the 250 m radius and would make the cap meaningless, so this rules the map square as the map itself in an 8 x 8 grid: 64 squares, a global ceiling of 192 vests. If a real map-grid size is ever read out of the client, this row is the one line to change.",
+      "csharp": {
+        "name": "LaminatedArmourMapSquareMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.StreamRadiusMetres",
+      "value": 60.0,
+      "ruling": "D42",
+      "source": "docs/52 - Cranberry's own working-set disc",
+      "grade": "RULING",
+      "csharp": {
+        "name": "StreamRadiusMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.DespawnRadiusMetres",
+      "value": 90.0,
+      "ruling": "D42",
+      "source": "docs/52 - 1.5 x the stream radius, so an object does not flicker on the boundary",
+      "grade": "RULING",
+      "csharp": {
+        "name": "DespawnRadiusMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.MaxLive",
+      "value": 704,
+      "ruling": "D281",
+      "source": "docs/112 s2 - D69's own rule (the measured peak plus about a sixth of headroom) re-applied after each density change: peak working set 497 at one box gave 576, and D286's second box per gun raised the peak to 612, so 704 carries ~15 %",
+      "grade": "RULING",
+      "note": "128 before D69, 384 from D69, 576 from D281, 704 after D286. D69 sized 384 against a measured peak of 341 on a 19,475-item floor; D270 doubled the floor to 39,346 and the same sweep measured 497, so D281 raised it to 576; D286 (reversing D272 to two boxes per gun) added ~10,000 more ground entities and the same sweep now measures a peak of 612, so 576 TRUNCATED the working set again. Measured with the cap lifted to 100,000 the two-box peak is 612 and does not grow further, which is what makes 704 a guard rail again rather than a budget. Doorway coverage is unchanged by the cap at any value (100 % median / 80 % worst), so this fixes the truncation and not the coverage - see docs/112 s7.",
+      "csharp": {
+        "name": "MaxLive",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.MaxPerRestream",
+      "value": 64,
+      "ruling": "D69",
+      "source": "docs/78 s3",
+      "grade": "Z1",
+      "csharp": {
+        "name": "MaxPerRestream",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.RestreamByteBudget",
+      "value": 22000,
+      "ruling": "D69",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneLootStream (his StreamByteBudget), docs/78 s3",
+      "grade": "Z1",
+      "note": "The tick is budgeted in bytes rather than in objects - the mechanism change D69 names.",
+      "csharp": {
+        "name": "RestreamByteBudget",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.MaxEvictionsPerRestream",
+      "value": 64,
+      "ruling": "D69",
+      "source": "docs/78 s3",
+      "grade": "Z1",
+      "csharp": {
+        "name": "MaxEvictionsPerRestream",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.RestreamFraction",
+      "value": 0.167,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Loot/LootStreamOptions.cs:155 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. The fraction of the stream radius a player must move before a re-plan (10 m of 60 m).",
+      "csharp": {
+        "name": "RestreamFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.RestreamIntervalMs",
+      "value": 500,
+      "ruling": "D69",
+      "source": "docs/78 s3.1 - 500 ms, down from 3 s, so the re-stream arm backfills the landing burst's remainder promptly",
+      "grade": "Z1",
+      "csharp": {
+        "name": "RestreamIntervalMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.QueryWindow",
+      "value": 512,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Loot/LootStreamOptions.cs:188 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. An internal query batch size, not a gameplay number.",
+      "csharp": {
+        "name": "QueryWindow",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.PanelRadiusMetres",
+      "value": 2.0,
+      "ruling": "D70",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneProximity.cs:91 (ProximityRadius = 2f)",
+      "grade": "Z1",
+      "note": "f8 01 ProximateItems. His ZoneLootClusters.cs:101 names the coupling: the 0.5 m box offset was chosen so the gun and both boxes fall inside this same 2 m ball.",
+      "csharp": {
+        "name": "PanelRadiusMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.PanelHeightMetres",
+      "value": 1.0,
+      "ruling": "D70",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneProximity.cs:180 (ProximityYDistance = 1f)",
+      "grade": "Z1",
+      "csharp": {
+        "name": "PanelHeightMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "LootStreamOptions.PanelMaxRows",
+      "value": 32,
+      "ruling": "D70",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneProximity.cs:315 (MaximumEntries = 32)",
+      "grade": "Z1",
+      "note": "The republish falls from a measured 9,552 B to 155 B p90 / 673 B max.",
+      "csharp": {
+        "name": "PanelMaxRows",
+        "type": "int"
+      }
+    },
+    {
+      "key": "LootStreamOptions.PickupReachMetres",
+      "value": 4.0,
+      "ruling": "D70",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneProximity.cs:133 (InteractReach = 4f)",
+      "grade": "Z1",
+      "note": "Independently matches docs/13 s8's ~4 m measured from the August binary, so the value is corroborated as well as adopted. Supersedes docs/65 s4 C1's 6 m design guess.",
+      "csharp": {
+        "name": "PickupReachMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "ZoneOptions.GroundLootRadius",
+      "value": 64.0,
+      "ruling": "D73",
+      "source": "docs/78 s3.1 - the owner's 64 m landing ring",
+      "grade": "Z1",
+      "note": "Declared here, LEFT AS A LITERAL in ZoneOptions.cs: that file belongs to another lane this wave (docs/101 s5).",
+      "csharp": null
+    },
+    {
+      "key": "ZoneOptions.GroundLootMaxPerBurst",
+      "value": 192,
+      "ruling": "D73",
+      "source": "docs/78 s3.1 - 192 as the conservative step between the 128 proven live and the 256 asked for",
+      "grade": "Z1",
+      "note": "Declared here, LEFT AS A LITERAL in ZoneOptions.cs (docs/101 s5).",
+      "csharp": null
+    },
+    {
+      "key": "AirdropOptions.FirstDropAtMs",
+      "value": 300000,
+      "ruling": "D274",
+      "source": "Cranberry's own pacing against the gas ladder (docs/53, GasSettings.FirstMoveDelayMs 270,000)",
+      "grade": "RULING",
+      "note": "UNPROVEN TIMING. No source of any rank carries retail's airdrop schedule: the research document gives contents and a stop condition but no delay and no interval, and the owner's own Z1 tree has no airdrop at all (ZoneRetailSpawn.cs:690 RetailAirdrops = false). 5:00 puts the first crate just after the gas first moves at 4:30, which is the point in the match where players are already converging.",
+      "csharp": {
+        "name": "FirstDropAtMs",
+        "type": "long"
+      }
+    },
+    {
+      "key": "AirdropOptions.DropIntervalMs",
+      "value": 240000,
+      "ruling": "D274",
+      "source": "Cranberry's own pacing",
+      "grade": "RULING",
+      "note": "UNPROVEN. 4:00 between supply planes; the 20-survivor cutoff applies only to separate bomber runs.",
+      "csharp": {
+        "name": "DropIntervalMs",
+        "type": "long"
+      }
+    },
+    {
+      "key": "AirdropOptions.MaxDropsPerMatch",
+      "value": 4,
+      "ruling": "D274",
+      "source": "Cranberry's own, bounded by the retail 'one crate per drop' note",
+      "grade": "RULING",
+      "note": "UNPROVEN. Retail ran ONE crate per drop until Feb 2018 ('up to 3 drops instead of 1'), so a drop is a single crate here; how many drops a match holds is ours.",
+      "csharp": {
+        "name": "MaxDropsPerMatch",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AirdropOptions.StopAtPlayersAlive",
+      "value": 20,
+      "ruling": "D274",
+      "source": "Daybreak, June 9 2017 producer letter, Gas Changes: https://www.h1z1.com/news/producers-letter-june-9",
+      "grade": "RULING",
+      "note": "Corrected 2026-09-06: this is the BOMBER cutoff, not a supply-crate cutoff. No new bomber is launched at 20 or fewer survivors; already launched bombers finish. There is no PeakAlive bypass. See docs/airdrop-retail-20260906.md.",
+      "csharp": {
+        "name": "StopAtPlayersAlive",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AirdropOptions.MinPlayersAlive",
+      "value": 1,
+      "ruling": "D274",
+      "source": "client out/data_aug/StringHashToValue.txt:12 - Airdrops.DefaultMinPlayerCount = 1",
+      "grade": "CLIENT",
+      "note": "The ONLY Airdrops.* tunable in the whole August build, and the only airdrop number in it that is not a ruling. It is why a single-player click test still gets a crate.",
+      "csharp": {
+        "name": "MinPlayersAlive",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AirdropOptions.DescentMs",
+      "value": 20000,
+      "ruling": "D274",
+      "source": "Cranberry's own",
+      "grade": "RULING",
+      "note": "UNPROVEN. Twenty-second parachute descent from release to landing, in addition to the plane approach. The former announcement-only lead time has been replaced by a simulated flight and descent.",
+      "csharp": {
+        "name": "DescentMs",
+        "type": "long"
+      }
+    },
+    {
+      "key": "AirdropOptions.UnlockMs",
+      "value": 8000,
+      "ruling": "D274",
+      "source": "retail, High confidence, C:/Aug2017/out/stage1-assessment/web-research-aug2017-kotk.md:148 - \"the crate lands and must be unlocked (~8 s per Jan 2017 guide, Medium)\"",
+      "grade": "RULING",
+      "note": "Medium-confidence retail. The crate stands in the world but refuses [F] until it elapses.",
+      "csharp": {
+        "name": "UnlockMs",
+        "type": "long"
+      }
+    },
+    {
+      "key": "AirdropOptions.SafeZoneFraction",
+      "value": 0.8,
+      "ruling": "D274",
+      "source": "Cranberry's own",
+      "grade": "RULING",
+      "note": "UNPROVEN. The crate lands on a uniform-area sample of the disc inside this fraction of the currently revealed safe circle's radius, so it is always reachable and always contested. Before the first reveal it falls back to the gas play-area centre.",
+      "csharp": {
+        "name": "SafeZoneFraction",
+        "type": "double"
+      }
+    },
+    {
+      "key": "AirdropOptions.RifleChance",
+      "value": 0.5,
+      "ruling": "D274",
+      "source": "retail, High confidence, C:/Aug2017/out/stage1-assessment/web-research-aug2017-kotk.md:148 - \"always laminated armor, 50 % chance of a hunting rifle\"",
+      "grade": "RULING",
+      "note": "A dated retail fact. It is the only route by which the .308 Hunting Rifle (1373) and the .308 Round (1469) reach a player at all - both are excluded from the ground roster BECAUSE they were airdrop-only (AUDIT-loot.md F10).",
+      "csharp": {
+        "name": "RifleChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "AirdropOptions.PoolDraws",
+      "value": 3,
+      "ruling": "D274",
+      "source": "Cranberry's own",
+      "grade": "RULING",
+      "note": "UNPROVEN. How many weighted bundles a crate draws on top of its guaranteed set.",
+      "csharp": {
+        "name": "PoolDraws",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AirdropOptions.SpillRadiusMetres",
+      "value": 1.5,
+      "ruling": "D274",
+      "source": "Cranberry's own; matches the console spawn's own 1.5 m (D176)",
+      "grade": "RULING",
+      "note": "An opened crate lays its contents on the ground around itself and every one is then an ordinary ground pickup, so the crate needs no new packet and no new pickup path. 1.5 m keeps the whole spill inside the client's own 2 m proximity ball (LootStreamOptions.PanelRadiusMetres, D70), so the [F] panel lists the crate's contents as one set.",
+      "csharp": {
+        "name": "SpillRadiusMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AirdropOptions.LandingEffectId",
+      "value": 5038,
+      "ruling": "D274",
+      "source": "client ActorCompositeEffectDefinitions.xml:3209 - PFX_Impact_AirDrop_Large",
+      "grade": "CLIENT",
+      "note": "August client airdrop landing composite PFX_Impact_AirDrop_Large. The native flight integration now has an August-verified effect sender; see docs/airdrop-retail-20260906.md.",
+      "csharp": {
+        "name": "LandingEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AirdropOptions.PlaneModelId",
+      "value": 9215,
+      "ruling": "D274",
+      "source": "client Models.txt:317 - Vehicle_C130.adr, DESCRIPTION 'AirDropC130'",
+      "grade": "CLIENT",
+      "note": "August Vehicle_C130.adr for both supply and bomber routes. The August native delivery route has now been verified against its own binary; the previous claim that only an unusable 1087 route existed is superseded. See docs/airdrop-retail-20260906.md.",
+      "csharp": {
+        "name": "PlaneModelId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AirdropOptions.InboundText",
+      "value": "A military crate is inbound.",
+      "ruling": "D274",
+      "source": "Cranberry's own sentence over the client's own noun",
+      "grade": "RULING",
+      "note": "The August client has NO airdrop locale string: all 21 rows of AugustStrings.g.cs were enumerated and none matches airdrop, supply, crate, plane or cargo. ClientUpdate.TextAlert (11 31) carries a STRING and not an id (GasAlerts.cs:35), so the server may say this in its own words - and the noun is the client's own: string 1344 'Military Crate', the display name of item 1501, the crate this drop lands.",
+      "csharp": {
+        "name": "InboundText",
+        "type": "string"
+      }
+    },
+    {
+      "key": "AirdropOptions.LandedText",
+      "value": "The military crate has landed.",
+      "ruling": "D274",
+      "source": "Cranberry's own sentence over the client's own noun",
+      "grade": "RULING",
+      "note": "As InboundText. Sent when the crate becomes a world object.",
+      "csharp": {
+        "name": "LandedText",
+        "type": "string"
+      }
+    }
+  ]
+}

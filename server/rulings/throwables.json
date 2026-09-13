@@ -1,0 +1,366 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "throwables",
+  "class": "Throwables",
+  "home": "src/Cranberry.Zone/Weapons/AugustThrowables.cs, src/Cranberry.Zone/Combat/ThrowableArm.cs",
+  "summary": "The five throwables (14 Molotov, 65 M67 Frag, 2235 Stun, 2236 Smoke, 2237 Gas; all ITEM_CLASS 25078). The August client ships NO FireModes sheet and NO ProjectileDefinitions sheet, so the flight numbers here are Cranberry rulings (docs/120 s5); what IS the client's own is named CLIENT: the fire groups 7/42/43/44, the projectile models Projectile_*.adr, the MODEL ids 9440/9443/9468/9478/9480 (Models.txt) and the composite-effect ids (ActorCompositeEffectDefinitions.xml). D312 LIFTS docs/120 s5.0's exclusion of the owner's Z1 grenade table: the fuses, the effect ids, the model ids, the radii, the 10,000-bar blast and the gas tick are ADOPTED from C:/Z1/Server/Zone/ZoneCombatThrowables.cs under D315 (docs/125), and every one of the five effect ids and five model ids was checked to exist in August's own tables before it shipped. His two mechanisms still cross under D306 - a grenade always goes off, and the fallback spares the thrower.",
+  "rulings": [
+    "D300",
+    "D301",
+    "D304",
+    "D306",
+    "D307",
+    "D308",
+    "D315"
+  ],
+  "rows": [
+    {
+      "key": "AugustThrowables.FragFireGroupId",
+      "value": 1404,
+      "ruling": "D300",
+      "source": "ClientItemDatasheetData.txt row 65: WEAPON_ID 1404, FIRE_GROUP_ID 0 - the only throwable whose datasheet names no group. The group is named after its own WEAPON_ID, which no datasheet group (1..90) can collide with.",
+      "grade": "RULING",
+      "note": "Modes 2808/2809 by D159. Timings copy the other three grenades' datasheet row (REFIRE 150, RELOAD 950, CLIP 1) because the frag's own row is 0/0/1.",
+      "csharp": {
+        "name": "FragFireGroupId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.ProjectileIdBase",
+      "value": 71000,
+      "ruling": "D301",
+      "source": "docs/120 s3.3 - the client's own ProjectileToPenTypes.txt names 14 ids (19000, 19002, 70038..70075) and no grenade; a throwable's projectile id is 71000 + its item id",
+      "grade": "RULING",
+      "note": "Any id the server names is the id the client uses; the base keeps the five clear of the client's own 700xx block and readable in a dump (71014, 71065, 73235, 73236, 73237).",
+      "csharp": {
+        "name": "ProjectileIdBase",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.ThrowSpeed",
+      "value": 30.0,
+      "ruling": "D327",
+      "source": "Z1's own projectile rows for the five grenades (C:/Z1/Server/Data/projectileDefinitions.json ids 70178-70182: SPEED 30, GRAVITY 1.2, DRAG 0), adopted under D312; SPEED (rec+0x5c) is the launch velocity FUN_140c7bb60:390-413 multiplies the aim vector by",
+      "grade": "Z1",
+      "note": "Was Cranberry's 18 (D301). At 18 the 2026-09-04 20:23 gas grenade met the ground 190 ms after leaving the hand and rested 9 m out. CRANBERRY_THROWABLE_SPEED retunes.",
+      "csharp": {
+        "name": "ThrowSpeed",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.GravityScale",
+      "value": 1.2,
+      "ruling": "D327",
+      "source": "Z1's own grenade projectile rows (ids 70178-70182) carry GRAVITY 1.2 (rec+0xa4, the ProjectileDefinitions loader's GRAVITY, docs/120 s3.2), adopted under D312",
+      "grade": "Z1",
+      "note": "A multiplier on the physics flight model's gravity, not an acceleration; 1.0 (the client's constructor preset) was D301's value and is what a bullet record still ships at +0xa4.",
+      "csharp": {
+        "name": "GravityScale",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.TumbleRadiansPerSecond",
+      "value": 6.0,
+      "ruling": "D301",
+      "source": "docs/120 s3.2 - ANGULAR_VELOCITY_{X,Y,Z}_{MIN,MAX} (rec+0x104..+0x118) are read by ProjectileCallbackPhysics::OnActorReady (FUN_1415b17a0:42-55) as three lerped (min,max) pairs",
+      "grade": "RULING",
+      "note": "The grenade tumbles in flight: each axis gets (-6, +6). 0 would fly it rigid.",
+      "csharp": {
+        "name": "TumbleRadiansPerSecond",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.FuseSeconds",
+      "value": [
+        3.0,
+        1.0,
+        1.0,
+        2.0,
+        1.5
+      ],
+      "ruling": "none",
+      "source": "User request 2026-09-08: faster stun, smoke and gas activation; docs/gameplay-20260908.md",
+      "grade": "RULING",
+      "note": "Tuning trial: frag 3 s, stun 1 s, smoke 1 s, gas 2 s, molotov contact with 1.5 s backstop. These are not claimed retail measurements.",
+      "csharp": {
+        "name": "FuseSeconds",
+        "type": "float[]"
+      }
+    },
+    {
+      "key": "AugustThrowables.ThrowWindupMs",
+      "value": 400,
+      "ruling": "D304",
+      "source": "docs/120 s2.2 - FUN_142293af0 reads FIRE_DURATION_MS (rec+0x38) on a TYPE-12 trigger press and returns without entering the throw state (0x10) when it is < 1",
+      "grade": "RULING",
+      "note": "The throw's wind-up window in ms; the client's own datasheet carries no FIRE_DURATION for any weapon. CRANBERRY_THROWABLE_WINDUP_MS retunes.",
+      "csharp": {
+        "name": "ThrowWindupMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.FallbackGraceMs",
+      "value": 150,
+      "ruling": "D306",
+      "source": "User request 2026-09-08: reduce excess grenade activation wait",
+      "grade": "RULING",
+      "note": "150 ms allowance for the final position report, replacing the additional 1500 ms wait.",
+      "csharp": {
+        "name": "FallbackGraceMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.FragDamageRadius",
+      "value": 5.0,
+      "ruling": "D315",
+      "source": "Z1's EXPLOSION_CHARACTER_RADIUS = 5 world units - the radius his own server has hurt players at.",
+      "grade": "RULING",
+      "note": "Replaces D308's 8.0. The client's effect NAME still says 08m and the effect still draws that big - the 8 m was the size of the picture, and 5 u is how far it hurts on the server the owner plays.",
+      "csharp": {
+        "name": "FragDamageRadius",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.FragDamageHp",
+      "value": 100,
+      "ruling": "D315",
+      "source": "Z1's ExplosionBaseDamage = 10,000 on a 10,000-unit bar, i.e. 100 hp at the centre - the same number Cranberry already ruled.",
+      "grade": "RULING",
+      "note": "Unchanged in value, re-sourced to the owner's server. The FALL-OFF changes: see AugustThrowables.ExplosionFalloffPivotUnits.",
+      "csharp": {
+        "name": "FragDamageHp",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.GasCloudRadius",
+      "value": 7.0,
+      "ruling": "D315",
+      "source": "Z1's GasRadiusUnits = 7.",
+      "grade": "RULING",
+      "note": "Replaces D308's 6.0. Two units WIDER than the blast, not narrower: a cloud you have to run out of.",
+      "csharp": {
+        "name": "GasCloudRadius",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.GasCloudDamagePerSecondHp",
+      "value": 5,
+      "ruling": "D315",
+      "source": "Z1's GasDamagePerTick = 500 on a 10,000-unit bar = 5 hp, once per GasTickMs.",
+      "grade": "RULING",
+      "note": "Unchanged in value, re-sourced to the owner's server.",
+      "csharp": {
+        "name": "GasCloudDamagePerSecondHp",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.GasCloudSeconds",
+      "value": 20,
+      "ruling": "D308",
+      "source": "docs/120 s5.3",
+      "grade": "RULING",
+      "note": "How long the poison cloud lingers and ticks.",
+      "csharp": {
+        "name": "GasCloudSeconds",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.SmokeCloudSeconds",
+      "value": 30,
+      "ruling": "D308",
+      "source": "docs/120 s5.3",
+      "grade": "RULING",
+      "note": "How long the smoke lingers. It hurts nobody.",
+      "csharp": {
+        "name": "SmokeCloudSeconds",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.MolotovRadius",
+      "value": 5.0,
+      "ruling": "D315",
+      "source": "Z1 gives every WorldCompositeEffect bang the one EXPLOSION_CHARACTER_RADIUS of 5 units; the molotov is one.",
+      "grade": "RULING",
+      "note": "Replaces D308's 4.0.",
+      "csharp": {
+        "name": "MolotovRadius",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.MolotovDamagePerSecondHp",
+      "value": 10,
+      "ruling": "D308",
+      "source": "docs/120 s5.4",
+      "grade": "RULING",
+      "note": "Standing in the fire.",
+      "csharp": {
+        "name": "MolotovDamagePerSecondHp",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.MolotovSeconds",
+      "value": 10,
+      "ruling": "D308",
+      "source": "docs/120 s5.4",
+      "grade": "RULING",
+      "note": "KEPT against Z1, deliberately: his molotov is a one-shot bang with Lingers=false and no burning patch at all, but the August client ships PFX_Fire_Molotov_Persist (192) for exactly this, so Cranberry keeps the patch. The one place D315 does not follow the owner's table, named here so a revert is one row.",
+      "csharp": {
+        "name": "MolotovSeconds",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.CloudTickMs",
+      "value": 1000,
+      "ruling": "D315",
+      "source": "Z1's GasTickMs = 1000.",
+      "grade": "RULING",
+      "note": "Unchanged in value, re-sourced to the owner's server. Also the burning patch's tick.",
+      "csharp": {
+        "name": "CloudTickMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.FragEffectId",
+      "value": 5301,
+      "ruling": "D315",
+      "source": "ActorCompositeEffectDefinitions.xml id 5301 PFX_Impact_Explosion_FragGrenade_Default_08m - present in August's own table, and the id Z1 plays for item 65.",
+      "grade": "CLIENT",
+      "note": "Replaces D307's 1873 (the _Dirt_08m variant). Picking Dirt was a ruling made because this server has no surface probe; the client's own Default variant is the surface-agnostic one and is what the owner's working server plays, so docs/120 O7 is settled without a material trigger.",
+      "csharp": {
+        "name": "FragEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.StunEffectId",
+      "value": 4658,
+      "ruling": "D315",
+      "source": "ActorCompositeEffectDefinitions.xml id 4658 PFX_Impact_Explosion_FlashGrenade_Default - checked present in August's own table; the same id Z1 plays for items 2235/2416.",
+      "grade": "CLIENT",
+      "note": "Unchanged by D315: Cranberry had already picked the id the owner's server plays. The screen flash stays docs/120 O6.",
+      "csharp": {
+        "name": "StunEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.SmokeEffectId",
+      "value": 2333,
+      "ruling": "D315",
+      "source": "ActorCompositeEffectDefinitions.xml id 2333 PFX_Impact_GrenadeSmoke_loop - checked present in August's own table; the same id Z1 plays for items 2236/3380.",
+      "grade": "CLIENT",
+      "note": "Unchanged by D315. A loop, so it rides an effect TAG on a cloud anchor (0f 15 / 0f 16), not a one-shot.",
+      "csharp": {
+        "name": "SmokeEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.GasEffectId",
+      "value": 2335,
+      "ruling": "D315",
+      "source": "ActorCompositeEffectDefinitions.xml id 2335 PFX_Impact_GrenadePoison_loop - checked present in August's own table; the same id Z1 plays for items 2237/3022.",
+      "grade": "CLIENT",
+      "note": "Unchanged by D315. The same loop mechanism as the smoke.",
+      "csharp": {
+        "name": "GasEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.MolotovEffectId",
+      "value": 5308,
+      "ruling": "D315",
+      "source": "ActorCompositeEffectDefinitions.xml id 5308 PFX_Fire_Molotov_Impact - present in August's own table, and the id Z1 plays for item 14.",
+      "grade": "CLIENT",
+      "note": "Replaces D307's 190 (PFX_Fire_Molotov). 190 is the fire itself; 5308 is the IMPACT, which is what a bottle breaking on the ground is.",
+      "csharp": {
+        "name": "MolotovEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.MolotovPersistEffectId",
+      "value": 192,
+      "ruling": "D307",
+      "source": "ActorCompositeEffectDefinitions.xml id 192 PFX_Fire_Molotov_Persist (FX 1087 + SOUND 6351)",
+      "grade": "CLIENT",
+      "note": "The burning patch (an effect tag on the cloud anchor for MolotovSeconds).",
+      "csharp": {
+        "name": "MolotovPersistEffectId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "AugustThrowables.ActorModelIds",
+      "value": [
+        9443,
+        9478,
+        9468,
+        9480,
+        9440
+      ],
+      "ruling": "D315",
+      "source": "August's own Models.txt: 9443 Projectile_Grenades_HEGrenade.adr, 9478 Projectile_Grenades_FlashBang.adr, 9468 Projectile_Grenades_SmokeGrenade.adr, 9480 Projectile_Grenades_GasGrenade.adr, 9440 Projectile_MolotovCocktail.adr - each row's MODEL_FILE_NAME is byte-identical to the string AugustThrowables already carries.",
+      "grade": "CLIENT",
+      "note": "The numeric id of the mesh, which is what an AddLightweightNpc actorModelId takes and what Z1 spawns a grenade with. Order: frag, stun, smoke, gas, molotov - the same order as FuseSeconds. All five checked present in August before adoption.",
+      "csharp": {
+        "name": "ActorModelIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "AugustThrowables.ExplosionFalloffPivotUnits",
+      "value": 1.0,
+      "ruling": "D315",
+      "source": "Z1's OnExplosiveHit as his server implements it: damage = base inside one unit, base / distance beyond it.",
+      "grade": "RULING",
+      "note": "Replaces D308's linear ramp to zero at the radius. Inverse-distance is harsher near the centre and gentler at the rim: 100 hp inside 1 u, 50 at 2 u, 20 at 5 u. The radius still cuts it off.",
+      "csharp": {
+        "name": "ExplosionFalloffPivotUnits",
+        "type": "float"
+      }
+    },
+    {
+      "key": "AugustThrowables.DestroyAfterMs",
+      "value": 30000,
+      "ruling": "D315",
+      "source": "Z1's DestroyAfterMs = 30,000, unconditional.",
+      "grade": "RULING",
+      "note": "A hard ceiling on a live grenade. Nothing should reach it - the fuse plus the D306 grace settles every throw long before - so a reap at 30 s is a leak alarm and is logged as one.",
+      "csharp": {
+        "name": "DestroyAfterMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "AugustThrowables.SpawnRangeUnits",
+      "value": 200.0,
+      "ruling": "D315",
+      "source": "Z1's SpawnRangeUnits = 200 - getClientsInRange(200, position), who gets told a grenade exists.",
+      "grade": "RULING",
+      "note": "How far a detonation's own 0f 43 reaches. A viewer further away than this is not told, which is also what keeps a full lobby's grenades off the wire.",
+      "csharp": {
+        "name": "SpawnRangeUnits",
+        "type": "float"
+      }
+    }
+  ]
+}

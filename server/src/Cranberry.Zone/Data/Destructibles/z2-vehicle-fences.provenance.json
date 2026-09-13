@@ -1,0 +1,24 @@
+{
+  "grade": "CLIENT model ids, map placements and effects; SERVER allowlist, speed loss and health tuning",
+  "count": 60808,
+  "families": 48,
+  "sources": [
+    {
+      "path": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+      "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3"
+    },
+    {
+      "path": "C:\\Aug2017\\out\\data_aug\\derived\\effects.json",
+      "sha256": "ad7b48a80af07beb678b1f967ac64e4ed2e9b10fa73c0bcb0172f9fff0a5e7e8"
+    },
+    {
+      "path": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+      "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1"
+    },
+    {
+      "path": "C:\\Aug2017\\Server\\tools\\world\\vehicle-fences.py",
+      "sha256": "300617f9405c2b6af9306d181a14e423ae0d9ae73fa537438d1d466551743860"
+    }
+  ],
+  "outputSha256": "42bedcca3f6450eba694b0b1defe96871dc75477b98ac78662e2f1396a1ec187"
+}

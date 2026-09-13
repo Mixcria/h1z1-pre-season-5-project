@@ -1,0 +1,31 @@
+{
+  "sanitization": "Object/actor/projectile identifiers replaced with synthetic 1/2/3/123; fire pose and time synthetic; public model/effect/flag values retained.",
+  "cases": [
+    {
+      "schema": "dto-hit",
+      "sourceFrame": 22647,
+      "direction": "c2s",
+      "hex": "06a90100010000000000000033000000436974795f537472756374757265735f4275696c64696e67735f496e745f57616c6c486f6c65426c6f636b656430312e6164727b0000000200000000000000"
+    },
+    {
+      "schema": "appearance",
+      "sourceFrame": 9993,
+      "direction": "s2c",
+      "hex": "05de01010000000000000002000000000000005d030000"
+    },
+    {
+      "schema": "dto-replacement",
+      "sourceFrame": 22655,
+      "direction": "s2c",
+      "hex": "05a90200010000000000000015000000496e76697369626c65547269616e676c652e616472b21400000000803f000000000000010001"
+    },
+    {
+      "schema": "bounce",
+      "hex": "7b0000001b1a00000200000000000000"
+    },
+    {
+      "schema": "fire",
+      "hex": "03000000000000000000803f0000004000004040010000007b00000000000000000000000000803f00000000"
+    }
+  ]
+}

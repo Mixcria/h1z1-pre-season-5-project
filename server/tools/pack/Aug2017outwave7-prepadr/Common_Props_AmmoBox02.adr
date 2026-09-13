@@ -1,0 +1,32 @@
+<ActorRuntime>
+    <AnimationNetwork fileName="" animSetName="" />
+    <AnimationEnumerations />
+    <AnimationValues />
+    <Base fileName="Common_Props_AmmoBox02_LOD0.dme" paletteName="Common_Props_AmmoBox02_Lod0.dma" updateRadius="150.000000" waterDisplacementHeight="0.000000" objectTerrainDataId="0" sharedTextureAliases="" />
+    <TextureAliases>
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_S.dds" modelType="0" materialIndex="0" semanticHash="-773254801" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="0" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="0" materialIndex="0" semanticHash="-1856785929" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_N.dds" modelType="0" materialIndex="0" semanticHash="678189709" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_C.dds" modelType="0" materialIndex="0" semanticHash="1735042216" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_S.dds" modelType="1" materialIndex="0" semanticHash="-773254801" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="1" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="1" materialIndex="0" semanticHash="-1856785929" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_N.dds" modelType="1" materialIndex="0" semanticHash="678189709" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Common_Props_AmmoBox02_C.dds" modelType="1" materialIndex="0" semanticHash="1735042216" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+    </TextureAliases>
+    <TintAliases />
+    <Lods>
+        <Lod fileName="Common_Props_AmmoBox02_LOD1.dme" paletteName="Common_Props_AmmoBox02_Lod1.dma" distance="5" />
+        <Lod distance="50" />
+    </Lods>
+    <CollisionType type="4119585228" />
+    <CollisionData fileName="Common_Props_AmmoBox02.cdt" createAsKinematic="0" useBoundingBox="0" />
+    <Usage actorUsage="0" borrowSkeleton="0" validatePcNpc="1" />
+    <Shadows CheckShadowVisibility="0" Shadowless="0" />
+    <EquipType EquippedSlotName="None" ParentAttachSlot="None" />
+    <ChildAttachSlotsEx />
+    <OcclusionData TestModel="Common_Props_AmmoBox02_COL.dmv" SimpleVisibility="0" UseAsOccluder="1" />
+    <MaterialType type="METAL" />
+    <Invisible value="0" />
+</ActorRuntime>

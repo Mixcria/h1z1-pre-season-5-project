@@ -1,0 +1,203 @@
+{
+ "schema": "cranberry/august-vehicle-mesh-bounds/1",
+ "source": "August client Resources/Assets: ADR Base -> DMOD header + material block -> six f32 bounds",
+ "generator": "tools/world/vehicle_geometry.py",
+ "models": {
+  "Common_OffRoader_Tintable.adr": {
+   "mesh": "Common_OffRoader_Tintable_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "9c2df263",
+   "bounds": [
+    -1.0132122039794922,
+    -0.0071356710977852345,
+    -1.9639379978179932,
+    1.0132110118865967,
+    1.815098524093628,
+    2.0340805053710938
+   ],
+   "collisionFile": "Common_OffRoader_COL.apx"
+  },
+  "Common_PickupTruck.adr": {
+   "mesh": "Common_PickupTruck_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "da65a04a",
+   "bounds": [
+    -1.1597301959991455,
+    -0.019127273932099342,
+    -2.2417798042297363,
+    1.1597301959991455,
+    1.7876241207122803,
+    2.236067056655884
+   ],
+   "collisionFile": "Common_PickupTruck_COL.apx"
+  },
+  "Common_Props_AbandonedSUV.adr": {
+   "mesh": "Common_Props_AbandonedSUV_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "874c283b",
+   "bounds": [
+    -1.0815387964248657,
+    -0.004172480199486017,
+    -2.274737596511841,
+    1.0896159410476685,
+    1.8834677934646606,
+    2.4382293224334717
+   ],
+   "collisionFile": "Common_Props_AbandonedSUV.cdt"
+  },
+  "Common_Props_AbandonedSedan.adr": {
+   "mesh": "Common_Props_AbandonedSedan_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "059d0def",
+   "bounds": [
+    -0.9560943245887756,
+    -3.5762786065873797e-09,
+    -2.260742664337158,
+    0.9646145701408386,
+    1.4536887407302856,
+    2.1161513328552246
+   ],
+   "collisionFile": "Common_Props_AbandonedSedan.cdt"
+  },
+  "Common_Props_AbandonedTruck.adr": {
+   "mesh": "Common_Props_AbandonedTruck_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "c75ee441",
+   "bounds": [
+    -1.0616021156311035,
+    -0.02228378690779209,
+    -3.0291507244110107,
+    1.0843898057937622,
+    1.836556077003479,
+    3.0750949382781982
+   ],
+   "collisionFile": "Common_Props_AbandonedTruck.cdt"
+  },
+  "Common_Props_AbandonedVan.adr": {
+   "mesh": "Common_Props_AbandonedVan_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "e16db63d",
+   "bounds": [
+    -1.4217760562896729,
+    0.0,
+    -2.4975521564483643,
+    1.4217764139175415,
+    2.2609212398529053,
+    2.4975521564483643
+   ],
+   "collisionFile": "Common_Props_AbandonedVan.cdt"
+  },
+  "Common_Props_SemiVolvo_Body.adr": {
+   "mesh": "Common_Props_SemiVolvo_Body_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "83156de7",
+   "bounds": [
+    -2.707864284515381,
+    0.0042833853513002396,
+    -1.5336925983428955,
+    3.5167808532714844,
+    4.703763008117676,
+    1.8180065155029297
+   ],
+   "collisionFile": "Common_Props_SemiVolvo_Body.cdt"
+  },
+  "Common_Props_WreckedCar01.adr": {
+   "mesh": "Common_Props_WreckedCar01_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "fe74801e",
+   "bounds": [
+    -0.9540959596633911,
+    0.0,
+    -2.1972389221191406,
+    0.9541289210319519,
+    1.4543648958206177,
+    2.1972501277923584
+   ],
+   "collisionFile": "Common_Props_WreckedCar01.cdt"
+  },
+  "Common_Vehicle_PoliceCar01.adr": {
+   "mesh": "Common_Vehicle_PoliceCar01_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "7e9854d3",
+   "bounds": [
+    -1.0546188354492188,
+    -0.004063697997480631,
+    -2.6822283267974854,
+    1.0546188354492188,
+    1.663934588432312,
+    2.7245309352874756
+   ],
+   "collisionFile": "Common_Vehicle_PoliceCar01_COL.apx"
+  },
+  "Hospital_Props_AmbulanceWrecked.adr": {
+   "mesh": "Hospital_Props_AmbulanceWrecked_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "d9c1d9fd",
+   "bounds": [
+    -1.429724097251892,
+    -0.011342029087245464,
+    -3.1180419921875,
+    1.404871940612793,
+    2.667926073074341,
+    3.1180419921875
+   ],
+   "collisionFile": "Hospital_Props_AmbulanceWrecked.cdt"
+  },
+  "Industrial_Props_CrushedSedan.adr": {
+   "mesh": "Industrial_Props_CrushedSedan_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "7d88b7d6",
+   "bounds": [
+    -0.9560943245887756,
+    -0.002673594979569316,
+    -2.2594411373138428,
+    0.922114372253418,
+    0.9513044357299805,
+    2.105329751968384
+   ],
+   "collisionFile": "Industrial_Props_CrushedSedan.cdt"
+  },
+  "Industrial_Props_Vehicles_Forklift01.adr": {
+   "mesh": "Industrial_Props_Vehicles_Forklift01_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "f584551a",
+   "bounds": [
+    -0.971717357635498,
+    -0.004060089588165283,
+    -2.590183734893799,
+    0.971717357635498,
+    3.410344362258911,
+    2.5901830196380615
+   ],
+   "collisionFile": "Industrial_Props_Vehicles_Forklift01.cdt"
+  },
+  "Vehicle_Common_ATV01.adr": {
+   "mesh": "Vehicle_Common_ATV01_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "c629c8bb",
+   "bounds": [
+    -0.5694723129272461,
+    -8.730798435863107e-05,
+    -0.9858512878417969,
+    0.5694723129272461,
+    1.0961778163909912,
+    0.9356884360313416
+   ],
+   "collisionFile": "Vehicle_Common_ATV01_col.apx"
+  },
+  "Vehicles_Camper01.adr": {
+   "mesh": "Vehicles_Camper01_LOD0.dme",
+   "version": 4,
+   "meshCrc32": "56394a9c",
+   "bounds": [
+    -1.8537921905517578,
+    -0.017164597287774086,
+    -4.084828853607178,
+    2.5736870765686035,
+    3.731891632080078,
+    4.084827899932861
+   ],
+   "collisionFile": "Vehicles_Camper01.cdt"
+  }
+ }
+}

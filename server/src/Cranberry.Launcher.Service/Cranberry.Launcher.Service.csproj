@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../Cranberry.Launcher.Core/Cranberry.Launcher.Core.csproj" />
+    <ProjectReference Include="../Cranberry.Zone/Cranberry.Zone.csproj" />
+  </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="Cranberry.Launcher.Tests" /></ItemGroup>
+</Project>

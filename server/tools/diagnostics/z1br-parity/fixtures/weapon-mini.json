@@ -1,0 +1,144 @@
+{
+  "kind": "public static definition slices; list counts rebuilt; not a replay table",
+  "source": {
+    "stream": 6,
+    "frame": 669,
+    "utc": "2026-09-12T06:30:02.871818+00:00",
+    "direction": "s2c",
+    "name": "WeaponDefinitions",
+    "gatewayBodyOffset": 30,
+    "inflatedBytes": 382700,
+    "sha256": "7305e622f12142dc690e95222bea238143cb670c15778627e3df515c0ca0f605"
+  },
+  "sha256": "31e8d67761cc251dfacae303a655e672d1f9fc533a0f7de6f9861ebe90cece66",
+  "slices": [
+    {
+      "list": 0,
+      "id": 6,
+      "sourceOffset": 899,
+      "fixtureOffset": 4,
+      "bytes": 225,
+      "sha256": "ea0a6c06afa3a7b271d5f4adb2df0f8ee1e908b18f95d197a0bfbed9e86202df"
+    },
+    {
+      "list": 1,
+      "id": 6,
+      "sourceOffset": 24966,
+      "fixtureOffset": 233,
+      "bytes": 69,
+      "sha256": "4e79802a8b5bee1a92a6de58446f415a8172e2dcbffc66d77d5f38b459f27649"
+    },
+    {
+      "list": 2,
+      "id": 8,
+      "sourceOffset": 39823,
+      "fixtureOffset": 306,
+      "bytes": 1001,
+      "sha256": "642c170a65367e1ce3bb3a85d977086beff57199f41a63dc8a0bdb29ed803172"
+    },
+    {
+      "list": 2,
+      "id": 9,
+      "sourceOffset": 40824,
+      "fixtureOffset": 1307,
+      "bytes": 1001,
+      "sha256": "204a8dc462ed1b4317105cc568cd98c91c48da0e13cd733b93593706dfcc984e"
+    },
+    {
+      "list": 2,
+      "id": 176,
+      "sourceOffset": 199983,
+      "fixtureOffset": 2308,
+      "bytes": 1271,
+      "sha256": "16b557f83f1595bea133fa21ae41679ea48dd2c02f9a192378eac84afe5b8c91"
+    },
+    {
+      "list": 2,
+      "id": 405,
+      "sourceOffset": 266124,
+      "fixtureOffset": 3579,
+      "bytes": 1001,
+      "sha256": "2827f8b0365d8b03fb2a82f08ec35fe3de5ac2a05a763eeac0d8e201aef76e23"
+    },
+    {
+      "list": 2,
+      "id": 431,
+      "sourceOffset": 283411,
+      "fixtureOffset": 4580,
+      "bytes": 1001,
+      "sha256": "6c3d079f367d22487d3c6adcee5d20ba4ed1e10f197ab5606667601c0d0f4bfa"
+    },
+    {
+      "list": 3,
+      "id": 1,
+      "sourceOffset": 338279,
+      "fixtureOffset": 5585,
+      "bytes": 474,
+      "sha256": "0b8e12708218e83ad06fd8c82bc8f84557f1c26271624df59f2e37a7bfc689cd"
+    },
+    {
+      "list": 4,
+      "id": 8,
+      "sourceOffset": 373336,
+      "fixtureOffset": 6063,
+      "bytes": 16,
+      "sha256": "97b9d4b4144e73f088b90ca0213fbcd04b467f05fbcc0e088c3d4e9844eb04a5"
+    },
+    {
+      "list": 4,
+      "id": 9,
+      "sourceOffset": 373352,
+      "fixtureOffset": 6079,
+      "bytes": 16,
+      "sha256": "eeebceaf55d7f96d3e7c9d96fee143007d3597b60f833023cbdedc7e86973ae8"
+    },
+    {
+      "list": 4,
+      "id": 405,
+      "sourceOffset": 375896,
+      "fixtureOffset": 6095,
+      "bytes": 16,
+      "sha256": "9325708a2136e58afc1932addc99f9851d3e35b469168bd0874be3f0979733c4"
+    },
+    {
+      "list": 4,
+      "id": 431,
+      "sourceOffset": 376168,
+      "fixtureOffset": 6111,
+      "bytes": 16,
+      "sha256": "f83f4f1f9242f5f4b8dfbc74667c0a3b00fc765e3d22e011a524c8ae4e9a009a"
+    },
+    {
+      "list": 5,
+      "id": 1,
+      "sourceOffset": 377004,
+      "fixtureOffset": 6131,
+      "bytes": 96,
+      "sha256": "806fa0faac78bf3d0e97130c37230b2888791f155bbe914283bd96ffaddeef04"
+    },
+    {
+      "list": 6,
+      "id": 1,
+      "sourceOffset": 378544,
+      "fixtureOffset": 6231,
+      "bytes": 189,
+      "sha256": "03760ddb85dc670a45618f2fd12d715806814671e918676599f230d09f885449"
+    },
+    {
+      "list": 6,
+      "id": 2,
+      "sourceOffset": 378733,
+      "fixtureOffset": 6420,
+      "bytes": 189,
+      "sha256": "a5cce21845ce660b7f2a787e2096f597619e0b4c6add1caa749be3a2c30a5370"
+    },
+    {
+      "list": 7,
+      "id": 1,
+      "sourceOffset": 382488,
+      "fixtureOffset": 6613,
+      "bytes": 20,
+      "sha256": "f6163685634824034cbb1450836111e3fc38c54fc623e60878ec7f9352f32b72"
+    }
+  ]
+}

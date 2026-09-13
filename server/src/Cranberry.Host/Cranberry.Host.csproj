@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cranberry.Launcher.Service\Cranberry.Launcher.Service.csproj" />
+    <ProjectReference Include="..\Cranberry.Login\Cranberry.Login.csproj" />
+    <ProjectReference Include="..\Cranberry.Zone\Cranberry.Zone.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+  </PropertyGroup>
+
+</Project>

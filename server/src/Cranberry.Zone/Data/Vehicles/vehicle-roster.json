@@ -1,0 +1,487 @@
+{
+ "schema": "cranberry/vehicle-roster/1",
+ "note": "The four drivable land vehicles of a BR match and their seats, from the client's own datasheets via out/data_aug/derived/vehicles.json plus Models.txt. Vehicles 15/16 are the Ignition match-mode variants and are excluded (docs/43 sec.2.1).",
+ "generator": "Server/tools/world/vehicle_anchors.py",
+ "constants": {
+  "interactionCooldownMs": 1000,
+  "seatSwapCooldownMs": 250,
+  "defaultMaxDismountSpeed": 12,
+  "defaultMinDismountDamageSpeed": 10
+ },
+ "vehicles": [
+  {
+   "id": 1,
+   "name": "OffRoader",
+   "nameId": 16,
+   "modelId": 10060,
+   "modelFile": "Common_OffRoader_Tintable.adr",
+   "destroyedModelId": 7226,
+   "physicsFamily": 10,
+   "decaySeconds": 259200,
+   "maxDismountSpeed": 12,
+   "seats": [
+    {
+     "index": 0,
+     "seatInfoId": 1,
+     "isDriver": true,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 1,
+     "seatInfoId": 2,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 2,
+     "seatInfoId": 3,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 3,
+     "seatInfoId": 4,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 4,
+     "seatInfoId": 15,
+     "isDriver": false,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    }
+   ],
+   "driveModes": [
+    {
+     "ordinal": 0,
+     "moveInfoId": 10,
+     "movementMode": 1,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 1,
+     "moveInfoId": 11,
+     "movementMode": 2,
+     "maxForward": 90,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 2,
+     "moveInfoId": 12,
+     "movementMode": 9,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 3,
+     "moveInfoId": 13,
+     "movementMode": 8,
+     "maxForward": 90,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 4,
+     "moveInfoId": 14,
+     "movementMode": 10,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 5,
+     "moveInfoId": 15,
+     "movementMode": 10,
+     "maxForward": 0,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 6,
+     "moveInfoId": 16,
+     "movementMode": 11,
+     "maxForward": 65,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 7,
+     "moveInfoId": 17,
+     "movementMode": 12,
+     "maxForward": 70,
+     "estimatedMaxSpeed": 85
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "PickupTruck",
+   "nameId": 8932,
+   "modelId": 9258,
+   "modelFile": "Common_PickupTruck.adr",
+   "destroyedModelId": 9315,
+   "physicsFamily": 20,
+   "decaySeconds": 259200,
+   "maxDismountSpeed": 12,
+   "seats": [
+    {
+     "index": 0,
+     "seatInfoId": 5,
+     "isDriver": true,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 1,
+     "seatInfoId": 6,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 2,
+     "seatInfoId": 7,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": false,
+     "loopNextSeatIndex": 5
+    },
+    {
+     "index": 3,
+     "seatInfoId": 16,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": false,
+     "loopNextSeatIndex": 6
+    },
+    {
+     "index": 4,
+     "seatInfoId": 17,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 5,
+     "seatInfoId": 26,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": false,
+     "loopNextSeatIndex": 2
+    },
+    {
+     "index": 6,
+     "seatInfoId": 27,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": false,
+     "loopNextSeatIndex": 3
+    }
+   ],
+   "driveModes": [
+    {
+     "ordinal": 0,
+     "moveInfoId": 20,
+     "movementMode": 1,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 1,
+     "moveInfoId": 21,
+     "movementMode": 2,
+     "maxForward": 80,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 2,
+     "moveInfoId": 22,
+     "movementMode": 9,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 3,
+     "moveInfoId": 23,
+     "movementMode": 8,
+     "maxForward": 80,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 4,
+     "moveInfoId": 24,
+     "movementMode": 10,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 5,
+     "moveInfoId": 25,
+     "movementMode": 10,
+     "maxForward": 0,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 6,
+     "moveInfoId": 26,
+     "movementMode": 11,
+     "maxForward": 65,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 7,
+     "moveInfoId": 27,
+     "movementMode": 12,
+     "maxForward": 60,
+     "estimatedMaxSpeed": 85
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "PoliceCar",
+   "nameId": 8953,
+   "modelId": 9301,
+   "modelFile": "Common_Vehicle_PoliceCar01.adr",
+   "destroyedModelId": 9316,
+   "physicsFamily": 30,
+   "decaySeconds": 259200,
+   "maxDismountSpeed": 12,
+   "seats": [
+    {
+     "index": 0,
+     "seatInfoId": 8,
+     "isDriver": true,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 1,
+     "seatInfoId": 9,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 2,
+     "seatInfoId": 10,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 3,
+     "seatInfoId": 11,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 4,
+     "seatInfoId": 18,
+     "isDriver": false,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": true,
+     "kickCorpse": false,
+     "loopNextSeatIndex": -1
+    }
+   ],
+   "driveModes": [
+    {
+     "ordinal": 0,
+     "moveInfoId": 30,
+     "movementMode": 1,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 1,
+     "moveInfoId": 31,
+     "movementMode": 2,
+     "maxForward": 105,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 2,
+     "moveInfoId": 32,
+     "movementMode": 9,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 3,
+     "moveInfoId": 33,
+     "movementMode": 8,
+     "maxForward": 105,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 4,
+     "moveInfoId": 34,
+     "movementMode": 10,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 5,
+     "moveInfoId": 35,
+     "movementMode": 10,
+     "maxForward": 0,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 6,
+     "moveInfoId": 36,
+     "movementMode": 11,
+     "maxForward": 65,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 7,
+     "moveInfoId": 37,
+     "movementMode": 12,
+     "maxForward": 60,
+     "estimatedMaxSpeed": 85
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "ATV",
+   "nameId": 12552,
+   "modelId": 9588,
+   "modelFile": "Vehicle_Common_ATV01.adr",
+   "destroyedModelId": 9593,
+   "physicsFamily": 50,
+   "decaySeconds": 259200,
+   "maxDismountSpeed": 12,
+   "seats": [
+    {
+     "index": 0,
+     "seatInfoId": 19,
+     "isDriver": true,
+     "canFire": false,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": true,
+     "loopNextSeatIndex": -1
+    },
+    {
+     "index": 1,
+     "seatInfoId": 20,
+     "isDriver": false,
+     "canFire": true,
+     "canBail": true,
+     "enclosed": false,
+     "kickCorpse": true,
+     "loopNextSeatIndex": -1
+    }
+   ],
+   "driveModes": [
+    {
+     "ordinal": 0,
+     "moveInfoId": 50,
+     "movementMode": 1,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 1,
+     "moveInfoId": 51,
+     "movementMode": 2,
+     "maxForward": 100,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 2,
+     "moveInfoId": 52,
+     "movementMode": 9,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 85
+    },
+    {
+     "ordinal": 3,
+     "moveInfoId": 53,
+     "movementMode": 8,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 4,
+     "moveInfoId": 54,
+     "movementMode": 10,
+     "maxForward": 85,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 5,
+     "moveInfoId": 55,
+     "movementMode": 10,
+     "maxForward": 0,
+     "estimatedMaxSpeed": 100
+    },
+    {
+     "ordinal": 6,
+     "moveInfoId": 56,
+     "movementMode": 11,
+     "maxForward": 65,
+     "estimatedMaxSpeed": 10
+    },
+    {
+     "ordinal": 7,
+     "moveInfoId": 57,
+     "movementMode": 12,
+     "maxForward": 65,
+     "estimatedMaxSpeed": 12
+    }
+   ]
+  }
+ ]
+}

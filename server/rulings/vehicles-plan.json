@@ -1,0 +1,442 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "vehicles-plan",
+  "class": "VehiclesPlan",
+  "home": "src/Cranberry.Zone/Vehicles/VehicleSpawnPlanner.cs, VehicleStreamOptions.cs, VehicleState.cs",
+  "summary": "The owner confirmed the 550 locations and requested retail-like randomness on 2026-09-12. Ordinary pads roll independently at 30%; Pleasant Valley and Ranchito police stations clamp their four pad rolls to one or two cars. This is tunable server population policy, not a measured retail percentage. Explicit zero/one chances select none/all; null retains legacy count/spacing.",
+  "rulings": [
+    "D35",
+    "D43",
+    "D50",
+    "D53"
+  ],
+  "rows": [
+    {
+      "key": "VehicleSpawnPlanOptions.SpawnChance",
+      "value": 0.3,
+      "ruling": "none",
+      "source": "Owner follow-up 2026-09-12: keep correct locations but randomize occupancy; police department should have one car, sometimes two",
+      "grade": "RULING",
+      "note": "30% is chosen server tuning, not a recovered retail probability. Ordinary pads remain independent. For fractional chances, each identified police station clamps its four seeded rolls to one or two cars (second car probability 34.83% at the default). All 550 confirmed locations, families and poses remain eligible and unchanged. Configurable as vehicles.spawnChance or CRANBERRY_VEHICLE_SPAWN_CHANCE (0-1); explicit 0 disables vehicles and 1 fills every pad. See docs/vehicle-randomness-20260912.md.",
+      "csharp": {
+        "name": "SpawnChance",
+        "type": "double"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.Count",
+      "value": 150,
+      "ruling": "none",
+      "source": "C:/Z1/Server/Zone/ZoneWorldObjects.cs:379-380 - VehicleBudget defaults to 150",
+      "grade": "Z1",
+      "note": "Legacy option used only when SpawnChance is null. Z1 labels this a server budget, not a measured retail count. Retained for programmatic count/spacing plans; the default instead randomizes occupancy over the confirmed pads.",
+      "csharp": {
+        "name": "Count",
+        "type": "int"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.Mix.vehicleIds",
+      "value": [
+        1,
+        2,
+        5,
+        3
+      ],
+      "ruling": "D35",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleSpawnPlanner.cs:53-60 - OffRoader, PickupTruck, ATV, PoliceCar",
+      "grade": "RULING",
+      "note": "The ids are the client's own Vehicles.txt rows; the SELECTION of these four as the drivable set is the ruling.",
+      "csharp": {
+        "name": "MixVehicleIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.Mix.weights",
+      "value": [
+        40,
+        25,
+        20,
+        15
+      ],
+      "ruling": "D35",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleSpawnPlanner.cs:53-60 - Cranberry design",
+      "grade": "RULING",
+      "note": "Legacy fallback mix for untyped anchors or RespectAuthoredTypes=false. Every shipped Z2 anchor has an authored family, so these weights do not control the default type distribution or represent spawn percentages. Largest-remainder apportionment remains available for custom untyped maps.",
+      "csharp": {
+        "name": "MixWeights",
+        "type": "int[]"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.MinimumSeparationMetres",
+      "value": 50.0,
+      "ruling": "none",
+      "source": "C:/Z1/Server/Zone/ZoneWorldObjects.cs:304 - VehicleSpawnRadius, used by BackgroundVehicles",
+      "grade": "Z1",
+      "note": "Legacy option used only when SpawnChance is null. A background density rule, not a physical vehicle radius or a measured retail distance. Legacy plans keep this horizontal spacing on every pass, including a shortfall fill.",
+      "csharp": {
+        "name": "MinimumSeparationMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.MaxPerArea",
+      "value": 12,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleSpawnPlanner.cs:71 - Cranberry design",
+      "grade": "RULING",
+      "note": "Legacy option used only when SpawnChance is null. Retained first-pass cap per named area over authored vehicle pads; RelaxWhenShort can relax only this cap, never the legacy minimum spacing.",
+      "csharp": {
+        "name": "MaxPerArea",
+        "type": "int"
+      }
+    },
+    {
+      "key": "VehicleSpawnPlanOptions.GroundClearanceMetres",
+      "value": 0.0,
+      "ruling": "none",
+      "source": "Authored Z2_vehicleLocations.json positions, D329 local reference",
+      "grade": "RULING",
+      "note": "Use authored vehicle origin height unchanged; parking-mesh origins plus 0.5m produced floating/obstructed cars.",
+      "csharp": {
+        "name": "GroundClearanceMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleStreamOptions.StreamRadiusMetres",
+      "value": 1700.0,
+      "ruling": "D50",
+      "source": "docs/vehicle-spawns-20260907.md - continuous vehicle visibility across descent and landing",
+      "grade": "RULING",
+      "csharp": {
+        "name": "StreamRadiusMetres",
+        "type": "float"
+      },
+      "note": "Server visibility policy: prefetch beyond the 1500 m native draw range; retain the same range on foot. Existing packet pacing is preserved."
+    },
+    {
+      "key": "VehicleStreamOptions.DespawnRadiusMetres",
+      "value": 2000.0,
+      "ruling": "D50",
+      "source": "docs/vehicle-spawns-20260907.md - continuous vehicle visibility across descent and landing",
+      "grade": "RULING",
+      "csharp": {
+        "name": "DespawnRadiusMetres",
+        "type": "float"
+      },
+      "note": "Server visibility policy: prefetch beyond the 1500 m native draw range; retain the same range on foot. Existing packet pacing is preserved."
+    },
+    {
+      "key": "VehicleStreamOptions.MaxLive",
+      "value": 192,
+      "ruling": "D50",
+      "source": "docs/vehicle-spawns-retail-20260912.md - full retail catalogue visibility audit",
+      "grade": "RULING",
+      "csharp": {
+        "name": "MaxLive",
+        "type": "int"
+      },
+      "note": "550 occupied markers: the conservative 2000 m retention-disc bound is 163 vehicles, including between all 128 m grid samples. Keep 192 slots so the old 128-car cap cannot suppress vehicles. Existing radius and packet pacing are unchanged."
+    },
+    {
+      "key": "VehicleStreamOptions.MaxPerRestream",
+      "value": 32,
+      "ruling": "D50",
+      "source": "docs/vehicle-spawns-20260907.md - continuous vehicle visibility across descent and landing",
+      "grade": "RULING",
+      "csharp": {
+        "name": "MaxPerRestream",
+        "type": "int"
+      },
+      "note": "Server visibility policy: prefetch beyond the 1500 m native draw range; retain the same range on foot. Existing packet pacing is preserved."
+    },
+    {
+      "key": "VehicleStreamOptions.RestreamFraction",
+      "value": 0.02,
+      "ruling": "none",
+      "source": "docs/vehicle-spawns-20260907.md - continuous vehicle visibility across descent and landing",
+      "grade": "RULING",
+      "note": "Server visibility policy: prefetch beyond the 1500 m native draw range; retain the same range on foot. Existing packet pacing is preserved.",
+      "csharp": {
+        "name": "RestreamFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleStreamOptions.RestreamIntervalMs",
+      "value": 1000,
+      "ruling": "D50",
+      "source": "docs/vehicle-spawns-20260907.md - continuous vehicle visibility across descent and landing",
+      "grade": "RULING",
+      "csharp": {
+        "name": "RestreamIntervalMs",
+        "type": "int"
+      },
+      "note": "Server visibility policy: prefetch beyond the 1500 m native draw range; retain the same range on foot. Existing packet pacing is preserved."
+    },
+    {
+      "key": "VehicleFleetOptions.MaxHealth",
+      "value": 100000,
+      "ruling": "D53",
+      "source": "the client's own Resources.txt row 561 (RESOURCE_TYPE 1 ResourceTypeHealth, INITIAL_VALUE and MAX_VALUE both 100000, PACKET_BROADCAST_RANGE 30) - the resource row a vehicle's condition bar rides on; the owner's Z1 names the same id (C:\\Z1\\Server\\Zone\\ZoneVehicleResources.cs:132-138 ResourceIdCondition 561 / ResourceTypeCondition 1) and gives every vehicle Condition = 100_000 (ZoneVehicleRegistry.cs:253, 277, 316)",
+      "grade": "CLIENT",
+      "note": "Was 25,000 unruled Cranberry design. Vehicles.txt HEALTH really is 0 on every row, but the number was never absent from the build - it lives on the resource row, and the owner's own tuned value agrees with it exactly. AUDIT-vehicles gap 7.",
+      "csharp": {
+        "name": "MaxHealth",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.MaxFuel",
+      "value": 10000.0,
+      "ruling": "none",
+      "source": "the client's own Resources.txt id 50 ResourceTypeFuel MAX = 10000",
+      "grade": "CLIENT",
+      "note": "NOT a ruling - the one vehicle number the client does supply. Listed so the file is complete.",
+      "csharp": {
+        "name": "MaxFuel",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.MinimumSpawnFuelFraction",
+      "value": 0.75,
+      "ruling": "none",
+      "source": "User request 2026-09-08: every spawned vehicle starts at 75 fuel",
+      "grade": "RULING",
+      "note": "Fixed 75 percent tank for map and console spawns.",
+      "csharp": {
+        "name": "MinimumSpawnFuelFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.MaximumSpawnFuelFraction",
+      "value": 0.75,
+      "ruling": "none",
+      "source": "User request 2026-09-08: every spawned vehicle starts at 75 fuel",
+      "grade": "RULING",
+      "note": "Fixed 75 percent tank for map and console spawns.",
+      "csharp": {
+        "name": "MaximumSpawnFuelFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.FuelBurnPerSecond",
+      "value": 8.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleState.cs:42 - Cranberry design; the client carries no burn rate at all",
+      "grade": "RULING",
+      "note": "UNRULED. A full tank lasts about 21 minutes, longer than a round - so fuel is a pressure on a car found half-empty, not a timer on the match.",
+      "csharp": {
+        "name": "FuelBurnPerSecond",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.RefuelAmount",
+      "value": 2500.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleState.cs:49 - inferred from the client's own locale for Biofuel (73) / Ethanol (1384): 'enough to fill up a quarter of a tank'; PARAM1..3 are 0/1/0 on both rows",
+      "grade": "RULING",
+      "note": "UNRULED. A quarter of 10000 is the obvious reading of the client's own text, but the number itself is ours.",
+      "csharp": {
+        "name": "RefuelAmount",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.MaxPoseSpeedMetresPerSecond",
+      "value": 60.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleState.cs:59 - Cranberry design, deliberately NOT derived from MAX_FORWARD",
+      "grade": "RULING",
+      "note": "UNRULED. The client's sheets declare no units for MAX_FORWARD or ESTIMATED_MAX_SPEED (docs/43 s2.3), so reading 105 as 105 m/s would be a guess dressed as a fact.",
+      "csharp": {
+        "name": "MaxPoseSpeedMetresPerSecond",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleFleetOptions.DamagedFraction",
+      "value": 0.5,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneVehicleResources.cs:123-126 - the owner's own degradation ladder, 50,000 / 35,000 / 20,000 / 10,000 of a 100,000 condition bar",
+      "grade": "Z1",
+      "csharp": {
+        "name": "DamagedFraction",
+        "type": "float"
+      },
+      "note": "Was 0.75, DamageLevelInfo's own first level. Those 75/50/25 percentages are real client numbers but they are the HIT-INDICATOR levels; adopting the owner's 100,000 condition without his ladder would have changed a car's behaviour twice. The drive mode each band selects is still Cranberry's (docs/43 s8.3)."
+    },
+    {
+      "key": "VehicleFleetOptions.BadlyDamagedFraction",
+      "value": 0.35,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneVehicleResources.cs:123-126 - stage 2 at 35,000 of 100,000",
+      "grade": "Z1",
+      "csharp": {
+        "name": "BadlyDamagedFraction",
+        "type": "float"
+      },
+      "note": "Was 0.5. See VehicleFleetOptions.DamagedFraction."
+    },
+    {
+      "key": "VehicleFleetOptions.CrippledFraction",
+      "value": 0.2,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneVehicleResources.cs:123-126 - stage 3 at 20,000 of 100,000",
+      "grade": "Z1",
+      "csharp": {
+        "name": "CrippledFraction",
+        "type": "float"
+      },
+      "note": "Was 0.25. Selects MoveInfo ordinal 5, the row whose MAX_FORWARD is 0, so the car will not drive."
+    },
+    {
+      "key": "VehicleFuelOptions.BurnPerSecond",
+      "value": 8.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleFuel.cs:89 - Cranberry design, the same rate as VehicleFleetOptions.FuelBurnPerSecond",
+      "grade": "RULING",
+      "note": "UNRULED, and OFF by default (D50 keeps the two switches that can change how a match plays off). Left as a literal: VehicleFuel.cs is a second declaration of the same design number and folding them is a behaviour question, not a mechanical one (docs/101 s5).",
+      "csharp": null
+    },
+    {
+      "key": "VehicleFuelOptions.MaxBilledSeconds",
+      "value": 5.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleFuel.cs:101 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Caps how much fuel one late tick may bill after a stall. Left as a literal (see above).",
+      "csharp": null
+    },
+    {
+      "key": "VehicleFuelOptions.GaugeStepUnits",
+      "value": 100,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleFuel.cs:115 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Presentation only: how far the gauge must move before a resend. Left as a literal (see above).",
+      "csharp": null
+    },
+    {
+      "key": "AugustIgnitionFacts.HotwireBusyMs",
+      "value": 7000,
+      "ruling": "none",
+      "source": "the client's own ItemUseOptions.txt: TYPE_NAME StartVehicle, NAME_ID 14166 (Hotwire), one row per land family (item-use options 62/70/71/72), BUSY_MSEC = 7000 on all four - exact",
+      "grade": "CLIENT",
+      "note": "REGRADED 2026-09-03 (AUDIT-vehicles gap 11). It was carried as UNRULED design on the reading that D26 names a 6-7 s band rather than 7,000 ms; the client ships the exact number. Left as a literal in AugustIgnitionFacts, which is now honest about the whole type: every member of it is a client fact.",
+      "csharp": null
+    },
+    {
+      "key": "VehicleIgnitionOptions.KeyedFraction",
+      "value": 0.35,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleIgnition.cs:156 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. What fraction of parked cars are found with their key in. Left as a literal (see AugustIgnitionFacts.HotwireBusyMs).",
+      "csharp": null
+    },
+    {
+      "key": "VehicleFleetOptions.CriticalFraction",
+      "value": 0.1,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneVehicleResources.cs:123-126 - stage 4 at 10,000 of 100,000",
+      "grade": "Z1",
+      "note": "The fourth and last band of the owner's ladder. It selects no new drive mode - the MAX_FORWARD 0 row is already CrippledFraction's - it selects the fourth VEH_Damage_<family>_Stage04 composite effect, the one that is on fire.",
+      "csharp": {
+        "name": "CriticalFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleDamageOptions.CollisionBurstWindowMs",
+      "value": 500,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneCombat.cs:189 and ZoneVehicleResources.cs:119 - the owner's own round-25 regression fix: within the window one impact costs its PEAK, once, not once per packet",
+      "grade": "Z1",
+      "note": "Not tuning, a correctness requirement. The 47 live 8e 01 records recovered from C:\\Aug2017\\logs are two interleaved RAMPS (7, 14, 22, 30, 38, 46 ... and 262, 272, 283, 293, 303 ...), i.e. the client re-reports one continuing event with a running total. Charging every packet would kill a standing player in under a second.",
+      "csharp": {
+        "name": "CollisionBurstWindowMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "VehicleDamageOptions.PostArrivalGraceMs",
+      "value": 4000,
+      "ruling": "D53",
+      "source": "C:\\Z1\\Server\\Zone\\ZoneCombat.cs:196 - the owner's post-arrival grace",
+      "grade": "Z1",
+      "note": "Collision reports inside this many ms of the drop release are discarded. The client settles its actor onto the terrain on arrival and reports the settle as an impact.",
+      "csharp": {
+        "name": "PostArrivalGraceMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "VehicleDamageOptions.FlipPulseIntervalMs",
+      "value": 3000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleDamage.cs - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Vehicles.txt names the pulse AMOUNT (UPSIDE_DOWN_DAMAGE_PULSE 5000, PickupTruck 10000) and nothing else: UPSIDE_DOWN_DMG_PULSE_C_REQ_ID is 0 on every row and there is no period column anywhere in the sheet. 3,000 ms puts a flipped OffRoader at 60 s to a wreck and a flipped PickupTruck at 30 s.",
+      "csharp": {
+        "name": "FlipPulseIntervalMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "VehicleDamageOptions.UpsideDownDotThreshold",
+      "value": -0.25,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleDamage.cs - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. How far the vehicle's own up-axis must tip past horizontal before it counts as upside down, as the dot product with world up. The client ships no threshold, only UPSIDE_DOWN_FRICTION 0.8 and the UPSIDE_DOWN_UNDO auto-right. -0.25 is about 105 degrees from upright: a car on its roof, never a car on a steep bank.",
+      "csharp": {
+        "name": "UpsideDownDotThreshold",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleDamageOptions.WreckOccupantDamage",
+      "value": 0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleDamage.cs - Cranberry design; Vehicles.txt EXPLODE_DAMAGE and EXPLODE_RANGE are 0 on every row and DestroyedInfo.txt's TRIGGERED_ABILITY 1111205 is TargetPhysicsAreaAroundSelf, a physics impulse (RADIUS_MAX 8, params 3000/8000/4/8), not a damage field",
+      "grade": "RULING",
+      "note": "UNRULED, and ZERO on purpose. The explosion damage is not in this build and the owner's Z1 has no destroy-on-zero rule either (ZoneVehicleResources.cs:316-349 floors the condition at 1 and says so). Occupants are put out of the wreck; nothing invents what that costs them. CRANBERRY_VEHICLE_WRECK_DAMAGE is here for the owner to rule on.",
+      "csharp": {
+        "name": "WreckOccupantDamage",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "VehicleBoostOptions.FuelMultiplier",
+      "value": 4.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Vehicles/VehicleBoost.cs - Cranberry design; the client's own AbilityEx VehicleTurbo rows carry RESOURCE_FIRST_COST, RESOURCE_COST_PER_MSEC, FLAG_PAY_RESOURCE_COST and EXPIRE_MSEC all 0",
+      "grade": "RULING",
+      "note": "UNRULED. Only the MAGNITUDE of a boost is the client's (MoveInfo mode 2: OffRoader 90, Pickup 80, Police 105, ATV 100 against a normal 85); the COST is the server's. Four times the cruising rate puts a full tank at about five minutes of continuous boost against twenty-one minutes of cruising. The owner's Z1 carries the same figure but its own comment sources it to the forbidden tree (ZoneVehicleResources.cs:89), so it is NOT adopted - this is Cranberry's number, chosen independently.",
+      "csharp": {
+        "name": "FuelMultiplier",
+        "type": "float"
+      }
+    },
+    {
+      "key": "VehicleBoostOptions.TurboOnValue",
+      "value": 0,
+      "ruling": "none",
+      "source": "the August binary: 0f 33 Character.Turbo parser FUN_140a65200, handler FUN_140af9ca0 case 0x33 - value 0 SETS bit 0 of actor+0x4f8, any other value clears it, and the field is pre-seeded to 2",
+      "grade": "CLIENT+RULING",
+      "note": "UNRULED as a POLARITY. The byte itself is the client's; which of its two states means boost-granted is inferred - 0 sets reads more like turbo-BLOCKED-cleared than turbo-on. One live press settles it, and CRANBERRY_VEHICLE_TURBO_BYTE flips it in one word.",
+      "csharp": {
+        "name": "TurboOnValue",
+        "type": "int"
+      }
+    }
+  ]
+}

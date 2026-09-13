@@ -1,0 +1,3440 @@
+{
+ "schema": "cranberry/august-vehicle-obstructions/1",
+ "note": "Retained reference pads whose vehicle mesh envelope intersects actual August collision-actor visual LOD0 wall/fence/post/roof triangles. A witness triangle, mesh CRC and exact world instance/vehicle transforms make each exclusion reproducible. Empty building bounding boxes and lower support surfaces are insufficient. This is conservative visual-mesh placement validation, not a PhysX collision-mesh simulation.",
+ "obstructions": [
+  {
+   "anchor": {
+    "id": 14,
+    "x": -3704.3745,
+    "y": 45.2719,
+    "z": 972.2937,
+    "yaw": -2.299,
+    "spaces": 1,
+    "area": "WhitakersCrossWeightStation",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 2326433769,
+     "pos": [
+      -3706.25,
+      44.0801,
+      973.2731
+     ],
+     "rot": [
+      -3.141593,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 20,
+    "x": -3518.5301,
+    "y": 232.8374,
+    "z": -3173.5877,
+    "yaw": -2.6354,
+    "spaces": 1,
+    "area": "JayWildernessCamp",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 682156613,
+     "pos": [
+      -3518.6824,
+      232.5429,
+      -3173.4272
+     ],
+     "rot": [
+      -1.710423,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 0,
+    "localTriangle": [
+     [
+      -0.04707229509949684,
+      0.5214328765869141,
+      -0.04550649970769882
+     ],
+     [
+      -0.051940612494945526,
+      0.3711857795715332,
+      -0.029992584139108658
+     ],
+     [
+      -0.04688003286719322,
+      0.5571245551109314,
+      -0.09262701869010925
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 21,
+    "x": -3494.8344,
+    "y": 40.2304,
+    "z": 689.8227,
+    "yaw": -2.3583,
+    "spaces": 1,
+    "area": "KlugsStorageAndScrap",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ChainLinkFence_Straight.adr",
+     "id": 556597510,
+     "pos": [
+      -3495.7512,
+      39.9067,
+      684.2608
+     ],
+     "rot": [
+      -1.57057,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 150.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ChainLinkFence_Straight_LOD0.dme",
+     "crc32": "a24f2bef",
+     "triangles": 178
+    },
+    "triangleIndex": 152,
+    "localTriangle": [
+     [
+      3.9277849197387695,
+      2.0306403636932373,
+      0.0
+     ],
+     [
+      3.9277849197387695,
+      2.0106401443481445,
+      -0.034640997648239136
+     ],
+     [
+      3.9277849197387695,
+      1.99064040184021,
+      0.0
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 24,
+    "x": -3455.0492,
+    "y": -13.5534,
+    "z": -1082.7447,
+    "yaw": -2.3251,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Cabins_Structures_Cabins_Cabin01_SmallOverhang.adr",
+     "id": 2659577977,
+     "pos": [
+      -3456.0466,
+      -14.3878,
+      -1076.9152
+     ],
+     "rot": [
+      -0.523599,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      0.87,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Cabins_Structures_Cabins_Cabin01_SmallOverhang_LOD0.dme",
+     "crc32": "c2fbfe40",
+     "triangles": 111
+    },
+    "triangleIndex": 87,
+    "localTriangle": [
+     [
+      -0.4597753882408142,
+      3.997983694076538,
+      -6.176775932312012
+     ],
+     [
+      -0.45981931686401367,
+      1.5834612846374512,
+      -6.176769733428955
+     ],
+     [
+      -0.4597753882408142,
+      3.99798321723938,
+      -6.284021854400635
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 28,
+    "x": -3406.5055,
+    "y": 2.5101,
+    "z": -1800.1583,
+    "yaw": -0.9544,
+    "spaces": 1,
+    "area": "SouthwalkLumberCamp",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_FenceGate01.adr",
+     "id": 3481972032,
+     "pos": [
+      -3407.4531,
+      1.0,
+      -1799.3287
+     ],
+     "rot": [
+      2.86234,
+      0.0,
+      0.05236
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_FenceGate01_LOD0.dme",
+     "crc32": "f32b95cb",
+     "triangles": 6340
+    },
+    "triangleIndex": 156,
+    "localTriangle": [
+     [
+      0.1213085874915123,
+      1.539349913597107,
+      -0.059254150837659836
+     ],
+     [
+      0.10289367288351059,
+      1.3325480222702026,
+      -0.06062225252389908
+     ],
+     [
+      0.14324340224266052,
+      1.5138963460922241,
+      0.026830138638615608
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 30,
+    "x": -3392.0429,
+    "y": 56.0869,
+    "z": 1737.8376,
+    "yaw": 0.2793,
+    "spaces": 1,
+    "area": "FernsTruckStop",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Commercial_Structures_Buildings_GasStation01_Canopy01.adr",
+     "id": 3238574507,
+     "pos": [
+      -3395.7,
+      56.096,
+      1737.915
+     ],
+     "rot": [
+      -1.570796,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1000.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Commercial_Structures_Buildings_GasStation01_Canopy01_LOD0.dme",
+     "crc32": "5a38922b",
+     "triangles": 2922
+    },
+    "triangleIndex": 308,
+    "localTriangle": [
+     [
+      -1.7624987363815308,
+      2.396785020828247,
+      -3.75
+     ],
+     [
+      -1.7624987363815308,
+      0.0,
+      -3.75
+     ],
+     [
+      -1.75,
+      2.396785020828247,
+      -3.7375011444091797
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 31,
+    "x": -3366.3844,
+    "y": 56.1585,
+    "z": 1670.0283,
+    "yaw": 1.0996,
+    "spaces": 1,
+    "area": "FernsTruckStop",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Commercial_Structures_Buildings_GasStation01_Ext.adr",
+     "id": 2222376907,
+     "pos": [
+      -3359.7712,
+      56.079,
+      1682.0688
+     ],
+     "rot": [
+      -1.570796,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Commercial_Structures_Buildings_GasStation01_Ext_LOD0.dme",
+     "crc32": "f01f353b",
+     "triangles": 988
+    },
+    "triangleIndex": 748,
+    "localTriangle": [
+     [
+      -12.234621047973633,
+      0.0,
+      6.25
+     ],
+     [
+      -8.007336616516113,
+      0.9982737302780151,
+      6.25
+     ],
+     [
+      -1.3985399007797241,
+      0.24983066320419312,
+      6.249999046325684
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 33,
+    "x": -3344.3806,
+    "y": -6.0587,
+    "z": -976.0282,
+    "yaw": 2.3562,
+    "spaces": 1,
+    "area": "TreelineTrailsCampground",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Cabins_Structures_Cabins_Cabin01_ExtWall01.adr",
+     "id": 1410547305,
+     "pos": [
+      -3351.7913,
+      -6.0059,
+      -978.9634
+     ],
+     "rot": [
+      -1.117011,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1000.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Cabins_Structures_Cabins_Cabin01_ExtWall01_LOD0.dme",
+     "crc32": "2f800d5f",
+     "triangles": 382
+    },
+    "triangleIndex": 110,
+    "localTriangle": [
+     [
+      4.235873699188232,
+      1.6204055547714233,
+      -4.6918463706970215
+     ],
+     [
+      5.235268592834473,
+      1.6203855276107788,
+      -4.69184684753418
+     ],
+     [
+      5.235278129577637,
+      2.25949764251709,
+      -4.691848278045654
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 41,
+    "x": -3261.0361,
+    "y": 28.1007,
+    "z": 2688.6338,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "OhloneCircle",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 572749898,
+     "pos": [
+      -3261.999,
+      28.0732,
+      2684.9958
+     ],
+     "rot": [
+      1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 42,
+    "x": -3255.0107,
+    "y": 6.7921,
+    "z": -912.0041,
+    "yaw": -2.7576,
+    "spaces": 1,
+    "area": "TreelineTrailsCampground",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 345377847,
+     "pos": [
+      -3253.8167,
+      6.7343,
+      -907.8524
+     ],
+     "rot": [
+      1.37881,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 234,
+    "localTriangle": [
+     [
+      2.975644111633301,
+      1.118483066558838,
+      -0.04746894910931587
+     ],
+     [
+      2.639889717102051,
+      1.1130629777908325,
+      -0.04422920197248459
+     ],
+     [
+      2.655014991760254,
+      0.894206702709198,
+      -0.039340514689683914
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 48,
+    "x": -3206.7317,
+    "y": 21.1405,
+    "z": -860.6864,
+    "yaw": 2.8514,
+    "spaces": 1,
+    "area": "TreelineTrailsCampground",
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ChainLinkFence_Straight.adr",
+     "id": 4179828386,
+     "pos": [
+      -3203.2175,
+      20.4885,
+      -861.8731
+     ],
+     "rot": [
+      -2.583427,
+      -0.004848,
+      0.017369
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 150.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ChainLinkFence_Straight_LOD0.dme",
+     "crc32": "a24f2bef",
+     "triangles": 178
+    },
+    "triangleIndex": 152,
+    "localTriangle": [
+     [
+      3.9277849197387695,
+      2.0306403636932373,
+      0.0
+     ],
+     [
+      3.9277849197387695,
+      2.0106401443481445,
+      -0.034640997648239136
+     ],
+     [
+      3.9277849197387695,
+      1.99064040184021,
+      0.0
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 50,
+    "x": -3190.2854,
+    "y": -10.5197,
+    "z": 3423.3911,
+    "yaw": -1.4115,
+    "spaces": 1,
+    "area": "DoubleHFarms",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Structures_Buildings_Barn01.adr",
+     "id": 1829673666,
+     "pos": [
+      -3181.8171,
+      -10.6135,
+      3419.6909
+     ],
+     "rot": [
+      -1.884956,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Structures_Buildings_Barn01_LOD0.dme",
+     "crc32": "4b17a00d",
+     "triangles": 7625
+    },
+    "triangleIndex": 3969,
+    "localTriangle": [
+     [
+      9.104548454284668,
+      0.01978157088160515,
+      5.379654407501221
+     ],
+     [
+      5.452054500579834,
+      0.02768195979297161,
+      5.3779168128967285
+     ],
+     [
+      9.104548454284668,
+      3.1718902587890625,
+      5.379654407501221
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 51,
+    "x": -3184.1388,
+    "y": 23.7695,
+    "z": 150.7117,
+    "yaw": -2.81,
+    "spaces": 1,
+    "area": "TYeeWildernessCamp",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 203723441,
+     "pos": [
+      -3185.7478,
+      23.7685,
+      148.6285
+     ],
+     "rot": [
+      -1.047198,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 131,
+    "localTriangle": [
+     [
+      1.5980404615402222,
+      0.3653419017791748,
+      -0.0009033202659338713
+     ],
+     [
+      1.5270428657531738,
+      0.5568708777427673,
+      -0.031604308634996414
+     ],
+     [
+      1.0093157291412354,
+      0.3596649765968323,
+      0.011214141733944416
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 69,
+    "x": -2864.0361,
+    "y": 59.481,
+    "z": 648.6338,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "HideawayHillsPark",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "City_Props_ConcreteBarriers.adr",
+     "id": 741985604,
+     "pos": [
+      -2863.946,
+      59.38,
+      647.3757
+     ],
+     "rot": [
+      -2.635447,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 150.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "City_Props_ConcreteBarriers_LOD0.dme",
+     "crc32": "f8420cec",
+     "triangles": 336
+    },
+    "triangleIndex": 0,
+    "localTriangle": [
+     [
+      -0.06603497266769409,
+      0.538466215133667,
+      -0.9682651162147522
+     ],
+     [
+      -0.06603793054819107,
+      0.6649784445762634,
+      -0.399413138628006
+     ],
+     [
+      -0.06602408736944199,
+      0.23293110728263855,
+      0.049580078572034836
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 76,
+    "x": -2746.6434,
+    "y": -41.625,
+    "z": -1574.4128,
+    "yaw": -1.2566,
+    "spaces": 1,
+    "area": "Runamokcampground",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 3083681847,
+     "pos": [
+      -2745.606,
+      -41.6257,
+      -1577.4099
+     ],
+     "rot": [
+      -2.042036,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 138,
+    "localTriangle": [
+     [
+      1.5980404615402222,
+      0.3653419017791748,
+      -0.0009033202659338713
+     ],
+     [
+      2.1506402492523193,
+      0.5939921140670776,
+      -0.002929534763097763
+     ],
+     [
+      1.5270428657531738,
+      0.5568708777427673,
+      -0.031604308634996414
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 79,
+    "x": -2702.755,
+    "y": 195.5927,
+    "z": 2206.7758,
+    "yaw": -2.0857,
+    "spaces": 1,
+    "area": "LZPVRadioStation",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 1041911617,
+     "pos": [
+      -2700.8127,
+      195.7442,
+      2209.3962
+     ],
+     "rot": [
+      -0.785398,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 81,
+    "x": -2671.9247,
+    "y": -37.2707,
+    "z": -1526.9453,
+    "yaw": -1.8326,
+    "spaces": 1,
+    "area": "Runamokcampground",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Cabins_Structures_Cabins_Cabin01_SmallOverhang.adr",
+     "id": 679223070,
+     "pos": [
+      -2665.7419,
+      -39.1894,
+      -1522.1631
+     ],
+     "rot": [
+      0.64577,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      0.9744,
+      1.12,
+      1.12
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Cabins_Structures_Cabins_Cabin01_SmallOverhang_LOD0.dme",
+     "crc32": "c2fbfe40",
+     "triangles": 111
+    },
+    "triangleIndex": 87,
+    "localTriangle": [
+     [
+      -0.4597753882408142,
+      3.997983694076538,
+      -6.176775932312012
+     ],
+     [
+      -0.45981931686401367,
+      1.5834612846374512,
+      -6.176769733428955
+     ],
+     [
+      -0.4597753882408142,
+      3.99798321723938,
+      -6.284021854400635
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 82,
+    "x": -2656.4566,
+    "y": 140.0152,
+    "z": -3035.133,
+    "yaw": -2.3562,
+    "spaces": 1,
+    "area": "SereneRanchFruitFarm",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 2650816740,
+     "pos": [
+      -2657.0291,
+      139.7683,
+      -3027.9319
+     ],
+     "rot": [
+      1.047197,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 422,
+    "localTriangle": [
+     [
+      7.2509379386901855,
+      0.11109957098960876,
+      -2.773271083831787
+     ],
+     [
+      7.2509379386901855,
+      0.39355283975601196,
+      -2.7732675075531006
+     ],
+     [
+      7.248176574707031,
+      0.11109953373670578,
+      -2.7757039070129395
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 86,
+    "x": -2520.9985,
+    "y": 150.9011,
+    "z": -3278.5974,
+    "yaw": -1.8326,
+    "spaces": 1,
+    "area": "Owlhaven",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Props_Fence_Tall01_Side01.adr",
+     "id": 844730114,
+     "pos": [
+      -2521.0747,
+      150.7855,
+      -3279.7068
+     ],
+     "rot": [
+      1.308996,
+      -0.0,
+      -0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Props_Fence_Tall01_Side01_LOD0.dme",
+     "crc32": "28285b79",
+     "triangles": 280
+    },
+    "triangleIndex": 244,
+    "localTriangle": [
+     [
+      -0.08500148355960846,
+      -0.5,
+      -0.10308263450860977
+     ],
+     [
+      -0.08500148355960846,
+      2.043083429336548,
+      -0.10308263450860977
+     ],
+     [
+      -0.09999999403953552,
+      -0.5,
+      -0.0880841314792633
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 98,
+    "x": -2311.25,
+    "y": 153.5,
+    "z": -3238.5,
+    "yaw": -1.5708,
+    "spaces": 1,
+    "area": "Owlhaven",
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 683576410,
+     "pos": [
+      -2304.4744,
+      153.5,
+      -3246.0
+     ],
+     "rot": [
+      -1.570795,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 1362,
+    "localTriangle": [
+     [
+      7.008604526519775,
+      0.13415533304214478,
+      6.388224124908447
+     ],
+     [
+      7.008604526519775,
+      0.18824879825115204,
+      6.433607578277588
+     ],
+     [
+      7.008604526519775,
+      0.2938367426395416,
+      6.346565246582031
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 103,
+    "x": -2192.0229,
+    "y": -31.0666,
+    "z": -268.9341,
+    "yaw": -1.5708,
+    "spaces": 1,
+    "area": "CranberryResidential",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Props_Fence_Tall01_Side02.adr",
+     "id": 2843274804,
+     "pos": [
+      -2191.75,
+      -31.0,
+      -268.0
+     ],
+     "rot": [
+      1.570797,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Props_Fence_Tall01_Side02_LOD0.dme",
+     "crc32": "9c477a25",
+     "triangles": 560
+    },
+    "triangleIndex": 302,
+    "localTriangle": [
+     [
+      2.0,
+      0.5824016332626343,
+      0.04484572261571884
+     ],
+     [
+      6.103515488575795e-07,
+      0.5293502807617188,
+      0.04484572261571884
+     ],
+     [
+      2.0,
+      0.590816855430603,
+      0.036430492997169495
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 105,
+    "x": -2173.6658,
+    "y": -31.068,
+    "z": 80.3767,
+    "yaw": 1.5708,
+    "spaces": 1,
+    "area": "CranberryResidential",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "City_Structures_Buildings_WindowsBlocker01.adr",
+     "id": 2110701817,
+     "pos": [
+      -2173.6548,
+      -30.1306,
+      78.7493
+     ],
+     "rot": [
+      -1.570798,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.05,
+      0.6901,
+      1.0
+     ],
+     "renderDistance": 510.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "City_Structures_Buildings_WindowsBlocker01_LOD0.dme",
+     "crc32": "2f4d7cf4",
+     "triangles": 4
+    },
+    "triangleIndex": 0,
+    "localTriangle": [
+     [
+      0.75,
+      2.5,
+      -0.1328137218952179
+     ],
+     [
+      -0.75,
+      2.5,
+      -0.1328137218952179
+     ],
+     [
+      0.75,
+      0.0,
+      -0.1328137218952179
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 118,
+    "x": -1892.0092,
+    "y": -4.2181,
+    "z": 2347.8741,
+    "yaw": -2.0956,
+    "spaces": 1,
+    "area": "GovernorsMansion",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 470283417,
+     "pos": [
+      -1896.876,
+      -4.2153,
+      2346.8115
+     ],
+     "rot": [
+      -0.14376,
+      -0.026953,
+      0.067926
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 151,
+    "localTriangle": [
+     [
+      2.3487167358398438,
+      0.5854657888412476,
+      0.02076370269060135
+     ],
+     [
+      2.7823028564453125,
+      0.3814723789691925,
+      -0.02761295810341835
+     ],
+     [
+      2.741891384124756,
+      0.5925077795982361,
+      -0.022288402542471886
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 121,
+    "x": -1838.6003,
+    "y": -30.26,
+    "z": -743.0204,
+    "yaw": -1.5708,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall16m.adr",
+     "id": 3997322925,
+     "pos": [
+      -1838.5195,
+      -31.3808,
+      -735.0773
+     ],
+     "rot": [
+      -1.570796,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      0.7435,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall16m_LOD0.dme",
+     "crc32": "dc294dcb",
+     "triangles": 128
+    },
+    "triangleIndex": 12,
+    "localTriangle": [
+     [
+      -16.004575729370117,
+      1.2940216064453125,
+      0.1273687779903412
+     ],
+     [
+      -12.004575729370117,
+      1.2958961725234985,
+      0.12618407607078552
+     ],
+     [
+      -16.004575729370117,
+      -0.7029643654823303,
+      0.1273687779903412
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 133,
+    "x": -1574.708,
+    "y": 237.1468,
+    "z": -3243.4914,
+    "yaw": -1.6057,
+    "spaces": 1,
+    "area": "GreenesPastures",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Props_Fence_Tall01_Side01.adr",
+     "id": 2651906274,
+     "pos": [
+      -1577.2499,
+      237.1721,
+      -3242.5825
+     ],
+     "rot": [
+      -0.087265,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Props_Fence_Tall01_Side01_LOD0.dme",
+     "crc32": "28285b79",
+     "triangles": 280
+    },
+    "triangleIndex": 28,
+    "localTriangle": [
+     [
+      4.5895575340182404e-07,
+      0.39941877126693726,
+      -0.011261426843702793
+     ],
+     [
+      2.0,
+      0.45247015357017517,
+      -0.011261426843702793
+     ],
+     [
+      4.5895575340182404e-07,
+      0.5377655029296875,
+      -0.011261426843702793
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 140,
+    "x": -1498.6845,
+    "y": 237.9375,
+    "z": -3254.7071,
+    "yaw": -0.2618,
+    "spaces": 1,
+    "area": "GreenesPastures",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 1728908589,
+     "pos": [
+      -1492.6155,
+      237.9307,
+      -3247.8049
+     ],
+     "rot": [
+      -3.124139,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 1749,
+    "localTriangle": [
+     [
+      4.856339454650879,
+      0.8918867111206055,
+      6.215062141418457
+     ],
+     [
+      7.208840370178223,
+      0.2722800374031067,
+      6.215064525604248
+     ],
+     [
+      1.3728017807006836,
+      0.27218571305274963,
+      6.215062141418457
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 143,
+    "x": -1479.6099,
+    "y": -41.3458,
+    "z": 2745.9429,
+    "yaw": -3.0369,
+    "spaces": 1,
+    "area": "RubyLakeCampgroundEast",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 919554774,
+     "pos": [
+      -1476.894,
+      -41.3465,
+      2747.5811
+     ],
+     "rot": [
+      2.460914,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 151,
+    "localTriangle": [
+     [
+      2.3487167358398438,
+      0.5854657888412476,
+      0.02076370269060135
+     ],
+     [
+      2.7823028564453125,
+      0.3814723789691925,
+      -0.02761295810341835
+     ],
+     [
+      2.741891384124756,
+      0.5925077795982361,
+      -0.022288402542471886
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 167,
+    "x": -958.2431,
+    "y": 53.5538,
+    "z": -2616.214,
+    "yaw": -1.3443,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Common_Props_MilitaryBase_HighFence1x2.adr",
+     "id": 866857470,
+     "pos": [
+      -955.7614,
+      53.2416,
+      -2617.6428
+     ],
+     "rot": [
+      -2.199126,
+      -0.000608,
+      0.034901
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 150.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Common_Props_MilitaryBase_HighFence1x2_LOD0.dme",
+     "crc32": "5f5df617",
+     "triangles": 1112
+    },
+    "triangleIndex": 437,
+    "localTriangle": [
+     [
+      2.0,
+      2.066230058670044,
+      -0.03779953718185425
+     ],
+     [
+      2.0,
+      2.066230058670044,
+      0.04205527529120445
+     ],
+     [
+      2.0,
+      2.0201261043548584,
+      0.042055271565914154
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 171,
+    "x": -855.9689,
+    "y": 51.7403,
+    "z": 986.3317,
+    "yaw": 0.5236,
+    "spaces": 1,
+    "area": "DeSotosServiceStop",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Structures_Buildings_Warehouse03_LowerWall.adr",
+     "id": 3948822895,
+     "pos": [
+      -847.6182,
+      51.9903,
+      979.8438
+     ],
+     "rot": [
+      -0.785398,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Structures_Buildings_Warehouse03_LowerWall_LOD0.dme",
+     "crc32": "4085cf5c",
+     "triangles": 354
+    },
+    "triangleIndex": 202,
+    "localTriangle": [
+     [
+      -0.07125487923622131,
+      1.1478537321090698,
+      10.731618881225586
+     ],
+     [
+      -0.07286620885133743,
+      -0.04954051226377487,
+      10.724963188171387
+     ],
+     [
+      1.5209423303604126,
+      1.1455161571502686,
+      10.735025405883789
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 178,
+    "x": -703.3337,
+    "y": 57.5996,
+    "z": -1353.5464,
+    "yaw": 2.9496,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 818133244,
+     "pos": [
+      -703.6855,
+      57.5986,
+      -1356.1548
+     ],
+     "rot": [
+      -1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 112,
+    "localTriangle": [
+     [
+      0.5437289476394653,
+      0.34736838936805725,
+      0.012719878926873207
+     ],
+     [
+      1.0139843225479126,
+      0.5754320621490479,
+      -0.04776657000184059
+     ],
+     [
+      0.5113880634307861,
+      0.5701704025268555,
+      -0.0043884278275072575
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 187,
+    "x": -596.0367,
+    "y": 33.25,
+    "z": 44.8412,
+    "yaw": -3.1416,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 2411720272,
+     "pos": [
+      -594.9912,
+      33.8695,
+      40.2908
+     ],
+     "rot": [
+      1.570795,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 24,
+    "localTriangle": [
+     [
+      -4.012915134429932,
+      1.298587441444397,
+      1.4305114426349519e-08
+     ],
+     [
+      -4.008332252502441,
+      1.2940216064453125,
+      0.1250002384185791
+     ],
+     [
+      -4.012915134429932,
+      -0.7029643654823303,
+      1.4305114426349519e-08
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 192,
+    "x": -512.7025,
+    "y": 241.7283,
+    "z": -3766.3707,
+    "yaw": -1.309,
+    "spaces": 1,
+    "area": "WestPeaksRanch",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 3187557887,
+     "pos": [
+      -520.8234,
+      241.7502,
+      -3759.8198
+     ],
+     "rot": [
+      1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 1362,
+    "localTriangle": [
+     [
+      7.008604526519775,
+      0.13415533304214478,
+      6.388224124908447
+     ],
+     [
+      7.008604526519775,
+      0.18824879825115204,
+      6.433607578277588
+     ],
+     [
+      7.008604526519775,
+      0.2938367426395416,
+      6.346565246582031
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 200,
+    "x": -222.2354,
+    "y": 33.25,
+    "z": 520.2233,
+    "yaw": -1.6581,
+    "spaces": 1,
+    "area": "PVCommercialEast",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "City_Structures_Buildings_DoorFrame01.adr",
+     "id": 1928989468,
+     "pos": [
+      -220.25,
+      33.3,
+      522.5
+     ],
+     "rot": [
+      1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 99999.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "City_Structures_Buildings_DoorFrame01_LOD0.dme",
+     "crc32": "4b0f7348",
+     "triangles": 252
+    },
+    "triangleIndex": 9,
+    "localTriangle": [
+     [
+      0.9799017310142517,
+      0.15200220048427582,
+      -0.2803412973880768
+     ],
+     [
+      0.9588244557380676,
+      3.0652971267700195,
+      -0.3059062063694
+     ],
+     [
+      0.9543365240097046,
+      0.15200220048427582,
+      -0.3059062063694
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 204,
+    "x": -182.2723,
+    "y": 70.9899,
+    "z": 3276.7731,
+    "yaw": 2.6136,
+    "spaces": 1,
+    "area": "FlockOfTheShepherdChurch",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_BuildingAdd_Garage01.adr",
+     "id": 1517044308,
+     "pos": [
+      -194.0,
+      71.0,
+      3272.0
+     ],
+     "rot": [
+      -0.0,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_BuildingAdd_Garage01_LOD0.dme",
+     "crc32": "d0c6c5cb",
+     "triangles": 2489
+    },
+    "triangleIndex": 147,
+    "localTriangle": [
+     [
+      11.495439529418945,
+      0.40275219082832336,
+      3.0072641372680664
+     ],
+     [
+      11.739546775817871,
+      0.4027521312236786,
+      3.0074734687805176
+     ],
+     [
+      11.49666976928711,
+      3.0540268421173096,
+      3.0067903995513916
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 215,
+    "x": 62.3437,
+    "y": 33.25,
+    "z": 317.0875,
+    "yaw": 2.0944,
+    "spaces": 1,
+    "area": "PVCommercialEast",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Commercial_Structures_Buildings_SuperStore_Ext.adr",
+     "id": 2182336405,
+     "pos": [
+      104.6003,
+      33.3,
+      300.0
+     ],
+     "rot": [
+      -3.141593,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 2000.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Commercial_Structures_Buildings_SuperStore_Ext_LOD0.dme",
+     "crc32": "8860ca21",
+     "triangles": 7220
+    },
+    "triangleIndex": 138,
+    "localTriangle": [
+     [
+      40.03913879394531,
+      4.085231304168701,
+      -17.078073501586914
+     ],
+     [
+      40.03913879394531,
+      0.1629292219877243,
+      -17.078073501586914
+     ],
+     [
+      40.03913879394531,
+      0.1629292219877243,
+      30.14150619506836
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 217,
+    "x": 91.9313,
+    "y": -29.6535,
+    "z": 1676.7594,
+    "yaw": 1.4144,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 1827850958,
+     "pos": [
+      91.0719,
+      -29.3817,
+      1679.5002
+     ],
+     "rot": [
+      1.885308,
+      0.021593,
+      0.008437
+     ],
+     "scale": [
+      1.18,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 138,
+    "localTriangle": [
+     [
+      1.5980404615402222,
+      0.3653419017791748,
+      -0.0009033202659338713
+     ],
+     [
+      2.1506402492523193,
+      0.5939921140670776,
+      -0.002929534763097763
+     ],
+     [
+      1.5270428657531738,
+      0.5568708777427673,
+      -0.031604308634996414
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 226,
+    "x": 281.3165,
+    "y": 32.1572,
+    "z": 533.8077,
+    "yaw": -1.5708,
+    "spaces": 1,
+    "area": "PVResidential",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 1379951577,
+     "pos": [
+      278.0,
+      32.25,
+      527.5256
+     ],
+     "rot": [
+      -3.141591,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 206,
+    "localTriangle": [
+     [
+      -1.6833312511444092,
+      1.000001311302185,
+      -6.137094020843506
+     ],
+     [
+      -1.6833312511444092,
+      1.0000007152557373,
+      -6.104193687438965
+     ],
+     [
+      -1.6833281517028809,
+      2.5000011920928955,
+      -6.1370697021484375
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 235,
+    "x": 450.579,
+    "y": 48.2131,
+    "z": -2682.7534,
+    "yaw": 0.0349,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 3400044294,
+     "pos": [
+      450.8769,
+      48.1553,
+      -2687.0632
+     ],
+     "rot": [
+      -2.111849,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 138,
+    "localTriangle": [
+     [
+      1.5980404615402222,
+      0.3653419017791748,
+      -0.0009033202659338713
+     ],
+     [
+      2.1506402492523193,
+      0.5939921140670776,
+      -0.002929534763097763
+     ],
+     [
+      1.5270428657531738,
+      0.5568708777427673,
+      -0.031604308634996414
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 239,
+    "x": 503.0772,
+    "y": 4,
+    "z": 1360.25,
+    "yaw": -3.1416,
+    "spaces": 1,
+    "area": "TheVillas",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Small.adr",
+     "id": 4111721650,
+     "pos": [
+      510.5,
+      4.0,
+      1367.0
+     ],
+     "rot": [
+      3.141593,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Small_LOD0.dme",
+     "crc32": "554c11f0",
+     "triangles": 1806
+    },
+    "triangleIndex": 1362,
+    "localTriangle": [
+     [
+      7.008604526519775,
+      0.13415533304214478,
+      6.388224124908447
+     ],
+     [
+      7.008604526519775,
+      0.18824879825115204,
+      6.433607578277588
+     ],
+     [
+      7.008604526519775,
+      0.2938367426395416,
+      6.346565246582031
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 256,
+    "x": 838.0933,
+    "y": -7.4688,
+    "z": 651.5138,
+    "yaw": -1.0472,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Church_Structures_ChurchInt_01.adr",
+     "id": 1422702617,
+     "pos": [
+      840.1847,
+      -7.5127,
+      656.8646
+     ],
+     "rot": [
+      -0.959931,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Church_Structures_ChurchInt_01_LOD0.dme",
+     "crc32": "bf14c489",
+     "triangles": 3426
+    },
+    "triangleIndex": 588,
+    "localTriangle": [
+     [
+      -5.491442680358887,
+      1.114675760269165,
+      -11.84134578704834
+     ],
+     [
+      -5.491442680358887,
+      1.114675760269165,
+      6.451628684997559
+     ],
+     [
+      -6.268882751464844,
+      1.114675760269165,
+      -11.84134578704834
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 263,
+    "x": 974.897,
+    "y": -11.2813,
+    "z": 2305.873,
+    "yaw": -1.8326,
+    "spaces": 1,
+    "area": "Zimms",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall16m.adr",
+     "id": 1475010402,
+     "pos": [
+      972.9849,
+      -11.1775,
+      2322.0056
+     ],
+     "rot": [
+      -1.815142,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall16m_LOD0.dme",
+     "crc32": "dc294dcb",
+     "triangles": 128
+    },
+    "triangleIndex": 12,
+    "localTriangle": [
+     [
+      -16.004575729370117,
+      1.2940216064453125,
+      0.1273687779903412
+     ],
+     [
+      -12.004575729370117,
+      1.2958961725234985,
+      0.12618407607078552
+     ],
+     [
+      -16.004575729370117,
+      -0.7029643654823303,
+      0.1273687779903412
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 264,
+    "x": 983.3709,
+    "y": -11.2813,
+    "z": 2271.876,
+    "yaw": -1.8326,
+    "spaces": 1,
+    "area": "Zimms",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 2769150340,
+     "pos": [
+      984.5745,
+      -11.1771,
+      2275.5205
+     ],
+     "rot": [
+      -1.815144,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 272,
+    "x": 1076.9506,
+    "y": 9.9936,
+    "z": 605.4605,
+    "yaw": 1.5708,
+    "spaces": 1,
+    "area": "ValleyViewMall",
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "City_Structures_Buildings_16x16_Btm_Int_Bus02.adr",
+     "id": 1195800629,
+     "pos": [
+      1072.0,
+      10.1238,
+      598.5408
+     ],
+     "rot": [
+      -1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 510.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "City_Structures_Buildings_16x16_Btm_Int_Bus02_LOD0.dme",
+     "crc32": "1a064c2e",
+     "triangles": 87
+    },
+    "triangleIndex": 57,
+    "localTriangle": [
+     [
+      5.625,
+      3.75,
+      -7.5
+     ],
+     [
+      7.5,
+      0.0,
+      -7.5
+     ],
+     [
+      5.625,
+      0.0,
+      -7.5
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 276,
+    "x": 1183,
+    "y": 50,
+    "z": -1920,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "HarrisBluffsResidential",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_BuildingAdd_Garage01.adr",
+     "id": 1396457174,
+     "pos": [
+      1194.5,
+      50.0,
+      -1918.2026
+     ],
+     "rot": [
+      3.141593,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_BuildingAdd_Garage01_LOD0.dme",
+     "crc32": "d0c6c5cb",
+     "triangles": 2489
+    },
+    "triangleIndex": 285,
+    "localTriangle": [
+     [
+      11.739521026611328,
+      0.4027521312236786,
+      0.9992842078208923
+     ],
+     [
+      11.740717887878418,
+      3.0540270805358887,
+      0.9992840886116028
+     ],
+     [
+      11.739523887634277,
+      0.4027521312236786,
+      1.2456692457199097
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 277,
+    "x": 1220.0686,
+    "y": 50.2468,
+    "z": -1916.0568,
+    "yaw": -0.1222,
+    "spaces": 1,
+    "area": "HarrisBluffsResidential",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building03_2Story.adr",
+     "id": 1954334425,
+     "pos": [
+      1226.0,
+      50.0,
+      -1917.288
+     ],
+     "rot": [
+      3.141592,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building03_2Story_LOD0.dme",
+     "crc32": "a9b9968b",
+     "triangles": 2918
+    },
+    "triangleIndex": 2233,
+    "localTriangle": [
+     [
+      7.073147296905518,
+      2.51678204536438,
+      -2.686318874359131
+     ],
+     [
+      7.168436050415039,
+      2.51678204536438,
+      -2.686318874359131
+     ],
+     [
+      7.073153018951416,
+      0.27774497866630554,
+      -2.681351900100708
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 280,
+    "x": 1273.2961,
+    "y": 7.4395,
+    "z": -209.9831,
+    "yaw": 0,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 2169607263,
+     "pos": [
+      1273.0598,
+      6.3143,
+      -209.9893
+     ],
+     "rot": [
+      1e-06,
+      -0.0,
+      -0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 287,
+    "x": 1374.7427,
+    "y": 50,
+    "z": -2253.8557,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "HarrisBluffsResidential",
+    "vehicleId": 3
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building03_2Story.adr",
+     "id": 2938633369,
+     "pos": [
+      1373.1899,
+      50.0,
+      -2245.4592
+     ],
+     "rot": [
+      -1.570795,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building03_2Story_LOD0.dme",
+     "crc32": "a9b9968b",
+     "triangles": 2918
+    },
+    "triangleIndex": 239,
+    "localTriangle": [
+     [
+      -8.238250732421875,
+      -0.13047172129154205,
+      0.23558147251605988
+     ],
+     [
+      -8.238250732421875,
+      -0.13048121333122253,
+      -6.193187713623047
+     ],
+     [
+      -8.238250732421875,
+      0.2622455656528473,
+      0.2355802059173584
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 295,
+    "x": 1490.1096,
+    "y": 14.2845,
+    "z": 1348.82,
+    "yaw": 1.047,
+    "spaces": 1,
+    "area": "TaquitoTrailerPark",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building01_Mobile01_Int.adr",
+     "id": 939524742,
+     "pos": [
+      1499.9495,
+      14.2845,
+      1345.0
+     ],
+     "rot": [
+      -1.570798,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 260.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building01_Mobile01_Int_LOD0.dme",
+     "crc32": "5bf6751a",
+     "triangles": 1377
+    },
+    "triangleIndex": 946,
+    "localTriangle": [
+     [
+      3.0,
+      2.1343371868133545,
+      -0.5049828886985779
+     ],
+     [
+      3.0,
+      1.1458125114440918,
+      10.0
+     ],
+     [
+      3.000000476837158,
+      2.1343371868133545,
+      -1.4894506931304932
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 299,
+    "x": 1541.3271,
+    "y": 108.3075,
+    "z": -2658.6914,
+    "yaw": 2.6005,
+    "spaces": 1,
+    "area": "HarrisGulchGoldMine",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 2664738533,
+     "pos": [
+      1538.5092,
+      108.3161,
+      -2658.1807
+     ],
+     "rot": [
+      -0.044131,
+      0.866271,
+      0.10811
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 514,
+    "localTriangle": [
+     [
+      2.991389513015747,
+      0.366800993680954,
+      -0.03710632398724556
+     ],
+     [
+      2.991389513015747,
+      0.5826457142829895,
+      -0.03710632398724556
+     ],
+     [
+      2.837043285369873,
+      0.36778154969215393,
+      -0.035105131566524506
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 301,
+    "x": 1605.7141,
+    "y": 16.25,
+    "z": 2238,
+    "yaw": -0.5236,
+    "spaces": 1,
+    "area": "RanchitoIndustrial",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Structures_Buildings_Warehouse03_LowerWall.adr",
+     "id": 831420947,
+     "pos": [
+      1610.0,
+      16.55,
+      2247.0
+     ],
+     "rot": [
+      -3.141591,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Structures_Buildings_Warehouse03_LowerWall_LOD0.dme",
+     "crc32": "4085cf5c",
+     "triangles": 354
+    },
+    "triangleIndex": 308,
+    "localTriangle": [
+     [
+      5.9344482421875,
+      2.393200397491455,
+      10.727556228637695
+     ],
+     [
+      5.940571308135986,
+      1.1544384956359863,
+      10.69085693359375
+     ],
+     [
+      5.960864067077637,
+      2.391995429992676,
+      0.0018621826311573386
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 318,
+    "x": 2033.5,
+    "y": 15.25,
+    "z": 1512,
+    "yaw": -1.5708,
+    "spaces": 1,
+    "area": "RanchitoResidential",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_BuildingAdd_Garage01.adr",
+     "id": 1733428095,
+     "pos": [
+      2026.0,
+      15.25,
+      1509.2876
+     ],
+     "rot": [
+      -0.0,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_BuildingAdd_Garage01_LOD0.dme",
+     "crc32": "d0c6c5cb",
+     "triangles": 2489
+    },
+    "triangleIndex": 40,
+    "localTriangle": [
+     [
+      8.086687088012695,
+      0.24684184789657593,
+      3.019812822341919
+     ],
+     [
+      8.086688995361328,
+      0.24030210077762604,
+      3.025162696838379
+     ],
+     [
+      7.858117580413818,
+      -0.1284153014421463,
+      3.019893169403076
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 339,
+    "x": 2453.4052,
+    "y": 0.3125,
+    "z": -384.1657,
+    "yaw": 2.3562,
+    "spaces": 1,
+    "area": "WinonaPark",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Cabins_Structures_Cabins_Cabin01_SmallOverhang.adr",
+     "id": 1667517589,
+     "pos": [
+      2449.4331,
+      -1.2416,
+      -390.7044
+     ],
+     "rot": [
+      2.827436,
+      -0.0,
+      -0.0
+     ],
+     "scale": [
+      0.88,
+      0.88,
+      0.88
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Cabins_Structures_Cabins_Cabin01_SmallOverhang_LOD0.dme",
+     "crc32": "c2fbfe40",
+     "triangles": 111
+    },
+    "triangleIndex": 99,
+    "localTriangle": [
+     [
+      -5.719687461853027,
+      3.997983694076538,
+      -6.176775932312012
+     ],
+     [
+      -5.719731330871582,
+      1.5834612846374512,
+      -6.176769733428955
+     ],
+     [
+      -5.719687461853027,
+      3.99798321723938,
+      -6.284021854400635
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 340,
+    "x": 2485.2444,
+    "y": 125.2217,
+    "z": -3531.4829,
+    "yaw": -2.618,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 1965959106,
+     "pos": [
+      2485.6143,
+      124.7458,
+      -3534.7051
+     ],
+     "rot": [
+      -1.548759,
+      0.155538,
+      0.141343
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 138,
+    "localTriangle": [
+     [
+      1.5980404615402222,
+      0.3653419017791748,
+      -0.0009033202659338713
+     ],
+     [
+      2.1506402492523193,
+      0.5939921140670776,
+      -0.002929534763097763
+     ],
+     [
+      1.5270428657531738,
+      0.5568708777427673,
+      -0.031604308634996414
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 361,
+    "x": 2910.8467,
+    "y": -35.0765,
+    "z": 2990.31,
+    "yaw": -2.8623,
+    "spaces": 1,
+    "area": "Dam",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Dam_Structures_Powerhouse2_Exterior.adr",
+     "id": 2860246218,
+     "pos": [
+      2909.0164,
+      -36.0375,
+      2957.5686
+     ],
+     "rot": [
+      -2.565633,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1000.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Dam_Structures_Powerhouse2_Exterior_LOD0.dme",
+     "crc32": "50cfbbec",
+     "triangles": 10939
+    },
+    "triangleIndex": 7354,
+    "localTriangle": [
+     [
+      18.387781143188477,
+      2.1598870754241943,
+      -28.43913459777832
+     ],
+     [
+      15.187657356262207,
+      2.1598870754241943,
+      -28.43913459777832
+     ],
+     [
+      18.387781143188477,
+      1.9901500940322876,
+      -28.43913459777832
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 363,
+    "x": 2980.9041,
+    "y": -18.6485,
+    "z": -1868.5034,
+    "yaw": 3.1416,
+    "spaces": 1,
+    "area": "Romeros",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 3805392691,
+     "pos": [
+      2981.0261,
+      -19.7736,
+      -1872.3722
+     ],
+     "rot": [
+      1.570796,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 381,
+    "x": 3239.25,
+    "y": -33.0927,
+    "z": 1427.4651,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "BrightHills",
+    "vehicleId": 2
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building02_Medium.adr",
+     "id": 3731002383,
+     "pos": [
+      3242.0,
+      -33.0,
+      1433.3037
+     ],
+     "rot": [
+      -2e-06,
+      -0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building02_Medium_LOD0.dme",
+     "crc32": "869d27e0",
+     "triangles": 2555
+    },
+    "triangleIndex": 22,
+    "localTriangle": [
+     [
+      -1.9009286165237427,
+      0.8728491067886353,
+      -6.213763236999512
+     ],
+     [
+      -3.5784847736358643,
+      0.8728490471839905,
+      -6.213763236999512
+     ],
+     [
+      -5.285668849945068,
+      0.2721959948539734,
+      -6.213763236999512
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 382,
+    "x": 3255.9192,
+    "y": -6.7353,
+    "z": 2341.1509,
+    "yaw": 0,
+    "spaces": 1,
+    "area": null,
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Industrial_Props_ModularWall_BlockWall4m.adr",
+     "id": 1052146916,
+     "pos": [
+      3259.6829,
+      -7.8605,
+      2341.1445
+     ],
+     "rot": [
+      1e-06,
+      -0.0,
+      -0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 300.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Industrial_Props_ModularWall_BlockWall4m_LOD0.dme",
+     "crc32": "9cfcf72d",
+     "triangles": 80
+    },
+    "triangleIndex": 20,
+    "localTriangle": [
+     [
+      -4.004576206207275,
+      1.2940216064453125,
+      0.12736894190311432
+     ],
+     [
+      -0.004576415754854679,
+      1.2940207719802856,
+      0.12736882269382477
+     ],
+     [
+      -4.004576206207275,
+      -0.7029643654823303,
+      0.1273687332868576
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 386,
+    "x": 3351.9298,
+    "y": -14.8903,
+    "z": -1707.4979,
+    "yaw": -2.9823,
+    "spaces": 1,
+    "area": "NorthwindRanch",
+    "vehicleId": 1
+   },
+   "witness": {
+    "object": {
+     "model": "Farm_Props_Fences_Fence01.adr",
+     "id": 2982760400,
+     "pos": [
+      3352.4968,
+      -15.1372,
+      -1710.5706
+     ],
+     "rot": [
+      -1.39408,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 250.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Farm_Props_Fences_Fence01_LOD0.dme",
+     "crc32": "75c66d05",
+     "triangles": 1604
+    },
+    "triangleIndex": 135,
+    "localTriangle": [
+     [
+      1.0093157291412354,
+      0.381205290555954,
+      0.07162292301654816
+     ],
+     [
+      0.5539270043373108,
+      0.3784160912036896,
+      0.07178283482789993
+     ],
+     [
+      0.9208895564079285,
+      0.581463634967804,
+      0.03295287862420082
+     ]
+    ]
+   }
+  },
+  {
+   "anchor": {
+    "id": 394,
+    "x": 3447.6021,
+    "y": -33.0345,
+    "z": 1439.5,
+    "yaw": 0,
+    "spaces": 1,
+    "area": "BrightHills",
+    "vehicleId": 5
+   },
+   "witness": {
+    "object": {
+     "model": "Residential_Structures_Building02_Medium.adr",
+     "id": 2266263037,
+     "pos": [
+      3440.0,
+      -33.0,
+      1432.5066
+     ],
+     "rot": [
+      -0.0,
+      0.0,
+      0.0
+     ],
+     "scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "renderDistance": 1500.0,
+     "flags": 0
+    },
+    "mesh": {
+     "mesh": "Residential_Structures_Building02_Medium_LOD0.dme",
+     "crc32": "869d27e0",
+     "triangles": 2555
+    },
+    "triangleIndex": 14,
+    "localTriangle": [
+     [
+      1.8988115787506104,
+      0.8750984072685242,
+      6.215063571929932
+     ],
+     [
+      7.208792686462402,
+      0.2722800374031067,
+      6.215064525604248
+     ],
+     [
+      -1.143660545349121,
+      0.8918867111206055,
+      6.215062141418457
+     ]
+    ]
+   }
+  }
+ ],
+ "enclosingBoundsOnlyRetained": [
+  8,
+  132,
+  168,
+  170,
+  177,
+  283,
+  304,
+  359,
+  374,
+  380
+ ]
+}

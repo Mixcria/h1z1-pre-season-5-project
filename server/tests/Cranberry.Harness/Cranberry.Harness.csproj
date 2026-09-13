@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!--
+    Deliberately NOT a reference to Cranberry.Transport. The harness re-implements the whole
+    client half of the SOE wire (RC4, varint, sequencing, fragments, acks, the bundle envelope
+    and the leading-zero escape) so that a bug in the server's transport cannot hide behind a
+    test that uses the very same code. See docs/72 "What is shared, and the blind spot".
+
+    Cranberry.Zone is referenced for exactly one thing: ZoneOpcodes.Name, the generated lookup
+    from the client's own registrations-1148.json. It is data, not behaviour: a wrong entry can
+    only mis-label a failure message, never make an assertion pass.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Cranberry.Zone\Cranberry.Zone.csproj" />
+  </ItemGroup>
+
+</Project>

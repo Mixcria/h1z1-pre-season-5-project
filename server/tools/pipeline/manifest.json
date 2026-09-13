@@ -1,0 +1,2277 @@
+{
+  "schema": "cranberry-data-manifest/1",
+  "clientBuild": "0.0.118.208059",
+  "generatedUtc": "2026-09-12T12:27:04Z",
+  "grades": {
+    "CLIENT": "extracted from the August client's own packs or binary - retail by construction",
+    "CLIENT+RULING": "client data selected or shaped by an owner decision (the Dxx is named)",
+    "RULING": "an owner decision; the client carries no such value (the Dxx is named)",
+    "Z1": "a value from the owner's own Z1 tree, adopted under D53",
+    "CAPTURED": "bytes recorded off a wire or off a third-party server",
+    "THIRD_PARTY_SHAPED": "the shape follows a third-party artefact - flagged, never silent"
+  },
+  "gradeHistogram": {
+    "CLIENT": 13,
+    "CLIENT+RULING": 7,
+    "Z1": 2,
+    "CAPTURED": 2,
+    "CLIENT+RULING+CAPTURED": 1,
+    "RULING": 1
+  },
+  "generators": [
+    {
+      "id": "inventory-slots",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Inventory/InventorySlots.g.cs",
+          "sha256": "8aaabc0468945dc0d888b8dd7e92a9b3feaad666c1aee9b97753ae8ed49a7ce7",
+          "size": 43981,
+          "header": true
+        },
+        {
+          "path": "src/Cranberry.Zone/Inventory/InventoryItemFacts.g.cs",
+          "sha256": "ca7837ed622060adf5e7095af77ca216c5929506b05750930b249dea21e957e0",
+          "size": 286002,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-inventory-slots.py",
+      "generatorSha256": "78bfa946be3c83ab50a73c5d887b8af5b3768ddec3598f3823da2f9f0b86a9ee",
+      "inputs": [
+        {
+          "path": "out/data_aug/EquipmentSlotDefinitions.txt",
+          "sha256": "251e0546a73b6f6faa3bea3e42e099e6f172fc40f644ce2535f59187da38e6a1",
+          "crc32": "10876961",
+          "size": 4851,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\EquipmentSlotDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/EquipSlotItemClasses.txt",
+          "sha256": "d41d00742c27842166383e18adf07f356e474a7dc0d685a43c208842ce2d402e",
+          "crc32": "2a9bacf0",
+          "size": 269,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\EquipSlotItemClasses.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/Loadouts.txt",
+          "sha256": "ac4f565d733cf904c5e9aba83ba19f73e524311bdf44f788f903f00423088366",
+          "crc32": "d1f12f10",
+          "size": 85,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Loadouts.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/LoadoutSlots.txt",
+          "sha256": "a34439d648a525bb3b630d7cceaa180cf9ac83c1fe2cdad4e2126d9adc981e5a",
+          "crc32": "c747dd49",
+          "size": 9369,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\LoadoutSlots.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/LoadoutSlotItemClasses.txt",
+          "sha256": "a98d75e85f77f65f7ca7420369f68a6430e13c43d4aa2953aaaeef3b46fa3ed0",
+          "crc32": "e2665d9a",
+          "size": 3622,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\LoadoutSlotItemClasses.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/ContainerDefinitions.txt",
+          "sha256": "4359cfd081c4641e567629e362932bd682fd5d4921b353b4deec18e7001980c4",
+          "crc32": "3786510b",
+          "size": 3686,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ContainerDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots"
+          ]
+        },
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        }
+      ],
+      "rulings": [
+        "D33",
+        "D72",
+        "D141"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "the slot/loadout/container model and the nine item columns the resolver reads; the client's own FUN_140d35510 predicate is driven by these exact sheets",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "footwear",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Movement/FootwearItems.g.cs",
+          "sha256": "f5ad93b64513ae9ecd4dac74d71d54445266f9f112f751a36eda80bb98df6bf7",
+          "size": 3435,
+          "header": true
+        }
+      ],
+      "generator": "tools/world/gen-footwear.py",
+      "generatorSha256": "75aa43c1710257979a14d10b148dbba3b103276eae37de221da8f5560836e2e7",
+      "inputs": [
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        }
+      ],
+      "rulings": [
+        "D351"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "63 footwear tiers from August item class 25005 and PASSIVE_ABILITY_ID; speed and shred behaviour are applied separately by the owner ruling D351",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "item-use-options",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Inventory/ItemUseOptions.g.cs",
+          "sha256": "8581c27bb08475598ec3f42f7cec019bb1f7a725ddb07aa1b7b6d74828a79c58",
+          "size": 110162,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-item-use-options.py",
+      "generatorSha256": "6916b6955806a09ba65cfd9a3ce61a723a1e12bdc0601430afa2c9e0148a7f45",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/loot.json",
+          "sha256": "8023e21b5f864e8d4b9e95e6e4f6dc9199e3a5a6543fad95ee2a828538cdae79",
+          "crc32": "9d37015d",
+          "size": 2419885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\loot.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "item-use-options",
+            "item-class-mappings",
+            "armour-facts",
+            "loot-tables",
+            "authored-appearance"
+          ]
+        }
+      ],
+      "rulings": [
+        "D113",
+        "D116"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "reads the derive layer: loot.json useOptions / useOptionGroups / items[].useOptionGroupId (docs/96 \u00a74 pins the reconstruction as exact)",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "item-class-mappings",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Inventory/ItemClassMappings.g.cs",
+          "sha256": "a2a3916d4ef9e77fe49e8b71c18401fca2879d753164fe4a7246f8693dfedf15",
+          "size": 22014,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-item-class-mappings.py",
+      "generatorSha256": "0b21c19a9421c2bcc4942901f254def7b55a40586d10d1580f3e32a424d01f8b",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/loot.json",
+          "sha256": "8023e21b5f864e8d4b9e95e6e4f6dc9199e3a5a6543fad95ee2a828538cdae79",
+          "crc32": "9d37015d",
+          "size": 2419885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\loot.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "item-use-options",
+            "item-class-mappings",
+            "armour-facts",
+            "loot-tables",
+            "authored-appearance"
+          ]
+        }
+      ],
+      "rulings": [
+        "D72"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "reads the derive layer: loot.json items[].mappedClassIds, which is ItemClassMappings.txt already folded per item",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "weapon-firegroups",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Weapons/AugustWeaponFacts.g.cs",
+          "sha256": "6c66330c8d83846e2222e73265183f47bd82da2518a55ceb8c277dbd60834d16",
+          "size": 11187,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-weapon-firegroups.py",
+      "generatorSha256": "dd580d63cec498df965cc0e8108da86155ba879069a57535be79001d2597d9fd",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/weapons.json",
+          "sha256": "47e291d088242274dbb38f0b544040c0f33b7d0331ff8f6a8cb60feaa66203b1",
+          "crc32": "7856763c",
+          "size": 570305,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\weapons.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "weapon-firegroups"
+          ]
+        }
+      ],
+      "rulings": [
+        "D46",
+        "D94"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "reads the derive layer: weapons.json weaponItems x weapons.timing reproduces all 160 ClientItemDatasheetData rows exactly (docs/96 \u00a74)",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "weapon-lists",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Weapons/AugustFireModeFacts.g.cs",
+          "sha256": "96f6ab119d428f8a1681313009b7d0ea4a5d36a8ae480d50bb4571c195d90b97",
+          "size": 15910,
+          "header": true
+        },
+        {
+          "path": "src/Cranberry.Zone/Weapons/AugustProjectileFacts.g.cs",
+          "sha256": "9bb00186b8e4ca653878964c57ed270685d35f04076155bee45003d0b42ef873",
+          "size": 3130,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-weapon-lists.py",
+      "generatorSha256": "c3c4b1e2ce16dd27bd7a711701a536ab9b5841ecdae2cca7dd3696e0e66ffbcb",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/weapon-lists.json",
+          "sha256": "607d3680384ec715f14b585c2629a2bc0bf1efc32b0d13ccc7d324fc2f96aa0b",
+          "crc32": "e338ebb0",
+          "size": 35925,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\weapon-lists.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "weapon-lists"
+          ]
+        }
+      ],
+      "rulings": [
+        "D143",
+        "D159",
+        "D212",
+        "D230",
+        "D231",
+        "D232",
+        "D233",
+        "D234"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "reads the derive layer: weapon-lists.json fireModes / projectiles. Every VALUE is the client's own datasheet cell (CLIP_SIZE, REFIRE_TIME_MS, RELOAD_TIME_MS, PROJECTILE_ID, PEN_TYPE_ID); the one server-chosen number is the fire-mode id itself, D159 fireGroupId*2+index, because the August client ships no fire-mode table at all. Record LAYOUTS are hand-written C# (WeaponListLayouts) - they come out of the binary, not out of a sheet (docs/99). D212 adds the ADS zoom: the mechanism is [P] (FireMode.DefaultZoom = rec+0x128) but no August sheet carries a zoom column, so AdsZoom is Cranberry's number. D230 adds the ADS FIRST-PERSON switch (FORCE_FP_SCOPE = rec+0x2dc, the only data-driven path into the first-person camera in this build), D231 its absolute aimed FOV (AdsFpCameraFov = the client's own default verticalFOV 65 over AdsZoom, since no sheet carries a field-of-view column either), and D232 adopts the owner's own Z1 iron-sights ramp of 266 ms under D53. D233 (2026-09-03 evening, owner ruling) flips AdsFirstPerson to false and retunes AdsZoom 1.5 -> 1.2: right-click ADS is a THIRD-PERSON over-the-shoulder aim, not first person and not a big zoom, so FORCE_FP_SCOPE ships 0 and the modest zoom is the aim - CRANBERRY_WEAPON_ADS_FP=1 restores the FP swap. D234 (report 1, the fire sound) adds EffectGroup: rec+0x104 is a FireModeEffectGroups GROUP_ID (not a composite id - the client resolves group+'fire' itself), shipped as the fire-group id for groups with a non-zero 'fire' row (1..21/23/24); groups > 24 (the AK-47's 51) are an unrecoverable gap and ship 0",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "ability-facts",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Combat/AugustAbilityFacts.g.cs",
+          "sha256": "3e4245422baa86ab8455190919d52690b60f2f9ffe076cde883740eb7d7995ed",
+          "size": 30195,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-ability-facts.py",
+      "generatorSha256": "9f4557010336aed7dcb5d783327fa3eb40c3794cdeb3eafcb215b88696544963",
+      "inputs": [
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        }
+      ],
+      "rulings": [
+        "D132"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "ACTIVATABLE_ABILITY_ID per item. Still on the raw sheet: no derived document carries that column (docs/96 \u00a74, gap G1)",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "armour-facts",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Combat/AugustArmourFacts.g.cs",
+          "sha256": "435b994d64e143a2286e155f82b3feaef80994aecdc45cca210d665cb6168beb",
+          "size": 6698,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-armour-facts.py",
+      "generatorSha256": "edd55c0967d89050e8cb9fd7f87b362f1c8c2da92751ad4565f3aa567b570efa",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/loot.json",
+          "sha256": "8023e21b5f864e8d4b9e95e6e4f6dc9199e3a5a6543fad95ee2a828538cdae79",
+          "crc32": "9d37015d",
+          "size": 2419885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\loot.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "item-use-options",
+            "item-class-mappings",
+            "armour-facts",
+            "loot-tables",
+            "authored-appearance"
+          ]
+        }
+      ],
+      "rulings": [
+        "D92"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "reads the derive layer: loot.json items[] isArmor / itemClassId / bulk / modelName",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "pickup-effects",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Loot/PickupEffects.g.cs",
+          "sha256": "71ff03fa95364565225c7dfed59cfdeb653b7ae3eb561065cde1adb162bc0983",
+          "size": 11368,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-pickup-effects.py",
+      "generatorSha256": "c9e6bb35fde0d345f4c5b4eef8918200884c318dc9e2094a309f92978d6d03ca",
+      "inputs": [
+        {
+          "path": "C:/Z1/Data/2016/dataSources/ServerItemDefinitions.json",
+          "sha256": "e6af5f8e01d9b7355bd40fa2f697629f02471f768dbe711496db2db436ecfb2d",
+          "crc32": "9b3ec3a3",
+          "size": 6017524,
+          "grade": "Z1",
+          "thirdParty": false,
+          "absolutePath": "C:\\Z1\\Data\\2016\\dataSources\\ServerItemDefinitions.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "PICKUP_EFFECT item mapping adopted under D329 and the owner's 2026-09-06 bug-fix request; joined only when August NAME_ID, ITEM_CLASS and CODE_FACTORY_NAME match, and the effect exists as an August SFX_Item_PickUp asset",
+          "usedBy": [
+            "pickup-effects"
+          ]
+        },
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "out/data_aug/ActorCompositeEffectDefinitions.xml",
+          "sha256": "3923b8ce2880fe039931663864e0299816dd5470479dd1706c0dfa5e44e8f709",
+          "crc32": "dc68c048",
+          "size": 412028,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ActorCompositeEffectDefinitions.xml",
+          "kind": "xml",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "pickup-effects"
+          ]
+        }
+      ],
+      "rulings": [
+        "D329"
+      ],
+      "gradeNotes": {
+        "Z1": "per-item PICKUP_EFFECT associations are adopted from the owner's local Z1 data",
+        "CLIENT": "item identity must match NAME_ID, ITEM_CLASS and CODE_FACTORY_NAME; all selected effects must exist as SFX_Item_PickUp assets in August. IS_ARMOR corrects imported helmet sounds on non-armour hats/clothing to clothing effect 5148. Generic 5151, clothing 5148 and helmet 5153 are verified by shipped name"
+      },
+      "grade": "Z1",
+      "thirdParty": false,
+      "note": "Pickup sound mapping used once after a successful ground grant. Unknown or mismatched items fall back to the August generic pickup sound rather than guessing an old-build id",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "string-hash-values",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/StringHashValues.g.cs",
+          "sha256": "52765a1560c4166615971ac31c666046ae4de870108b2fc4b92f0b4e843f1552",
+          "size": 38398,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-string-hash-values.py",
+      "generatorSha256": "457b72de33b596a014b72a66754c252f3bb33426951367fbd6ce6f80b49f8707",
+      "inputs": [
+        {
+          "path": "out/data_aug/StringHashToValue.txt",
+          "sha256": "eb6178246ca70999dd666a682d0fa278c045e68ada970830ae330847f9c0dffe",
+          "crc32": "268fc7ca",
+          "size": 20508,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\StringHashToValue.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "string-hash-values"
+          ]
+        }
+      ],
+      "rulings": [
+        "D344"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "the 573-row table SendZoneDetails and 0xfb carry on the wire; the generator self-checks five hashes the binary bakes in. The September 7 video follow-up supersedes D344: PelletPatternsEnabled=1 now consumes the 17-pellet pattern and group supplied by AugustShotgunPattern after the weapon-table overlays. Pattern geometry and damage remain explicit reconstruction choices; see docs/video-fixes-20260907.md",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "skin-catalog",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/AugustSkinCatalog.g.cs",
+          "sha256": "13feb0c0406518b5fd25d667598e1b9ca62d08aed86f7b0afa699af69e088a6f",
+          "size": 96160,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-skin-catalog.py",
+      "generatorSha256": "3d2fdc90a5c3c395318fdee7ae94ec7d83f6a98a44920dc8759f7ead329a24e0",
+      "inputs": [
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog",
+            "loot-tables",
+            "appearance-catalog",
+            "authored-appearance",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/data_aug/SkinItemSlot.txt",
+          "sha256": "6262bf840278e6272d6caf85ca6904a13f45fc75ba640cc6f24264153d86d6f9",
+          "crc32": "6e60dc78",
+          "size": 603,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\SkinItemSlot.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog"
+          ]
+        },
+        {
+          "path": "out/data_aug/SkinItemSlotItem.txt",
+          "sha256": "0adc91886c7172bee7dc3717f5e2bd6228ce75625eae6a85595e99d6c7ef8459",
+          "crc32": "bd39d189",
+          "size": 825,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\SkinItemSlotItem.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog"
+          ]
+        },
+        {
+          "path": "out/data_aug/AcctItemConversions.txt",
+          "sha256": "574ff3c33ab74ff5d694164fa23a5855efb28e6e87fa52a7a74f3bc18e4f0e07",
+          "crc32": "a6f82af7",
+          "size": 18454,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\AcctItemConversions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog"
+          ]
+        },
+        {
+          "path": "C:/Z1/Server/Data/dynamicAppearanceFriend.bin",
+          "sha256": "cc34c416b19f90fa15d6ca7656061a9575ca6a00316fd981fc96ec98c559b00f",
+          "crc32": "d0307c8a",
+          "size": 664385,
+          "grade": "CAPTURED",
+          "thirdParty": true,
+          "absolutePath": "C:\\Z1\\Server\\Data\\dynamicAppearanceFriend.bin",
+          "kind": "binary",
+          "packAsset": false,
+          "source": "a capture of the friend server's DynamicAppearanceDefinitions ReferenceData (6,625,396 B, MD5-gated by D22). The August client ships NO appearance table, so every worn colourway Cranberry sends today comes from here or from Cranberry's own starter palette. S8 \u00a75.4 puts the replacement question to the owner",
+          "usedBy": [
+            "skin-catalog"
+          ]
+        },
+        {
+          "path": "C:/Z1/Data/2017/dataSources/dynamicappearance_1087.json",
+          "sha256": "f09355e681bc82149b520636b20fa97bd6486cbdce37677de2788ac217508b93",
+          "crc32": "5e2b7743",
+          "size": 8202185,
+          "grade": "CAPTURED",
+          "thirdParty": true,
+          "absolutePath": "C:\\Z1\\Data\\2017\\dataSources\\dynamicappearance_1087.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "the 2017 reference table gen-skin-catalog.py uses to repair the capture's known bad shader-group/gender fields. Its path shape is the one docs/00 \u00a7Forbidden names; it is declared here rather than being silent about it (S8 \u00a78)",
+          "usedBy": [
+            "skin-catalog"
+          ]
+        }
+      ],
+      "rulings": [
+        "D22",
+        "D53"
+      ],
+      "gradeNotes": {},
+      "grade": "CAPTURED",
+      "thirdParty": true,
+      "note": "THE APPEARANCE HOLE (S8 \u00a70.2, \u00a75.4). The client ships no appearance table, so the item -> model -> shader-group link comes from a capture of a third-party server. Options (a) declare the capture, (b) author Cranberry's own palette from the .adr texture aliases, (c) both - an owner ruling, not a derivation",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "menu-economy",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Economy/EconomyCatalogData.g.cs",
+          "sha256": "e4a7b7e135a7fa44f9229cb6995ea67584d8acfb15a1a83fb06ce96510f95461",
+          "size": 223654,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-menu-economy.py",
+      "generatorSha256": "9e3a21d6261d2791b462019a4534dea74613d46cb390d53d3a9b0c51958f21a1",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/economy.json",
+          "sha256": "1f907af3d22359665dd22a56b1d0a2053ba746915ce01b239eafd1743eb3660d",
+          "crc32": "5a269650",
+          "size": 779762,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\economy.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "menu-economy"
+          ]
+        },
+        {
+          "path": "out/data_aug/item-names-en_us.json",
+          "sha256": "c7352ed44c7ef95a9da0c33c1363036adb492a93566453d507aedfce6c70de3b",
+          "crc32": "e2692c51",
+          "size": 775628,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\item-names-en_us.json",
+          "kind": "json",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "menu-economy"
+          ]
+        },
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "src/Cranberry.Zone/AugustSkinCatalog.g.cs",
+          "sha256": "13feb0c0406518b5fd25d667598e1b9ca62d08aed86f7b0afa699af69e088a6f",
+          "crc32": "54995f95",
+          "size": 96160,
+          "grade": "CAPTURED",
+          "thirdParty": true
+        },
+        {
+          "path": "src/Cranberry.Zone/Vehicles/VehicleSkinCatalog.cs",
+          "sha256": "2cf5f1c166b1c1f415d3187afa6142065b6783d7b68c04586a1c3683b7effc15",
+          "crc32": "dd789343",
+          "size": 1512,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\Server\\src\\Cranberry.Zone\\Vehicles\\VehicleSkinCatalog.cs",
+          "kind": "file",
+          "packAsset": false,
+          "source": "August vehicle cosmetic account IDs used to join the economy catalogue",
+          "usedBy": [
+            "menu-economy"
+          ]
+        },
+        {
+          "path": "C:/h1z1project/reference/h1z1-server/data/2016/dataSources/AccountCrates.json",
+          "sha256": "1988fec36896697d1522825be9d17cedb230a7554af5a8256383a9a583b90b85",
+          "crc32": "ef65b063",
+          "size": 89824,
+          "grade": "THIRD_PARTY_SHAPED",
+          "thirdParty": true,
+          "absolutePath": "C:\\h1z1project\\reference\\h1z1-server\\data\\2016\\dataSources\\AccountCrates.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "crate memberships and weights adopted under D329; filtered to supported August cosmetics",
+          "usedBy": [
+            "menu-economy"
+          ]
+        },
+        {
+          "path": "C:/Project/out/wave20260823-r41/survivorsrest/containers.html",
+          "sha256": "5fad004738919d9bc3c9034df95f27c709d883587306c1a1907c69f502b48b14",
+          "crc32": "27ff84ab",
+          "size": 897107,
+          "grade": "THIRD_PARTY_SHAPED",
+          "thirdParty": true,
+          "absolutePath": "C:\\Project\\out\\wave20260823-r41\\survivorsrest\\containers.html",
+          "kind": "file",
+          "packAsset": false,
+          "source": "cached SurvivorsRest Nemesis crate membership adopted under D329; weights are server design",
+          "usedBy": [
+            "menu-economy"
+          ]
+        },
+        {
+          "path": "tools/data/locked_special_crates.py",
+          "sha256": "d54437b9c598d7e254a19b6f3bb7c573b6571ab6f0651697f887e8f8f8a597b1",
+          "crc32": "6f8ba95e",
+          "size": 1672,
+          "grade": "CLIENT",
+          "thirdParty": false
+        }
+      ],
+      "rulings": [
+        "D27",
+        "D329"
+      ],
+      "gradeNotes": {
+        "THIRD_PARTY_SHAPED": "reference crate memberships and weights adopted explicitly; Nemesis membership from cached SurvivorsRest",
+        "RULING": "server design: 250 Crowns to unlock; 100 Scrap per Scrapyard roll; Nomad badge membership and rarity weights; Nemesis rarity weights"
+      },
+      "grade": "CLIENT+RULING",
+      "thirdParty": true,
+      "note": "saved account cosmetics, distinct locked/unlocked crate pools and Scrapyard rewards. August IDs, scrap values, eligibility and metadata are client data; pool provenance is recorded per family. See docs/menu-economy-codec-evidence.md",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "asset-index",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Appearance/AugustAssetIndex.g.cs",
+          "sha256": "2adc90c312dd274fdf1f95a6d3f310be54565ecba7c9efbb0f8b1ebac0715f75",
+          "size": 317375,
+          "header": true
+        }
+      ],
+      "generator": "tools/appearance/gen-asset-index.py",
+      "generatorSha256": "9b350a8a4c1e2b0342725cb0e811111ac296d45bc6e8caecf451210ecda82718",
+      "inputs": [
+        {
+          "path": "out/data_aug/pack-index-aug.tsv",
+          "sha256": "f48b6cc515289cfbf7ae54d5a4a0dfd25e659096722a1fa17fb98d048b14b336",
+          "crc32": "5e09083b",
+          "size": 3624885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\pack-index-aug.tsv",
+          "kind": "index",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "asset-index",
+            "appearance-catalog"
+          ]
+        }
+      ],
+      "rulings": [
+        "D83"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "the 3,406 .adr names the client actually ships, with the pack's own spelling",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "loot-tables",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-loot-tables.json",
+          "sha256": "b581d3f24b107452abe20ac7b8247ff634f9179ffd999a08f1b27972877c6d0f",
+          "size": 49179,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-loot-spawns.bin",
+          "sha256": "caadb19e0189b4029b4d896688103fb0713ed3f448fbf83787a99dae2b01ced5",
+          "size": 4108541,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-airdrop.json",
+          "sha256": "db973e5e8d077dec64ba1a8024f6de4f53db728515df0b1cb7d084e9fea49a33",
+          "size": 6816,
+          "header": false
+        }
+      ],
+      "generator": "tools/data/gen-loot-tables.py",
+      "generatorSha256": "0d19ded62edf6ff5b4109b7c3926e29da4d1033032706fb93fc6088c35cdd101",
+      "inputs": [
+        {
+          "path": "out/world_aug/z2-item-spawners.json",
+          "sha256": "e053e00434dba5c08ff4e79624c5dfec188ce0bc4e91195350ae83b42c7a1f7f",
+          "crc32": "5011a14e",
+          "size": 48708988,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\z2-item-spawners.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "out/data_aug/ClientItemDefinitions.txt",
+          "sha256": "638deb01b4eeb565d1c8fc2037e0169518a2c54dd23f19c776f25d3e39dab114",
+          "crc32": "ffb21654",
+          "size": 489792,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ClientItemDefinitions.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "inventory-slots",
+            "footwear",
+            "ability-facts",
+            "pickup-effects",
+            "skin-catalog",
+            "menu-economy",
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog",
+            "loot-tables",
+            "appearance-catalog",
+            "authored-appearance",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/data_aug/ContentPacks.txt",
+          "sha256": "0a4f05602638829d24cc1de8db9c9d2bd01046dc4d15038243c4de0c43d080a2",
+          "crc32": "12c5ab9b",
+          "size": 4067,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\ContentPacks.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "loot-tables"
+          ]
+        },
+        {
+          "path": "out/data_aug/derived/loot.json",
+          "sha256": "8023e21b5f864e8d4b9e95e6e4f6dc9199e3a5a6543fad95ee2a828538cdae79",
+          "crc32": "9d37015d",
+          "size": 2419885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\loot.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "item-use-options",
+            "item-class-mappings",
+            "armour-facts",
+            "loot-tables",
+            "authored-appearance"
+          ]
+        }
+      ],
+      "rulings": [
+        "D20",
+        "D31",
+        "D39",
+        "D42",
+        "D53",
+        "D68",
+        "D69"
+      ],
+      "gradeNotes": {
+        "THIRD_PARTY_SHAPED": "the five per-family gates 0.1267 / 0.0850 / 0.25 / 0.30 / 0.60 in LootDensityOptions: docs/39 \u00a71.1 and docs/65 \u00a72.2 trace them to a reference server's seven Z2 ground tables; D68 adopted them under D53. The positions, ids, models and clip sizes in this file are the client's"
+      },
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "168,322 marker positions and the KOTK-2017 roster. The marker geometry is the client's Z2.zone; the roster, shares and box sizes are the owner's [OWN]",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "appearance-catalog",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Appearance/AugustModelCatalog.g.cs",
+          "sha256": "58c9aa9eb0a0a4d9be64423563d4125fcad78f183e61dcc8ec3ce5f8dc9c8b69",
+          "size": 78525,
+          "header": true
+        },
+        {
+          "path": "src/Cranberry.Zone/Appearance/AugustWornMeshCatalog.g.cs",
+          "sha256": "4e86fc125541dda674a0f3fe2979341beaeac3983ab4ede7654840796c5bac64",
+          "size": 11112,
+          "header": true
+        }
+      ],
+      "generator": "tools/appearance/gen-appearance-catalog.py",
+      "generatorSha256": "a665667973f6be0268293447b5025effab49075e19d010ae5302fba7827298de",
+      "inputs": [
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog",
+            "loot-tables",
+            "appearance-catalog",
+            "authored-appearance",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/data_aug/pack-index-aug.tsv",
+          "sha256": "f48b6cc515289cfbf7ae54d5a4a0dfd25e659096722a1fa17fb98d048b14b336",
+          "crc32": "5e09083b",
+          "size": 3624885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\pack-index-aug.tsv",
+          "kind": "index",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "asset-index",
+            "appearance-catalog"
+          ]
+        },
+        {
+          "path": "out/appearance-tints/z1-appearance-parsed.json",
+          "sha256": "a33b5ef93d433b8aa20e2f5a3d3c2f9bffb12601c25f73f16bd1b2c163c6a17b",
+          "crc32": "6940ef6f",
+          "size": 168955,
+          "grade": "CAPTURED",
+          "thirdParty": true,
+          "absolutePath": "C:\\Aug2017\\out\\appearance-tints\\z1-appearance-parsed.json",
+          "kind": "json",
+          "packAsset": true,
+          "source": "the APPEARANCE lane's parse of the D22-gated dynamic-appearance source - 3,551 appearance rows and 1,667 semantic rows recorded off the friend server, not shipped by the August client. It is what fills AugustWornMeshCatalog.g.cs (S8 \u00a70.2, \u00a75.4)",
+          "usedBy": [
+            "appearance-catalog"
+          ]
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-loot-tables.json",
+          "sha256": "b581d3f24b107452abe20ac7b8247ff634f9179ffd999a08f1b27972877c6d0f",
+          "crc32": "780ad7e5",
+          "size": 49179,
+          "grade": "CLIENT+RULING",
+          "thirdParty": false
+        }
+      ],
+      "rulings": [
+        "D22",
+        "D44",
+        "D84"
+      ],
+      "gradeNotes": {},
+      "grade": "CAPTURED",
+      "thirdParty": true,
+      "note": "AugustModelCatalog is pure client; AugustWornMeshCatalog's ModelId per (item, gender, shader group) comes from the same capture as skin-catalog. This generator still carries its own datasheet() splitter - tools/appearance is outside this lane's ownership (docs/96 \u00a74, gap G6)",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "authored-appearance",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Appearance/AugustAuthoredAppearance.g.cs",
+          "sha256": "250feef25dc2563108cd75d56795f0cfa0d496425365ec67f588f3948e2aeabc",
+          "size": 19760,
+          "header": true
+        }
+      ],
+      "generator": "tools/appearance/gen-authored-appearance.py",
+      "generatorSha256": "e8326481883e1969144c9c013601423cb8d640caff9e7c77dd51be561c71548a",
+      "inputs": [
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog",
+            "loot-tables",
+            "appearance-catalog",
+            "authored-appearance",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/data_aug/TintSemanticTables.txt",
+          "sha256": "d4b43425b1eb7a2c683c2e4476f6dad4eab6582c498a11e8278b7bab60d7cda4",
+          "crc32": "ae1c6d9e",
+          "size": 8335,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\TintSemanticTables.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/derived/loot.json",
+          "sha256": "8023e21b5f864e8d4b9e95e6e4f6dc9199e3a5a6543fad95ee2a828538cdae79",
+          "crc32": "9d37015d",
+          "size": 2419885,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\loot.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "item-use-options",
+            "item-class-mappings",
+            "armour-facts",
+            "loot-tables",
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorMale_Back_Backpack_Mansport_Tintable.adr",
+          "sha256": "c64d0f9943a98056bc0879f8dc6742bdf5b7065ab0d04c7a991d03dbc53efb68",
+          "crc32": "f833b29f",
+          "size": 1875,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorMale_Back_Backpack_Mansport_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorFemale_Back_Backpack_Mansport_Tintable.adr",
+          "sha256": "96af32446cd1057c55d2bd13152b3fc4cc29a45e8065fc741c1e707e98123a0b",
+          "crc32": "1d871e97",
+          "size": 1894,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorFemale_Back_Backpack_Mansport_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorMale_Chest_Shirt_TintTshirt.adr",
+          "sha256": "56802da69ff5f47d3ddd302b9f2cef258c1b4c29e71a166a1528cc65a551900e",
+          "crc32": "71eb8bf1",
+          "size": 1846,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorMale_Chest_Shirt_TintTshirt.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorFemale_Chest_Shirt_TintTshirt.adr",
+          "sha256": "02757365935cd7d12a0b875c27b5a119294c253882f54c23724eb91504648590",
+          "crc32": "a604a5fc",
+          "size": 1906,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorFemale_Chest_Shirt_TintTshirt.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorMale_Head_Helmet_Motorcycle_Tintable.adr",
+          "sha256": "dfceac7369df712e52c4465c65c0b7f7e2a18cec4eab93581d4e992dc5feebaa",
+          "crc32": "2465a8b4",
+          "size": 2019,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorMale_Head_Helmet_Motorcycle_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorFemale_Head_Helmet_Motorcycle_Tintable.adr",
+          "sha256": "c1f324d289cd692b48b046d4e4265c066116fe6c5a1f74067510603d14aeb6a7",
+          "crc32": "d3e0a20f",
+          "size": 2023,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorFemale_Head_Helmet_Motorcycle_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorMale_Feet_Conveys_Tintable.adr",
+          "sha256": "584bf45943c25541cdf12d4353a59e0df36ac5b8e19b3449bdc103f0f5190ee4",
+          "crc32": "37db4f5f",
+          "size": 1872,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorMale_Feet_Conveys_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/data_aug/adr/SurvivorFemale_Feet_Conveys_Tintable.adr",
+          "sha256": "981cf0332a48131c2b69203de19f247c1359a8f4874f02ddc89ab26e4c021045",
+          "crc32": "80529d0f",
+          "size": 1870,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\adr\\SurvivorFemale_Feet_Conveys_Tintable.adr",
+          "kind": "actor",
+          "packAsset": true,
+          "source": "actor definitions extracted from the client's packs (docs/55)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/appearance-tints/SurvivorMale_Back_Backpack_ManSport_C.dds",
+          "sha256": "28787b0443ee669fed877c44d5e16f107c901b1bc798a61723c9942645368eb8",
+          "crc32": "faba19e7",
+          "size": 174904,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\appearance-tints\\SurvivorMale_Back_Backpack_ManSport_C.dds",
+          "kind": "texture",
+          "packAsset": true,
+          "source": "hand extraction during docs/54; outside client-assets.lst (S8 defect T2)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/appearance-tints/SurvivorMale_Chest_Shirt_TintTshirt_Plain_C.dds",
+          "sha256": "1d2c56f337fb3a5e0b9ea90aa82a2e2f28c949e4171e1bf02ed24973701b538e",
+          "crc32": "e0ed3ff1",
+          "size": 699192,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\appearance-tints\\SurvivorMale_Chest_Shirt_TintTshirt_Plain_C.dds",
+          "kind": "texture",
+          "packAsset": true,
+          "source": "hand extraction during docs/54; outside client-assets.lst (S8 defect T2)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/appearance-tints/SurvivorMale_Head_Helmet_MotorCycleHelmet_C.dds",
+          "sha256": "94dba6ec3de383121d384943fc1ddfa5ba53ed4ee9e87a59f332b3ef7cfd7831",
+          "crc32": "bac86389",
+          "size": 174904,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\appearance-tints\\SurvivorMale_Head_Helmet_MotorCycleHelmet_C.dds",
+          "kind": "texture",
+          "packAsset": true,
+          "source": "hand extraction during docs/54; outside client-assets.lst (S8 defect T2)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        },
+        {
+          "path": "out/appearance-tints/SurvivorMale_Feet_Conveys_Tintable_C.dds",
+          "sha256": "e4c41368a6a895d06cf452771c2278b336a6d874e8c4f32138fddd93a53ca208",
+          "crc32": "38a8693e",
+          "size": 174904,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\appearance-tints\\SurvivorMale_Feet_Conveys_Tintable_C.dds",
+          "kind": "texture",
+          "packAsset": true,
+          "source": "hand extraction during docs/54; outside client-assets.lst (S8 defect T2)",
+          "usedBy": [
+            "authored-appearance"
+          ]
+        }
+      ],
+      "rulings": [
+        "D22",
+        "D190",
+        "D203"
+      ],
+      "gradeNotes": {
+        "RULING": "the HUE of each of the thirteen colourways (PALETTE in the generator) and the roster of which item wears which mesh. The August client ships every one of these items' NAME - \"Black Backpack\", \"Green Backpack\" - and no colourway at all, because the colourway was server-authored in retail (docs/106 \u00a75). D203 is the owner decision that Cranberry authors its own rather than importing the capture's"
+      },
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "the thirteen ground-loot wearables the boot census reports as GREY get Cranberry's OWN appearance rows. The ModelId and GenderId are the client's Models.txt; the highlight/midtone/shadow ramp SHAPE is measured off the mesh's own _C.dds colour map by tools/appearance/ddstint.py (p92/p50/p08 luminance percentiles, docs/69 \u00a73.4); the alpha and the neutral B branch are TintSemanticTables row 1 Default. Nothing is taken from the D22-gated capture, whose 26 rows for these items the runtime filter drops anyway",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "zone-opcodes",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/ZoneOpcodes.g.cs",
+          "sha256": "bdd7b36ca4ef75597967e55328251c2470ef69f290480834d1d26bbfe5f5a0b7",
+          "size": 31079,
+          "header": true
+        }
+      ],
+      "generator": "tools/opcodes/gen-zone-opcodes.py",
+      "generatorSha256": "364241ecb4e8749da6d6a672d2fdac6bf90a1fe8c6fba230e321b4ce60044153",
+      "inputs": [
+        {
+          "path": "out/registrations-1148.json",
+          "sha256": "b915bf3863d7f392c0a9d23542efebc238bdbdcb743133cedf9181b6ab2c5aa2",
+          "crc32": "46610c48",
+          "size": 530515,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\registrations-1148.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "the client's own packet-id registration table, recovered from the 28 registration functions of H1Z1.exe 0.0.118.208059 with Ghidra (docs/06)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/ghidra-aug/doors-prompt-string/callers_14140c480/FUN_14129ad10_14129ad10.c",
+          "sha256": "f9c8e587b5ca6b28deee5bf946fde97dd338632f7d66b9c534dcaefafde9f038",
+          "crc32": "85d114ae",
+          "size": 20435,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\ghidra-aug\\doors-prompt-string\\callers_14140c480\\FUN_14129ad10_14129ad10.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/ghidra-aug/character-dispatch/_140af9ca0/FUN_140af9ca0_140af9ca0.c",
+          "sha256": "6f546bbb45b8037d651d5f1d07d42f123b03d124433635d43885b11c2ff83884",
+          "crc32": "629b2caa",
+          "size": 37031,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\ghidra-aug\\character-dispatch\\_140af9ca0\\FUN_140af9ca0_140af9ca0.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/ghidra-aug/loot-research/clientupdate-dispatch/_140afc660/FUN_140afc660_140afc660.c",
+          "sha256": "181e2782b822b7c6a2bfb3f658d265987e3b6ca5c4f831631c584bfc57f57edb",
+          "crc32": "84bcaecd",
+          "size": 75718,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\ghidra-aug\\loot-research\\clientupdate-dispatch\\_140afc660\\FUN_140afc660_140afc660.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/ghidra-aug/fable-character-login/_140b81830_1420cd050/FUN_140b81830_140b81830.c",
+          "sha256": "f398ee2db36752e8620e4b09c53e9e75a7b901094623905b90bf88152f6ffcdb",
+          "crc32": "9ac89c5a",
+          "size": 13158,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\ghidra-aug\\fable-character-login\\_140b81830_1420cd050\\FUN_140b81830_140b81830.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/inventory-research/loadout-packet/_140b03170/FUN_140d37650_140d37650.c",
+          "sha256": "90f7edfe71062f645dd12dc8902529be6ad2782371c89df94fd5f8ac323869d2",
+          "crc32": "7962ada1",
+          "size": 1230,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\inventory-research\\loadout-packet\\_140b03170\\FUN_140d37650_140d37650.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        },
+        {
+          "path": "out/ghidra-aug/matchflow-b5/_140bba510_14136ddf0_140c9e170_140a2d040_140a3ca40_140f25600/FUN_140bba510_140bba510.c",
+          "sha256": "63c2b4043617a8af138d5c29de2ea04874fe0fbde489f3f8f9c50ed406365a43",
+          "crc32": "6102678d",
+          "size": 6655,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\ghidra-aug\\matchflow-b5\\_140bba510_14136ddf0_140c9e170_140a2d040_140a3ca40_140f25600\\FUN_140bba510_140bba510.c",
+          "kind": "file",
+          "packAsset": false,
+          "source": "a Ghidra decompile of one packet family's dispatcher in H1Z1.exe 0.0.118.208059, dumped by an earlier lane. gen-zone-opcodes.py reads the family's sub-opcode WIDTH out of the C type at the selector read site and fails rather than guessing if the cited line moves (D181)",
+          "usedBy": [
+            "zone-opcodes"
+          ]
+        }
+      ],
+      "rulings": [
+        "D181"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "the 241 base packet ids the client registers with itself, plus the sub-opcode WIDTH of six families read off their own dispatcher decompiles (the registration table lists members, not framing, so it cannot answer that): 0x09=2, 0x0f=1, 0x11=2, 0x82=1 after a u32 gameTime, 0x86=1, 0xce=2",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "effect-catalog",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Generated/AugustEffectCatalog.g.cs",
+          "sha256": "141ca18c371bde79aefa06c2f645f14364f6906082ae94c8cc4d792cf02b4cfa",
+          "size": 66792,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-effect-catalog.py",
+      "generatorSha256": "0b9d3f97409da1c3c8b1d810232be7791dce8965e43150648f3c341b2c48f754",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/effects.json",
+          "sha256": "ad7b48a80af07beb678b1f967ac64e4ed2e9b10fa73c0bcb0172f9fff0a5e7e8",
+          "crc32": "a1fb76d8",
+          "size": 451316,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\effects.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "effect-catalog",
+            "destructibles",
+            "doors"
+          ]
+        }
+      ],
+      "rulings": [
+        "D100",
+        "D179"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "the 1,047 composite effects of the client's own ActorCompositeEffectDefinitions.xml, by id and by name. CompositeEffectGate is an ALLOW list over this table (S8 section 6.4 - the gate's own remark that this build ships no composite-effect datasheet was wrong); id 0 is absent from the table, so D100's rule now falls out of the client's data",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "august-strings",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Generated/AugustStrings.g.cs",
+          "sha256": "264a1fe5ca045f57ee60bf8e6d16d3edad31184e5c1eb3f9c95cf6297e9b83fe",
+          "size": 19571,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-august-strings.py",
+      "generatorSha256": "461df1e3bef09ff9bb35c16903efeb1a9ff91c0a16610a89ff27dfe2c522ee8c",
+      "inputs": [
+        {
+          "path": "out/data_aug/derived/strings.json",
+          "sha256": "d499061915e7a9bba940fd5be71659c89828751593a522b0829c3b5657589615",
+          "crc32": "07796b14",
+          "size": 11702,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\strings.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "august-strings"
+          ]
+        }
+      ],
+      "rulings": [
+        "D179"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "21 locale strings with their en_us text: 13 anchored on the client's own CodeStringMappings.txt message name, 8 on the exact en_us text (docs/47 section 4e's locale-key inversion, reproduced in derive_strings.py). GasAlerts, MatchAlerts and InteractionStringPackets read these instead of literals",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "z1-opcode-map",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Protocol/Z1OpcodeMap.g.cs",
+          "sha256": "7e7adb473248dc02186a0336dc8c85572f10ad1aea825a888b2994b647c44512",
+          "size": 56846,
+          "header": true
+        }
+      ],
+      "generator": "tools/bridge/gen-z1-opcode-map.py",
+      "generatorSha256": "07b8903bf68faed98573b2aa7efebcee67f5e638c2d5e0cae394dbe7c6f2bb43",
+      "inputs": [
+        {
+          "path": "out/wave9-bridge/opcode-map-1087-to-1148.json",
+          "sha256": "6aa931e2fe73a7ef17f4e877748b905527d36d7acaef5c09de7474150d87663c",
+          "crc32": "d459feff",
+          "size": 520379,
+          "grade": "Z1",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\wave9-bridge\\opcode-map-1087-to-1148.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "join of the owner's own 1087 Ghidra registration table with the 1148 one (clean-room rule 4; D101)",
+          "usedBy": [
+            "z1-opcode-map"
+          ]
+        }
+      ],
+      "rulings": [
+        "D101"
+      ],
+      "gradeNotes": {},
+      "grade": "Z1",
+      "thirdParty": false,
+      "note": "1087 -> 1148 translation so a ported Z1 writer keeps its own opcode constants; the 1087 half is the owner's own earlier Ghidra work (clean-room rule 4)",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "destructibles",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Data/Destructibles/z2-destructibles.json",
+          "sha256": "b2aa523b7bf1d639c4a18c7427ce69feab216e7ac493a8bb4aefc9f62c2947ee",
+          "size": 1806241,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Destructibles/z2-destructibles.provenance.json",
+          "sha256": "39e10f279c7380b2ad25313f6eced636995028af6ff8d79ec9720486a4176407",
+          "size": 1793,
+          "header": false
+        }
+      ],
+      "generator": "tools/world/destructibles.py",
+      "generatorSha256": "48582ff462b1e3ffb874619907283b6a4d1dc2ec7c6fd11dab89553a8e1f48df",
+      "inputs": [
+        {
+          "path": "out/world_aug/z2-objects.jsonl",
+          "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3",
+          "crc32": "c88cb2f9",
+          "size": 90151503,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+          "kind": "jsonl",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "destructibles",
+            "glass-melee",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/world_aug/Z2.zone",
+          "sha256": "742613f79b1b48e64ea78653dd03f3bbc08d27a1d95d9af3f6946d8c80f1c6b2",
+          "crc32": "a5c72f0a",
+          "size": 45124881,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\Z2.zone",
+          "kind": "world",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "destructibles"
+          ]
+        },
+        {
+          "path": "out/data_aug/derived/effects.json",
+          "sha256": "ad7b48a80af07beb678b1f967ac64e4ed2e9b10fa73c0bcb0172f9fff0a5e7e8",
+          "crc32": "a1fb76d8",
+          "size": 451316,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\effects.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "effect-catalog",
+            "destructibles",
+            "doors"
+          ]
+        },
+        {
+          "path": "C:/h1z1project/reference/h1z1-server/src/servers/ZoneServer2016/entities/destroyable.ts",
+          "sha256": "9514a1d680e3e474199d0801b9eeeaf4d480b81fe8486716e9ba9d78263ad53c",
+          "crc32": "3eec2c9b",
+          "size": 11288,
+          "grade": "THIRD_PARTY_SHAPED",
+          "thirdParty": true,
+          "absolutePath": "C:\\h1z1project\\reference\\h1z1-server\\src\\servers\\ZoneServer2016\\entities\\destroyable.ts",
+          "kind": "file",
+          "packAsset": false,
+          "source": "D329: getMaxHealth supplies adopted 2000 glass / 5000 wood tuning only; August DTO wire and map placements were independently derived from the client",
+          "usedBy": [
+            "destructibles"
+          ]
+        }
+      ],
+      "rulings": [
+        "D329"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "45,932 exact August Z2 objects in sixteen authored glass/wood/barrel/wall-blocker families. Client placements and effects; 2000 glass / 5000 wood / 1000 barrel / 4000 wall health are declared server tuning, not client health data. Only the 451 WallHoleBlocked01 panels are removable; surrounding WallHole01 geometry remains intact. Health reference source/hash is retained in the adjacent provenance JSON.",
+      "generatedUtc": "2026-09-12T07:48:52Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "glass-melee",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Data/Destructibles/z2-glass-panes.json",
+          "sha256": "cd970659a46a25f67ecebc9deb7db1fc5b7dca9680cd2387799098b61fd0567b",
+          "size": 2694537,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Destructibles/z2-glass-panes.provenance.json",
+          "sha256": "47457fc17be2f16c81758cb44dc978b68c6e7bcbd0be467bcab5c24c5ec1e351",
+          "size": 1612,
+          "header": false
+        }
+      ],
+      "generator": "tools/world/glass_melee.py",
+      "generatorSha256": "ae651ef5eec77c478d538554b65dacb4bad8823b52935a020e46296a14a108b2",
+      "inputs": [
+        {
+          "path": "out/world_aug/z2-objects.jsonl",
+          "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3",
+          "crc32": "c88cb2f9",
+          "size": 90151503,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+          "kind": "jsonl",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "destructibles",
+            "glass-melee",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "tools/world/vehicle_geometry.py",
+          "sha256": "49171de6e1cb3a9fb5769a3a34056380c799bf46ff6d6b5c1fe8050af2a830c9",
+          "crc32": "e0151566",
+          "size": 4984,
+          "grade": "CLIENT",
+          "thirdParty": false
+        }
+      ],
+      "rulings": [],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "15,407 August window panes: ADR/DME bounds and Z2 placement transforms. Exact actor/mesh SHA-256 hashes are retained in the adjacent provenance file.",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "doors",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Data/Doors/z2-doors.bin",
+          "sha256": "d8eed69e292cd0a6b0841637998fb2f22a57fbe3e87b4fd9adf86e69eb84957b",
+          "size": 168470,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Generated/AugustDoorTable.g.cs",
+          "sha256": "ec00418f0eac3cb8414fc8863877ae312eb6673e4a7f724155d96f659d3a5d95",
+          "size": 8561,
+          "header": true
+        }
+      ],
+      "generator": "tools/data/gen-doors.py",
+      "generatorSha256": "8d8d3881e8c109ca744ec77f73a0f3e7e91ba0dfe5a4c14cb08f6dbac6b14696",
+      "inputs": [
+        {
+          "path": "out/world_aug/z2-objects.jsonl",
+          "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3",
+          "crc32": "c88cb2f9",
+          "size": 90151503,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\z2-objects.jsonl",
+          "kind": "jsonl",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "destructibles",
+            "glass-melee",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\Models.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "extracted from the August client's Assets_*.pack by tools/pack/packread.py (list: out/data_aug/client-assets.lst, CRC-verified)",
+          "usedBy": [
+            "skin-catalog",
+            "loot-tables",
+            "appearance-catalog",
+            "authored-appearance",
+            "doors",
+            "vehicle-anchors"
+          ]
+        },
+        {
+          "path": "out/world_aug/Z2Areas.xml",
+          "sha256": "75e996d578ce729212963f38e133c9bf0e1da9902606267e9caa87f005f4dba6",
+          "crc32": "a3a268b6",
+          "size": 5478706,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\Z2Areas.xml",
+          "kind": "xml",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "doors"
+          ]
+        },
+        {
+          "path": "out/overhaul-20260901/unextracted/Doors.txt",
+          "sha256": "301de03db31d9d16e750f4eeca497ec832f6fe8952d71e2274078299fc0fae2f",
+          "crc32": "ddc1640d",
+          "size": 389,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\overhaul-20260901\\unextracted\\Doors.txt",
+          "kind": "datasheet",
+          "packAsset": true,
+          "source": "the 136 datasheets + 15 XML definition files the earlier extraction list missed, extracted 2026-09-01 by packread (CRC-verified, S8 \u00a74.1)",
+          "usedBy": [
+            "doors"
+          ]
+        },
+        {
+          "path": "out/data_aug/derived/effects.json",
+          "sha256": "ad7b48a80af07beb678b1f967ac64e4ed2e9b10fa73c0bcb0172f9fff0a5e7e8",
+          "crc32": "a1fb76d8",
+          "size": 451316,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\data_aug\\derived\\effects.json",
+          "kind": "derived-json",
+          "packAsset": false,
+          "source": "tools/data/derive_*.py join over the client's own datasheets; carries the per-field provenance map and the serverSideGaps list",
+          "usedBy": [
+            "effect-catalog",
+            "destructibles",
+            "doors"
+          ]
+        }
+      ],
+      "rulings": [
+        "D75",
+        "D76",
+        "D77",
+        "D78",
+        "D79",
+        "D80",
+        "D81",
+        "D82",
+        "D180"
+      ],
+      "gradeNotes": {
+        "RULING": "which SWING SOUND each of the eight door families gets is Cranberry's choice (C1). It is now named as a composite-effect NAME (SFX_Door_Wood_Open) instead of a Doors.txt row number, and the row id is resolved through the client's own two tables - S8 defect T4 closed, D180. The kinematic-twin names are still chosen by hand (docs/55)"
+      },
+      "grade": "CLIENT+RULING",
+      "thirdParty": false,
+      "note": "4,147 playable invisible door-placement markers out of the client's own Z2.zone - the eight Common_DPO_DoorProxy_* families and the three Hospital_*_Placer families, which carry the identical Models.txt marker text - meshes resolved by NAME through Models.txt, Doors.txt row ids resolved by composite-effect name through derived/effects.json. 2026-09-03 (docs/112): +39 hospital doors and +5 LOBBY doors (--max-height 400 -> 600), and every one of the 4,103 rows that were already here is unchanged field for field",
+      "generatedUtc": "2026-09-11T17:56:45Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "vehicle-anchors",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Data/Vehicles/vehicle-roster.json",
+          "sha256": "5a358c8f5209b29a61cd42a3ef3443a6b50d087dabee4672552a8e44117518f9",
+          "size": 9633,
+          "header": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Vehicles/z2-vehicle-anchors.json",
+          "sha256": "8fa0f440a2ccbdaa6171932fa8752a4173e1455cd7c5363dc6222ba4eb5a0cf6",
+          "size": 133126,
+          "header": false
+        }
+      ],
+      "generator": "tools/world/vehicle_anchors.py",
+      "generatorSha256": "98b88cc89872acfec7d3a8bcedea0147fd53d760e8a4f5b0d1aa30b08c219d8d",
+      "inputs": [
+        {
+          "path": "tools/world/data/z1br-retail-vehicle-markers.json",
+          "sha256": "42264ec415893a806e31e9cdebdb2d5f18467fc0715c03104dab8d7f25f9b69d",
+          "crc32": "cb479b3d",
+          "size": 261586,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/data/z1br-retail-august-placements.json",
+          "sha256": "859bb6cffa6f06f051dc0a1fc73af97644451969f29b40450bdbb5722f79d4f6",
+          "crc32": "141b18f1",
+          "size": 307345,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_retail.py",
+          "sha256": "258b8113f3ef8324a3bcccff5462ff4a7ffe614e70acc1faa5ca3a2751d7d76d",
+          "crc32": "fac26253",
+          "size": 5553,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_retail_extract.py",
+          "sha256": "2c4487801439ec28c8662e395b5bb53702f5f8d0c0e0b9014ae4303c3543c99c",
+          "crc32": "c523970c",
+          "size": 4431,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_retail_audit.py",
+          "sha256": "b908464a3739fdad994787de86f17846ebbada54a29ca0d33173d86cd0956703",
+          "crc32": "3b42f571",
+          "size": 9208,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_structures.py",
+          "sha256": "942f11262e0f61a71d95503ca505783e3e092818bc7c2bf585b928d58820253f",
+          "crc32": "acf1a5ad",
+          "size": 10154,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/data/august-vehicle-mesh-bounds.json",
+          "sha256": "6c7e3b3c9f26d40f66ec278ebb92e3bb9c1b30ad80264c266fac55a9b92893de",
+          "crc32": "6b0c461a",
+          "size": 5399,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_geometry.py",
+          "sha256": "49171de6e1cb3a9fb5769a3a34056380c799bf46ff6d6b5c1fe8050af2a830c9",
+          "crc32": "e0151566",
+          "size": 4984,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "tools/world/vehicle_terrain.py",
+          "sha256": "7d87f6e2d68a3697909198db6682e2a41535e9769cb8be714750a60ddbc62cb3",
+          "crc32": "c6c28ea4",
+          "size": 3827,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-terrain.bin",
+          "sha256": "5124d0421a42ea04bb48412883e21891595c7b9f61b98be3caa7d7bfe646a1a3",
+          "crc32": "56a1d7e9",
+          "size": 90990838,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "out/world_aug/z2-objects.jsonl",
+          "sha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3",
+          "crc32": "c88cb2f9",
+          "size": 90151503,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "out/world_aug/z2-areas.json",
+          "sha256": "e13938754126ba1eba00fc0e782dfddc88f58821508c6a7c40a024d76a00b4b5",
+          "crc32": "e4e190b7",
+          "size": 51618,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "out/data_aug/derived/vehicles.json",
+          "sha256": "85984cb13fcdb26df191585d078cdb0d1cabc35444999b833b02c2152b84d0d4",
+          "crc32": "f9f28c5a",
+          "size": 251477,
+          "grade": "CLIENT",
+          "thirdParty": false
+        },
+        {
+          "path": "out/data_aug/Models.txt",
+          "sha256": "1a7d89d3b84ccbdb0dc40c3351583116ddee801a3b365117447ec91b360b33c1",
+          "crc32": "06ba7c27",
+          "size": 95822,
+          "grade": "CLIENT",
+          "thirdParty": false
+        }
+      ],
+      "rulings": [
+        "D35",
+        "D43",
+        "D50",
+        "D329"
+      ],
+      "gradeNotes": {
+        "RULING": "every retained pad is occupied by default; population policy is VehicleSpawnPlanner's, not this file's - the client's Vehicles.txt is zero on MASS, HEALTH, fuel burn and every other refereeing number"
+      },
+      "grade": "CLIENT+RULING+CAPTURED",
+      "thirdParty": false,
+      "note": "Whole-map retail Z2.zone v7 markers, replacing all previous spawn inputs. 550 accepted / 41 explicitly excluded August geometry decisions preserve exact source X/Z, heading, pitch, roll and marker family. Y is audited August support plus 0.1 m, not recovered retail settled Y. All 37 supported observed positions match retail marker X/Z exactly. Roster remains August-client-derived; visual mesh validation is not a full PhysX simulation.",
+      "generatedUtc": "2026-09-12T12:00:41Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "gas-weight-areas",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Generated/AugustGasWeightAreas.g.cs",
+          "sha256": "501c7150fc2fe269c848d2e899986a42dabd3dca94ffcec4252c34244550cb1c",
+          "size": 7590,
+          "header": true
+        }
+      ],
+      "generator": "tools/world/gas_weight_areas.py",
+      "generatorSha256": "1b3b1253ad11b666895b3b23574c50a0c27b6d65aa34e461ab5c3186d63527ca",
+      "inputs": [
+        {
+          "path": "out/world_aug/z2-areas.json",
+          "sha256": "e13938754126ba1eba00fc0e782dfddc88f58821508c6a7c40a024d76a00b4b5",
+          "crc32": "e4e190b7",
+          "size": 51618,
+          "grade": "CLIENT",
+          "thirdParty": false,
+          "absolutePath": "C:\\Aug2017\\out\\world_aug\\z2-areas.json",
+          "kind": "json",
+          "packAsset": false,
+          "source": "the client's Z2/LoginZone world files and this repo's tools/zone parses of them",
+          "usedBy": [
+            "vehicle-anchors",
+            "gas-weight-areas"
+          ]
+        }
+      ],
+      "rulings": [
+        "D277"
+      ],
+      "gradeNotes": {},
+      "grade": "CLIENT",
+      "thirdParty": false,
+      "note": "the nine GasWeightArea.<Poi> boxes of the client's own Z2.zone - the only statement the August client makes about WHERE a safe zone belongs, and what Daybreak's 2017-06-29 whole-map ring rework shipped into the world file. Every number is the client's; which box a match ends in, and how the boxes are weighted, is rulings/gas.json's CentrePlan / PoiWeightExponent (D277)",
+      "generatedUtc": "2026-09-11T17:56:46Z",
+      "clientBuild": "0.0.118.208059"
+    },
+    {
+      "id": "rulings",
+      "outputs": [
+        {
+          "path": "src/Cranberry.Zone/Generated/Rulings.g.cs",
+          "sha256": "67c71f0e12663f60f9d342e01e3b85db345293f3cb2a2263731898af7b933808",
+          "size": 180054,
+          "header": true
+        }
+      ],
+      "generator": "tools/pipeline/generators/gen-rulings.py",
+      "generatorSha256": "b47c3ed1a0334a98993b2cd2a0383a590d299c1b5e5460561b9feb8ea45e15f9",
+      "inputs": [
+        {
+          "path": "rulings/movement.json",
+          "sha256": "1c644da90b9abf65ba460e144e901beb31ed58c7dfa23bb8201dbf1f79896173",
+          "crc32": "58f5dcd4",
+          "size": 8528,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/gas.json",
+          "sha256": "c3808710d9a6e4eb22432390b024e1d28de1cd8ddbae0d9ee206f2686691b3a1",
+          "crc32": "c1c52e54",
+          "size": 26677,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/descent.json",
+          "sha256": "0318f0e142ff5596503a704c756bb92f03b49b0e851a343d7ace0ca519fa84d8",
+          "crc32": "b6b1cdc9",
+          "size": 13518,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/sky.json",
+          "sha256": "1909a99c86622855c5d5fd309aba855e08be2593943d3a90cfb640f11143183d",
+          "crc32": "5a07f010",
+          "size": 7405,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/loot-gates.json",
+          "sha256": "56a1a0ae4134fd7b3d884983df20218bbe383cb5bae62dcbaecff72a980d782a",
+          "crc32": "a2f35dd3",
+          "size": 28869,
+          "grade": "THIRD_PARTY_SHAPED",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/loot-roster.json",
+          "sha256": "ddba8569cc2dda6bf022db24b62a2d27b4bb09433414d2c55f11be7b755bd17c",
+          "crc32": "b87328b2",
+          "size": 9144,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/vehicles-plan.json",
+          "sha256": "24d22ac0a70b4b0df6546cc491cff2e99482745591c98ecb056847001bd69faa",
+          "crc32": "27062f60",
+          "size": 21496,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/crafting.json",
+          "sha256": "f86db64df39354c1772668e08986ae8afb63c20f4456810202197e3327dbcd77",
+          "crc32": "db77b75c",
+          "size": 37799,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/starter.json",
+          "sha256": "ae0d0d1f1a15a02d985be811ae50e2a22368af6a97c979a25bfbc56b4c4f84f6",
+          "crc32": "7d08a0cf",
+          "size": 6504,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "rulings/throwables.json",
+          "sha256": "306b94ee1728fadfb11f83102053b4a49033e9b82237dfd9c6a9b383c6a6776b",
+          "crc32": "98640880",
+          "size": 15684,
+          "grade": "RULING",
+          "thirdParty": false
+        },
+        {
+          "path": "src/Cranberry.Zone/Data/Loot/z2-loot-tables.json",
+          "sha256": "b581d3f24b107452abe20ac7b8247ff634f9179ffd999a08f1b27972877c6d0f",
+          "crc32": "780ad7e5",
+          "size": 49179,
+          "grade": "CLIENT+RULING",
+          "thirdParty": false
+        }
+      ],
+      "rulings": [
+        "D16",
+        "D18",
+        "D19",
+        "D20",
+        "D30",
+        "D31",
+        "D32",
+        "D35",
+        "D37",
+        "D42",
+        "D43",
+        "D47",
+        "D48",
+        "D50",
+        "D53",
+        "D54",
+        "D55",
+        "D56",
+        "D59",
+        "D61",
+        "D62",
+        "D63",
+        "D65",
+        "D66",
+        "D68",
+        "D69",
+        "D70",
+        "D72",
+        "D73",
+        "D97",
+        "D98",
+        "D99",
+        "D116",
+        "D120",
+        "D123",
+        "D125",
+        "D127",
+        "D141",
+        "D256",
+        "D257",
+        "D258",
+        "D260",
+        "D300",
+        "D301",
+        "D304",
+        "D306",
+        "D307",
+        "D308",
+        "D350",
+        "D351"
+      ],
+      "gradeNotes": {
+        "THIRD_PARTY_SHAPED": "rulings/loot-gates.json's five per-family gates (D68). docs/39 \u00a71.1 and docs/65 \u00a72.2 trace them to a reference server's Z2 ground tables; the row's own grade field says so, so the flag survives into the generated file's doc comments",
+        "CLIENT": "some rows are the client's own numbers hand-transcribed into C# - the parachute terminal-velocity rails, Resources.txt fuel MAX, the DamageLevelInfo fractions, the starter item ids. They carry grade CLIENT and are declared here so a reader can tell them apart from a ruling, not because they are rulings"
+      },
+      "grade": "RULING",
+      "thirdParty": false,
+      "note": "S8 \u00a77.5 step 3 / overhaul plan \u00a73 lane 2C: the owner's rulings stop being C# literals. 184 rows over 9 subsystems; 165 become constants the value classes read, 19 are documentation-only (the number already ships inside another graded artefact, or its home file belongs to another lane). z2-loot-tables.json is an input because the generator cross-checks 25 restated loot numbers against it and fails rather than letting the two copies drift",
+      "generatedUtc": "2026-09-12T12:27:04Z",
+      "clientBuild": "0.0.118.208059"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<ActorRuntime>
+    <AnimationNetwork fileName="Weapons.mrn" animSetName="AK47_3P" />
+    <AnimationEnumerations>
+        <AnimationEnumeration hash="2031026762" value="10" />
+        <AnimationEnumeration hash="3009471212" value="3" />
+    </AnimationEnumerations>
+    <AnimationValues />
+    <Base fileName="Weapon_AK47_3P_LOD0.dme" paletteName="Weapon_AK47_3P_Lod0.dma" updateRadius="150.000000" waterDisplacementHeight="0.000000" objectTerrainDataId="0" sharedTextureAliases="" />
+    <TextureAliases>
+        <Alias aliasName="default0" textureName="grey.dds" modelType="0" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="0" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_S.dds" modelType="0" materialIndex="0" semanticHash="67211600" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_N.dds" modelType="0" materialIndex="0" semanticHash="789998085" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_C.dds" modelType="0" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="1" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="1" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_S.dds" modelType="1" materialIndex="0" semanticHash="67211600" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_N.dds" modelType="1" materialIndex="0" semanticHash="789998085" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_C.dds" modelType="1" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="2" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="2" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_S.dds" modelType="2" materialIndex="0" semanticHash="67211600" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_N.dds" modelType="2" materialIndex="0" semanticHash="789998085" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_C.dds" modelType="2" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="grey.dds" modelType="3" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="3" materialIndex="0" semanticHash="-125639093" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_S.dds" modelType="3" materialIndex="0" semanticHash="67211600" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_N.dds" modelType="3" materialIndex="0" semanticHash="789998085" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="Weapons_AK47_3P_C.dds" modelType="3" materialIndex="0" semanticHash="-1295769314" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+    </TextureAliases>
+    <TintAliases />
+    <Lods>
+        <Lod fileName="Weapon_AK47_3P_LOD1.dme" paletteName="Weapon_AK47_3P_Lod1.dma" distance="3" />
+        <Lod fileName="Weapon_AK47_3P_LOD2.dme" paletteName="Weapon_AK47_3P_Lod2.dma" distance="20" />
+        <Lod fileName="Weapon_AK47_3P_LOD3.dme" paletteName="Weapon_AK47_3P_Lod3.dma" distance="30" />
+        <Lod distance="65" />
+    </Lods>
+    <CollisionType type="3099813281" />
+    <Usage actorUsage="0" borrowSkeleton="0" boneAttachmentName="R_weapon" validatePcNpc="1" />
+    <Shadows CheckShadowVisibility="0" Shadowless="0" />
+    <EquipType EquippedSlotName="None" ParentAttachSlot="None" />
+    <ChildAttachSlotsEx />
+    <OcclusionData SimpleVisibility="0" UseAsOccluder="1" />
+    <MaterialType type="METAL" />
+    <Invisible value="0" />
+</ActorRuntime>

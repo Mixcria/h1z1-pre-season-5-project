@@ -1,0 +1,227 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "loot-roster",
+  "class": "LootRoster",
+  "home": "tools/data/gen-loot-tables.py (TABLES, CLUSTERS) -> src/Cranberry.Zone/Data/Loot/z2-loot-tables.json",
+  "summary": "The KOTK-2017 ground roster: which items reach the floor, in what relative share, in how big a stack, and the two boxes that flank every gun. The client ships NO loot table at all (S8 s5.1), so the roster and the shares are the owner's own and cross under D53. The 168,322 marker POSITIONS, the item ids, the ground models and the clip sizes in the same file are the client's and are not rulings.\n\nPER-ITEM WEIGHTS ARE NOT DUPLICATED HERE. All 79 rows live in tools/data/gen-loot-tables.py's TABLES and ship inside z2-loot-tables.json, which tools/pipeline/manifest.json already grades CLIENT+RULING with its own sha256. Copying 79 weights into this file would create a second source of truth with nothing to keep them equal. Instead this file records the roster's SHAPE - per-category entry count and total weight - and tools/pipeline/generators/gen-rulings.py CROSS-CHECKS every one of those numbers against the checked-in z2-loot-tables.json at generate time and fails if they have drifted.",
+  "rulings": [
+    "D20",
+    "D31",
+    "D39",
+    "D44",
+    "D53",
+    "D68"
+  ],
+  "rows": [
+    {
+      "key": "Roster.Weapons01.entryCount",
+      "value": 11,
+      "ruling": "D273",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "note": "Cross-checked against z2-loot-tables.json at generate time. Held weapons only, no loose ammunition. 10 before D273 (2026-09-03) added the Crossbow (2246): the owner's own retail research names it live KOTK loot in this window (web-research-aug2017-kotk.md:129, :245) where his Z1 roster removed it on an explicit UNPROVEN-BY-ABSENCE note, and the dated research outranks that.",
+      "csharp": {
+        "name": "Weapons01EntryCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Roster.Weapons01.totalWeight",
+      "value": 305,
+      "ruling": "D273",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "csharp": {
+        "name": "Weapons01TotalWeight",
+        "type": "int"
+      },
+      "note": "285 before D273 added the Crossbow at weight 20, against the Recurve Bow's 24."
+    },
+    {
+      "key": "Roster.Gear01.entryCount",
+      "value": 52,
+      "ruling": "D20",
+      "source": "User play-test request 2026-09-08; tools/data/gen-loot-tables.py TABLES",
+      "grade": "RULING",
+      "csharp": {
+        "name": "Gear01EntryCount",
+        "type": "int"
+      },
+      "note": "September 8: remove naturally generated Field Bandages; starter, crafted and player-owned bandages remain available."
+    },
+    {
+      "key": "Roster.Gear01.totalWeight",
+      "value": 498,
+      "ruling": "D20",
+      "source": "User play-test request 2026-09-08; tools/data/gen-loot-tables.py TABLES",
+      "grade": "RULING",
+      "csharp": {
+        "name": "Gear01TotalWeight",
+        "type": "int"
+      },
+      "note": "September 8: remove naturally generated Field Bandages; starter, crafted and player-owned bandages remain available."
+    },
+    {
+      "key": "Roster.Backpack01.entryCount",
+      "value": 7,
+      "ruling": "D20",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "csharp": {
+        "name": "Backpack01EntryCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Roster.Backpack01.totalWeight",
+      "value": 100,
+      "ruling": "D20",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "csharp": {
+        "name": "Backpack01TotalWeight",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Roster.FirstAidKit01.entryCount",
+      "value": 1,
+      "ruling": "D20",
+      "source": "User play-test request 2026-09-08; tools/data/gen-loot-tables.py TABLES",
+      "grade": "RULING",
+      "csharp": {
+        "name": "FirstAidKit01EntryCount",
+        "type": "int"
+      },
+      "note": "September 8: remove naturally generated Field Bandages; starter, crafted and player-owned bandages remain available."
+    },
+    {
+      "key": "Roster.FirstAidKit01.totalWeight",
+      "value": 40,
+      "ruling": "D20",
+      "source": "User play-test request 2026-09-08; tools/data/gen-loot-tables.py TABLES",
+      "grade": "RULING",
+      "csharp": {
+        "name": "FirstAidKit01TotalWeight",
+        "type": "int"
+      },
+      "note": "September 8: remove naturally generated Field Bandages; starter, crafted and player-owned bandages remain available."
+    },
+    {
+      "key": "Roster.Ammo01.entryCount",
+      "value": 7,
+      "ruling": "D20",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "csharp": {
+        "name": "Ammo01EntryCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Roster.Ammo01.totalWeight",
+      "value": 120,
+      "ruling": "D20",
+      "source": "Z1 C:/Z1/Server/Data/kotk/kotk2017-ground-set.json via tools/data/gen-loot-tables.py TABLES",
+      "grade": "Z1",
+      "csharp": {
+        "name": "Ammo01TotalWeight",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Roster.tableItemIdCount",
+      "value": 71,
+      "ruling": "D273",
+      "source": "User play-test request 2026-09-08; tools/data/gen-loot-tables.py TABLES",
+      "grade": "RULING",
+      "note": "September 8: remove naturally generated Field Bandages; starter, crafted and player-owned bandages remain available.",
+      "csharp": {
+        "name": "TableItemIdCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Cluster.OffsetMetres",
+      "value": 0.5,
+      "ruling": "D39",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneLootClusters.cs:101 (via tools/data/gen-loot-tables.py:471 CLUSTER_OFFSET_METRES)",
+      "grade": "Z1",
+      "note": "Perpendicular to the marker's yaw. His own file states the reason ours did not: 0.5 m keeps the gun and both boxes inside the same 2 m proximity ball (see LootStreamOptions.PanelRadiusMetres).",
+      "csharp": {
+        "name": "ClusterOffsetMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "Cluster.SecondBoxYawRadians",
+      "value": 0.35,
+      "ruling": "D39",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneLootClusters.cs:140 (via tools/data/gen-loot-tables.py:472 CLUSTER_SECOND_BOX_YAW)",
+      "grade": "Z1",
+      "note": "So a pair does not read as one mirrored object.",
+      "csharp": {
+        "name": "ClusterSecondBoxYawRadians",
+        "type": "float"
+      }
+    },
+    {
+      "key": "Cluster.boxCount",
+      "value": 9,
+      "ruling": "D273",
+      "source": "tools/data/gen-loot-tables.py:475-487 CLUSTERS; matches Z1 MagazineBoxes row for row (ZoneLootClusters.cs:180-192)",
+      "grade": "Z1",
+      "note": "8 before D273 paired the Crossbow with the Wooden Arrow. The chamber stays 1 - that is the client's own CLIP_SIZE for 2246 and it is ShooterCombatState.DefaultMagazineFor's number (docs/102, lane 1F), not this table's; the five-arrow box is the Recurve Bow's standing quantum exception.",
+      "csharp": {
+        "name": "ClusterCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Cluster.roundsPerBox",
+      "value": [
+        30,
+        30,
+        15,
+        7,
+        7,
+        6,
+        6,
+        5,
+        5
+      ],
+      "ruling": "D273",
+      "source": "the client's own CLIP_SIZE column, one box = one magazine; ordered as CLUSTERS (AR-15, AK-47, M9, M1911, R380, .44, 12GA, Recurve Bow)",
+      "grade": "CLIENT+RULING",
+      "note": "One magazine of the gun's own calibre, from the client's own CLIP_SIZE column - except the two bows, whose CLIP_SIZE is 1 and whose box is the five-arrow quantum. The ninth entry is D273's Crossbow.",
+      "csharp": {
+        "name": "ClusterRoundsPerBox",
+        "type": "int[]"
+      }
+    },
+    {
+      "key": "Roster.gridCellMetres",
+      "value": 64.0,
+      "ruling": "none",
+      "source": "tools/data/gen-loot-tables.py:117 GRID_CELL_METRES - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. A runtime convenience for the spatial index, not a gameplay number.",
+      "csharp": {
+        "name": "GridCellMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "Roster.gridDimension",
+      "value": 128,
+      "ruling": "none",
+      "source": "tools/data/gen-loot-tables.py:118 GRID_DIMENSION - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. 128 x 64 m = 8,192 m, the Z2 map's own extent.",
+      "csharp": {
+        "name": "GridDimension",
+        "type": "int"
+      }
+    }
+  ]
+}

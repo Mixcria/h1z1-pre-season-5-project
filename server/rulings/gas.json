@@ -1,0 +1,620 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "gas",
+  "class": "Gas",
+  "home": "src/Cranberry.Zone/Gas/GasSettings.cs",
+  "summary": "Gas reconstruction for client 0.0.118.208059. September 6 sizing audit replaces the Z1 geometric guess with measured public-match targets and explicit phase durations from https://www.youtube.com/watch?v=wvFTuNz3EL0 (uploaded August 5, 2017; exact build visible). First five nominal radii are 2000/1400/900/625/300 m. Tail measurements and the unobserved continuation are qualified per row; original server constants and randomization have not been recovered. See docs/gas-ring-sizing-20260906.md.",
+  "rulings": [
+    "D23",
+    "D43",
+    "D53",
+    "D62",
+    "D63",
+    "D65",
+    "D104",
+    "D120",
+    "D122",
+    "D123",
+    "D276",
+    "D277",
+    "D278",
+    "D279",
+    "D280",
+    "D285",
+    "D350"
+  ],
+  "rows": [
+    {
+      "key": "GasSettings.PhaseCount",
+      "value": 10,
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:267 (WaveCount)",
+      "grade": "Z1",
+      "note": "Retained project continuation. Exact-build public recording reaches seven revealed targets and ends during the seventh advance; it cannot establish the total phase count. Later phases are explicitly unverified.",
+      "csharp": {
+        "name": "PhaseCount",
+        "type": "int"
+      }
+    },
+    {
+      "key": "GasSettings.PlayAreaCentre",
+      "value": [
+        -250.0,
+        0.0,
+        100.0
+      ],
+      "ruling": "D63",
+      "source": "docs/66 s3 - a 92-anchor minimum enclosing circle and a grid search over the client's own 166,781 ItemSpawner_* markers",
+      "grade": "RULING",
+      "note": "Cranberry's own solve over the August Z2 data. Z1 has no equivalent constant.",
+      "csharp": {
+        "name": "PlayAreaCentre",
+        "type": "float3"
+      }
+    },
+    {
+      "key": "GasSettings.InitialRadius",
+      "value": 8000.0,
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "Inferred from measured first radial advance 20.006 m/s and 300-second movement to a nominal 2000 m target. The rendered fog edge has small measurement/clock/smoothing offsets; their exact cause is unresolved. This is not a recovered packet constant.",
+      "csharp": {
+        "name": "InitialRadius",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.FinalRadius",
+      "value": 40.0,
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:286 (FinalRadius)",
+      "grade": "Z1",
+      "note": "Retained project terminal fallback; not established by the exact-build recording, which ends during the seventh advance. Z1 graded40m GUESS.",
+      "csharp": {
+        "name": "FinalRadius",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.RadiusLadder",
+      "value": [
+        2000.0,
+        1400.0,
+        900.0,
+        625.0,
+        300.0,
+        137.5,
+        75.0,
+        60.0,
+        45.0,
+        40.0
+      ],
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "First five nominal targets measured on exact build:2000/1400/900/625/300m. Sixth137.5 and seventh75m are estimates:1080p arc sensitivity gives roughly135-139m and75-80m; one nativepixel is7.66m, and icons obscure the latter. Match ends during phase seven. Phases8-10 are an unverified monotonic continuation to retained40m: old100/65/40 tail rescaled from old phase-seven160 to75 and rounded to5m. Neither ten phases nor terminal40 is established.",
+      "csharp": {
+        "name": "RadiusLadder",
+        "type": "float[]"
+      }
+    },
+    {
+      "key": "GasSettings.FirstRevealDelayMs",
+      "value": 120000,
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "Retained 120-second opening reveal countdown, consistent with the public video already showing1:51 while airborne at video0; recording and match clocks have different origins.",
+      "csharp": {
+        "name": "FirstRevealDelayMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.AdvanceDurationsMs",
+      "value": [
+        300000,
+        60000,
+        60000,
+        60000,
+        60000,
+        60000,
+        60000,
+        60000,
+        60000,
+        60000
+      ],
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "First movement lasts300seconds; observed subsequent completed advances last60seconds. Seventh match ends while moving; the60-second seventh and later advances continue the observed later cadence, not a recovered terminal phase table.",
+      "csharp": {
+        "name": "AdvanceDurationsMs",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "GasSettings.HoldDurationsMs",
+      "value": [
+        250000,
+        120000,
+        90000,
+        90000,
+        60000,
+        60000,
+        50000,
+        50000,
+        50000,
+        50000
+      ],
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "Exact-build HUD observations establish first seven reveal-to-movement holds. The last three repeat the last observed50-second hold as an explicit unverified continuation.",
+      "csharp": {
+        "name": "HoldDurationsMs",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "GasSettings.FirstMoveDelayMs",
+      "value": 370000,
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "THIRD_PARTY_SHAPED",
+      "csharp": {
+        "name": "FirstMoveDelayMs",
+        "type": "uint"
+      },
+      "note": "FirstReveal120000 plus measured first hold250000. Exact-build video110: reveal01;111: gas4:09;112:4:08;120:4:00;first movement~360. A July public recording has a245-second hold, so this is an exact-recording reconstruction, not proof every retail match used one fixed opening timer."
+    },
+    {
+      "key": "GasSettings.InterPhaseHoldMs",
+      "value": 16000,
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:352, :436-446 (SolveHoldSeconds)",
+      "grade": "Z1",
+      "note": "DISCLOSED (docs/53 s5.1): Z1 derives 16 s as a function of BOTH the inputs D53 excludes, so it is adopted as a value rather than re-derived.",
+      "csharp": {
+        "name": "InterPhaseHoldMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ShrinkSpeedMetresPerSecond",
+      "value": 3.866,
+      "ruling": "D350",
+      "source": "(4200 - 40) / (1490 - 270 - 9 * 16), rounded to 0.001 m/s",
+      "grade": "RULING",
+      "csharp": {
+        "name": "ShrinkSpeedMetresPerSecond",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.TargetMatchLengthMs",
+      "value": 1490000,
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:311 (TargetTotalSeconds = 1490)",
+      "grade": "Z1",
+      "note": "Z1's own grade is GUESS - the top of the 20-25 minute band.",
+      "csharp": {
+        "name": "TargetMatchLengthMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.CentreDriftFraction",
+      "value": 0.96,
+      "ruling": "D276",
+      "source": "docs/118 s2 - re-solved from the 8.00 m/s rail on the shipped ladder",
+      "grade": "RULING",
+      "note": "Retained project containment cap. With new first radial speed20m/s the analytic edge bound is39.2m/s and total centre budget is7641.6m. Footage shows changing centre headings, so the retained POI-directed straight-line placement is not verified retail randomization.",
+      "csharp": {
+        "name": "CentreDriftFraction",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.DriftConeDegrees",
+      "value": 120.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:228 - Cranberry design, never named by a D-row",
+      "grade": "RULING",
+      "note": "UNRULED. The cone the next centre may be drawn within, so consecutive phases do not zig-zag. No owner ruling and no Z1 equivalent (Z1 draws area-uniform over the whole admissible disc, ZoneMatch.cs:1395-1408).",
+      "csharp": {
+        "name": "DriftConeDegrees",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.MaxEdgeSpeedMetresPerSecond",
+      "value": 40.0,
+      "ruling": "none",
+      "source": "https://www.youtube.com/watch?v=wvFTuNz3EL0; docs/gas-ring-sizing-20260906.md",
+      "grade": "RULING",
+      "csharp": {
+        "name": "MaxEdgeSpeedMetresPerSecond",
+        "type": "float"
+      },
+      "note": "Project validation bound: measured20m/s first radial advance times(1+retained0.96drift)=39.2m/s. Replaces old8m/s bound that could not admit observed movement. Not itself a measured retail edge constant."
+    },
+    {
+      "key": "GasSettings.PreMoveRing",
+      "value": "None",
+      "ruling": "D65",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:170 (NoRingBeforeMove = true), :158 (RetailGasHiddenUntilMove = true)",
+      "grade": "Z1",
+      "note": "The owner's click-test ruling: the gas must not be on the map until it starts moving. No ring packet at all, not a radius-0 ring. The constant is the ENUM MEMBER NAME, not a number: GasSettings.PreMoveRing keeps the typed GasPreMoveRing.None literal (a string cast at every construction would be a runtime cost and a runtime throw), and RulingsTests asserts Enum.GetName(default) equals this constant, so the two cannot drift.",
+      "csharp": {
+        "name": "PreMoveRing",
+        "type": "string"
+      }
+    },
+    {
+      "key": "GasSettings.AdvanceRoundingMs",
+      "value": 100,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:257 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Presentation only: rounds a phase's advance so the HUD countdown reads in tenths.",
+      "csharp": {
+        "name": "AdvanceRoundingMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.RadiusRoundingMetres",
+      "value": 5.0,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:270 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Presentation only.",
+      "csharp": {
+        "name": "RadiusRoundingMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.FirstPhaseWindowMs",
+      "value": 180000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:277 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED, and INERT on the shipped default: Pacing is SpeedPaced, so the window ladder is the WindowPaced fallback only.",
+      "csharp": {
+        "name": "FirstPhaseWindowMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.PhaseWindowShorteningMs",
+      "value": 60000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:283 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED, and inert on the shipped default (see FirstPhaseWindowMs).",
+      "csharp": {
+        "name": "PhaseWindowShorteningMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.MinimumPhaseWindowMs",
+      "value": 90000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:289 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED, and inert on the shipped default (see FirstPhaseWindowMs).",
+      "csharp": {
+        "name": "MinimumPhaseWindowMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ShrinkWarningMs",
+      "value": 30000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:300 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. How long before a shrink the warning banner fires.",
+      "csharp": {
+        "name": "ShrinkWarningMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.TickPeriodMs",
+      "value": 1000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:310 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. The unit the damage column is expressed in; changing it rescales the whole damage curve.",
+      "csharp": {
+        "name": "TickPeriodMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.HostTickIntervalMs",
+      "value": 250,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:317 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. An internal sweep, not a wire cadence.",
+      "csharp": {
+        "name": "HostTickIntervalMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "GasSettings.SafeZoneUpdateIntervalMs",
+      "value": 500,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:325 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED.",
+      "csharp": {
+        "name": "SafeZoneUpdateIntervalMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.HudHealIntervalMs",
+      "value": 1000,
+      "ruling": "D120",
+      "source": "docs/77 s5 - the ce 0f countdown is re-sent on a 1 Hz heal, not only on a state transition",
+      "grade": "RULING",
+      "csharp": {
+        "name": "HudHealIntervalMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.SafeZoneHealIntervalMs",
+      "value": 15000,
+      "ruling": "D123",
+      "source": "docs/77 - ce 02 is re-sent every 15 s while a circle is revealed",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SafeZoneHealIntervalMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.RetailDamagePerPhase",
+      "value": [
+        90,
+        100,
+        120,
+        150,
+        200,
+        270,
+        400,
+        600,
+        600,
+        600
+      ],
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:474 (DamagePercentPerSecond 0.9..6.0 %/s)",
+      "grade": "Z1",
+      "note": "Health units per TickPeriodMs off a 10,000 bar. The identical ten-row base/full table is published at https://www.gamersky.com/handbook/201702/866512_6.shtml dated February 9, 2017 (H1Z1 Tieba translation), so all ten damage rows predate August rather than being evidenced only by a January 2018 repost. It remains secondary evidence with contradictory prose and no August server verification. See docs/gas-retail-audit-20260906.md.",
+      "csharp": {
+        "name": "RetailDamagePerPhase",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "GasSettings.RetailDamageAtFullToxicityPerPhase",
+      "value": [
+        130,
+        160,
+        180,
+        230,
+        300,
+        400,
+        600,
+        900,
+        900,
+        900
+      ],
+      "ruling": "none",
+      "source": "https://www.gamersky.com/handbook/201702/866512_6.shtml (February 9, 2017 translation, identical ten-row table); https://steamcommunity.com/sharedfiles/filedetails/?id=1263619696 (January 9, 2018 repost of h1z1config guide); full-meter mechanism independently in August Resources.txt/locale and official July 15, 2016 producer letter",
+      "grade": "THIRD_PARTY_SHAPED",
+      "note": "2026-09-06 reconstruction: the same source used for the existing base-damage table supplies this full-toxicity column. The February 2017 publication establishes pre-August chronology, not that the table remained unchanged in August. Both guides say DOUBLE while their numbers are about 1.5x and claim a 100-second fill conflicting with the client's 180 seconds. The February timeline says no tenth wave while listing ten damage rows. Neither multiplier nor table is verified against August retail-server traffic. The client proves only that full toxicity adds damage. Empty table disables the damage increase for legacy presets. See docs/gas-retail-audit-20260906.md.",
+      "csharp": {
+        "name": "RetailDamageAtFullToxicityPerPhase",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "GasSettings.FirstPhaseDamage",
+      "value": 90,
+      "ruling": "D43",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneGasRetail.cs:474 - the table's first entry",
+      "grade": "Z1",
+      "note": "Only reached when DamagePerPhase is empty; equal to the table's first entry so a default match ticks 90 either way.",
+      "csharp": {
+        "name": "FirstPhaseDamage",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.DamageIncreasePerPhase",
+      "value": 45,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:404 - the wave-4 linear curve, Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED, and inert on the shipped default: only reached when DamagePerPhase is empty.",
+      "csharp": {
+        "name": "DamageIncreasePerPhase",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.MaxHitpoints",
+      "value": 10000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/SelfRecord.cs CharacterResource.Starter, resource 1 = 10000/10000",
+      "grade": "RULING",
+      "note": "UNRULED as a gas number. It is the bar the damage curve is expressed against and must track the starter record; see rulings/starter.json Starter.HealthMax, which is the same number.",
+      "csharp": {
+        "name": "MaxHitpoints",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.Seed",
+      "value": 6499335558142099457,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasSettings.cs:418 - Cranberry design (0x5A32474153200001)",
+      "grade": "RULING",
+      "note": "UNRULED. A domain-separating salt, not a tuned value; it only has to be stable. 0x5A32474153200001 in the C# source ('Z2GAS' packed plus a version byte); the JSON must carry it in decimal because JSON has no hex integer literal, which is exactly the kind of transcription RulingsTests exists to catch.",
+      "csharp": {
+        "name": "Seed",
+        "type": "ulong"
+      }
+    },
+    {
+      "key": "GasSettings.CentrePlan",
+      "value": "PoiDestination",
+      "ruling": "D277",
+      "source": "docs/118 s3 - the owner's 2026-09-03 rulings (a) and (b); the volumes themselves are the client's own out/world_aug/z2-areas.json",
+      "grade": "RULING",
+      "note": "The constant is the ENUM MEMBER NAME, not a number, exactly as GasSettings.PreMoveRing is: GasSettings keeps the typed GasCentrePlan.PoiDestination literal and RulingsTests asserts the two agree. PoiDestination draws one of the nine client GasWeightArea volumes by weight, draws a point inside it, and walks every phase centre along the straight line to it. Drift is D62's cone walk, kept for an A/B (CRANBERRY_GAS_CENTRE_PLAN=Drift).",
+      "csharp": {
+        "name": "CentrePlan",
+        "type": "string"
+      }
+    },
+    {
+      "key": "GasSettings.PoiWeightExponent",
+      "value": 0.5,
+      "ruling": "D277",
+      "source": "docs/118 s3 - Cranberry's own weighting rule over the client's own footprints",
+      "grade": "RULING",
+      "note": "weight = (client footprint area) ^ exponent. 0.5 weights by the box's own linear extent rather than its area, so SchadeWoodsLoggingTrail (137,900 m2) is drawn 4.5x as often as ChangsWildCampgrounds (6,802 m2) instead of 20x; 1.0 weights strictly by area and 0 makes the nine equally likely. The AREAS are the client's [CLIENT]; that a bigger volume is a likelier destination is this project's reading of what a weight volume is for, and the exponent is how hard that reading is applied. 0.5 rather than 1.0 because at 1.0 one volume takes 40 % of every match, and the drop lane's own signed-off property - three consecutive matches are never the same place - fails at exactly one window in 200 (DropPlannerTests.ConsecutiveMatchesDropSomewhereElse); at 0.5 it holds with the client's volumes still driving the draw (docs/118 s3.4).",
+      "csharp": {
+        "name": "PoiWeightExponent",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.PlayAreaLeadMetres",
+      "value": 1200.0,
+      "ruling": "D350",
+      "source": "D278 1000 m lead plus 200 m initial-radius reduction",
+      "grade": "RULING",
+      "note": "Preserves access to every shipped destination volume with the smaller initial ring.",
+      "csharp": {
+        "name": "PlayAreaLeadMetres",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.SendToxicity",
+      "value": true,
+      "ruling": "D279",
+      "source": "docs/118 s4 - the owner's 2026-09-03 ruling (d)",
+      "grade": "RULING",
+      "note": "Arms and drives resource 611 while a match runs, so the meter the client already draws (HudPlayerResourcesWindow.gfx ResourceType.TOXICITY / m_toxicity) stops rendering empty for every second of every match. CRANBERRY_GAS_TOXICITY=0 turns it off; nothing else in the gas path reads it, so off is byte-identical to the pre-D279 wire. September 6: this is now a HUD-send switch only. Authoritative toxicity and damage continue regardless of its value.",
+      "csharp": {
+        "name": "SendToxicity",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityResourceId",
+      "value": 611,
+      "ruling": "none",
+      "source": "client out/data_aug/Resources.txt:145 column *ID",
+      "grade": "CLIENT",
+      "note": "The client's own row: Generic^611^75^ResourceToxicity^14118^14119^... Not a ruling - it is the id the client's own Resources.PlayerResourceDataSource keys the meter on.",
+      "csharp": {
+        "name": "ToxicityResourceId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityResourceType",
+      "value": 75,
+      "ruling": "none",
+      "source": "client out/data_aug/Resources.txt:145 column RESOURCE_TYPE",
+      "grade": "CLIENT",
+      "note": "Unlike health (1/1) and stamina (6/6) the toxicity row's type is NOT its id: 611 is the id, 75 is the type. The 8d ResourceEvent carries both, so getting them the wrong way round is a silent no-op on the client's lookup.",
+      "csharp": {
+        "name": "ToxicityResourceType",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityMaxValue",
+      "value": 180000,
+      "ruling": "none",
+      "source": "client out/data_aug/Resources.txt:145 column MAX_VALUE",
+      "grade": "CLIENT",
+      "note": "The full meter, and the number that CONTRADICTS Z1's ToxicityMax = 100 (ZoneGasRetail.cs:348). The client wins: it is the client's own bar and the client's own percentage calc. INITIAL_VALUE on the same row is 0 and there are no VALUE_MARKER tiers, so the meter is a plain 0 -> 180,000 fill.",
+      "csharp": {
+        "name": "ToxicityMaxValue",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityRegenPerMs",
+      "value": 1.0,
+      "ruling": "none",
+      "source": "client out/data_aug/Resources.txt:145 column REGEN_PER_MS",
+      "grade": "CLIENT",
+      "note": "1 per millisecond charged on a REGEN_TICK_MSEC = 1000 beat is 1,000 units a second, i.e. 180 s from empty to full - the client's own fill rate, and what the owner's ruling (d) names. FLAG_INIT_WITH_DISABLED_REGEN = 1 on the same row is why it does not run until the server arms it.",
+      "csharp": {
+        "name": "ToxicityRegenPerMs",
+        "type": "float"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityRegenTickMs",
+      "value": 1000,
+      "ruling": "none",
+      "source": "client out/data_aug/Resources.txt:145 column REGEN_TICK_MSEC",
+      "grade": "CLIENT",
+      "note": "The beat REGEN_PER_MS is charged on. Equal to GasSettings.TickPeriodMs, which is why the server's own accumulator moves in whole ticks and stays in step with a client that ticks the resource itself.",
+      "csharp": {
+        "name": "ToxicityRegenTickMs",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.ToxicityDrainPerSecond",
+      "value": 1000,
+      "ruling": "D279",
+      "source": "docs/118 s4 - Cranberry's own symmetric drain; the client's own BURN_PER_MSEC on Resources.txt:145 is 0",
+      "grade": "RULING",
+      "note": "The one toxicity number the client does NOT supply. Its BURN_PER_MSEC is 0 and FLAG_INIT_WITH_DISABLED_BURN is 1, so a client-side drain from the row's own columns would drain nothing at all - the drain has to be a server number or there is no drain. 1,000 units a second mirrors the client's own fill exactly (180 s out, 180 s back), which is the only choice that needs no second story about why the two differ.",
+      "csharp": {
+        "name": "ToxicityDrainPerSecond",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "GasSettings.RingBlendMode",
+      "value": "SendPeriod",
+      "ruling": "D280",
+      "source": "docs/118 s5 - the owner's 2026-09-03 ruling (e)",
+      "grade": "RULING",
+      "note": "The ENUM MEMBER NAME. ce 01's +0x54 is the time constant of the client's own exponential ease (docs/18 s1, G-07), so a wall re-stated every 500 ms while easing with a 1,000 ms constant is a wall that always trails the circle the server burns against. SendPeriod writes the interval until the NEXT ce 01 of that state: SafeZoneUpdateIntervalMs while the ring is travelling, RingBlendMs otherwise. Fixed restores the flat RingBlendMs the tree shipped before D280.",
+      "csharp": {
+        "name": "RingBlendMode",
+        "type": "string"
+      }
+    },
+    {
+      "key": "GasPackets.RingBlendMsDefault",
+      "value": 1000,
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Gas/GasPackets.cs:37 - Cranberry design",
+      "grade": "RULING",
+      "note": "UNRULED. Left as a literal on purpose: GasPackets.cs is a wire-layout file, not a value class (docs/101 s5)."
+    }
+  ]
+}

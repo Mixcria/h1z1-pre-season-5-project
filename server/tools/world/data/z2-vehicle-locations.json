@@ -1,0 +1,7256 @@
+[
+  {
+    "id": 0,
+    "name": "Common_DPO_Vehicle_PoliceCar01_proxy",
+    "vehicleId": 3,
+    "position": [
+      3006.8599,
+      88.7106,
+      -547.6171,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 1,
+    "name": "Common_DPO_Vehicle_PoliceCar01_proxy",
+    "vehicleId": 3,
+    "position": [
+      2991.3967,
+      89.189,
+      -515.0989,
+      1
+    ],
+    "rotation": [
+      2.3552,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3552
+  },
+  {
+    "id": 2,
+    "name": "Common_DPO_Vehicle_PoliceCar01_proxy",
+    "vehicleId": 3,
+    "position": [
+      -1150.5986,
+      46.9979,
+      1318.3044,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 3,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -4012.1054,
+      79.5797,
+      2696.7068,
+      1
+    ],
+    "rotation": [
+      1.1456,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.1456
+  },
+  {
+    "id": 4,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3925.4755,
+      171.5733,
+      2197.8411,
+      1
+    ],
+    "rotation": [
+      2.8232,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8232
+  },
+  {
+    "id": 5,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3864.0957,
+      276.19,
+      -3352.9353,
+      1
+    ],
+    "rotation": [
+      -0.4189,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.4189
+  },
+  {
+    "id": 6,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3823.1238,
+      282.623,
+      -3350.6468,
+      1
+    ],
+    "rotation": [
+      0.7941,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7941
+  },
+  {
+    "id": 7,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3818.5171,
+      44.2813,
+      919.8987,
+      1
+    ],
+    "rotation": [
+      2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0944
+  },
+  {
+    "id": 8,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3804.7859,
+      176.6262,
+      -2022.7212,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 9,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -3796.2605,
+      268.9876,
+      -3273.9557,
+      1
+    ],
+    "rotation": [
+      -2.0196,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0196
+  },
+  {
+    "id": 10,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3781.3567,
+      172.4234,
+      209.8521,
+      1
+    ],
+    "rotation": [
+      2.2177,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2177
+  },
+  {
+    "id": 11,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -3758.4905,
+      143.5845,
+      -1722.0626,
+      1
+    ],
+    "rotation": [
+      -1.1038,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.1038
+  },
+  {
+    "id": 12,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3734.0461,
+      9.498,
+      3129.0317,
+      1
+    ],
+    "rotation": [
+      0.7288,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7288
+  },
+  {
+    "id": 13,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -3704.3745,
+      45.2719,
+      972.2937,
+      1
+    ],
+    "rotation": [
+      -2.299,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.299
+  },
+  {
+    "id": 14,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3677.4542,
+      26.5113,
+      2732.2517,
+      1
+    ],
+    "rotation": [
+      1.4167,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4167
+  },
+  {
+    "id": 15,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3651.4779,
+      49.7556,
+      1252.1902,
+      1
+    ],
+    "rotation": [
+      1.4167,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4167
+  },
+  {
+    "id": 16,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 5,
+    "position": [
+      -3620.9124,
+      44.3125,
+      917.1049,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 17,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3603.2688,
+      11.2975,
+      3525.4985,
+      1
+    ],
+    "rotation": [
+      -1.5702,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5702
+  },
+  {
+    "id": 18,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3531.3866,
+      168.3179,
+      -2816.8015,
+      1
+    ],
+    "rotation": [
+      1.7663,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.7663
+  },
+  {
+    "id": 19,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3518.5301,
+      232.8374,
+      -3173.5877,
+      1
+    ],
+    "rotation": [
+      -2.6354,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.6354
+  },
+  {
+    "id": 20,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3494.8344,
+      40.2304,
+      689.8227,
+      1
+    ],
+    "rotation": [
+      -2.3583,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3583
+  },
+  {
+    "id": 21,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -3475.6854,
+      35.3703,
+      2190.2201,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 22,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3466.9705,
+      45.5313,
+      816.1347,
+      1
+    ],
+    "rotation": [
+      1.3105,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3105
+  },
+  {
+    "id": 23,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3455.0492,
+      -13.5534,
+      -1082.7447,
+      1
+    ],
+    "rotation": [
+      -2.3251,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3251
+  },
+  {
+    "id": 24,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3436.5126,
+      228.7222,
+      -3125.2786,
+      1
+    ],
+    "rotation": [
+      -3.1241,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1241
+  },
+  {
+    "id": 25,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3415.4168,
+      -15.3338,
+      -1104.208,
+      1
+    ],
+    "rotation": [
+      -2.1577,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.1577
+  },
+  {
+    "id": 26,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3415.0042,
+      -14.518,
+      -1061.4891,
+      1
+    ],
+    "rotation": [
+      -2.8551,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.8551
+  },
+  {
+    "id": 27,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -3406.5055,
+      2.5101,
+      -1800.1583,
+      1
+    ],
+    "rotation": [
+      -0.9544,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.9544
+  },
+  {
+    "id": 28,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -3400.7227,
+      31.3438,
+      482.5845,
+      1
+    ],
+    "rotation": [
+      1.8762,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.8762
+  },
+  {
+    "id": 29,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3392.0429,
+      56.0869,
+      1737.8376,
+      1
+    ],
+    "rotation": [
+      0.2793,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2793
+  },
+  {
+    "id": 30,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -3366.3844,
+      56.1585,
+      1670.0283,
+      1
+    ],
+    "rotation": [
+      1.0996,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0996
+  },
+  {
+    "id": 31,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      -3362.3962,
+      30.1542,
+      473.4929,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 32,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3344.3806,
+      -6.0587,
+      -976.0282,
+      1
+    ],
+    "rotation": [
+      2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3562
+  },
+  {
+    "id": 33,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -3338.9838,
+      38.2567,
+      2396.5574,
+      1
+    ],
+    "rotation": [
+      -1.8501,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8501
+  },
+  {
+    "id": 34,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3330.7475,
+      -15.6552,
+      3241.8793,
+      1
+    ],
+    "rotation": [
+      -2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.8798
+  },
+  {
+    "id": 35,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3313.2265,
+      72.7622,
+      -2161.8539,
+      1
+    ],
+    "rotation": [
+      -0.446,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.446
+  },
+  {
+    "id": 36,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3294.0049,
+      28.1114,
+      2750.1572,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 37,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -3279.8378,
+      83.755,
+      1297.4975,
+      1
+    ],
+    "rotation": [
+      0.1745,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1745
+  },
+  {
+    "id": 38,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      -3274.9895,
+      28.1015,
+      2778.0833,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 39,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -3263.0493,
+      77.9688,
+      -2412.0732,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 40,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3261.0361,
+      28.1007,
+      2688.6338,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 41,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3255.0107,
+      6.7921,
+      -912.0041,
+      1
+    ],
+    "rotation": [
+      -2.7576,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.7576
+  },
+  {
+    "id": 42,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3246.7112,
+      80.114,
+      -2454.5073,
+      1
+    ],
+    "rotation": [
+      -1.7233,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.7233
+  },
+  {
+    "id": 43,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3242.8322,
+      17.5802,
+      -102.3364,
+      1
+    ],
+    "rotation": [
+      1.2462,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.2462
+  },
+  {
+    "id": 44,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3221.1924,
+      -10.6135,
+      3435.1877,
+      1
+    ],
+    "rotation": [
+      2.6105,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6105
+  },
+  {
+    "id": 45,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3218.9921,
+      53.6415,
+      986.4721,
+      1
+    ],
+    "rotation": [
+      2.3375,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3375
+  },
+  {
+    "id": 46,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -3207.9548,
+      59.9795,
+      2465.6611,
+      1
+    ],
+    "rotation": [
+      -3.0371,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.0371
+  },
+  {
+    "id": 47,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -3206.7317,
+      21.1405,
+      -860.6864,
+      1
+    ],
+    "rotation": [
+      2.8514,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8514
+  },
+  {
+    "id": 48,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -3204.2018,
+      -30.8931,
+      -1813.0374,
+      1
+    ],
+    "rotation": [
+      1.3071,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3071
+  },
+  {
+    "id": 49,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -3190.2854,
+      -10.5197,
+      3423.3911,
+      1
+    ],
+    "rotation": [
+      -1.4115,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.4115
+  },
+  {
+    "id": 50,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3184.1388,
+      23.7695,
+      150.7117,
+      1
+    ],
+    "rotation": [
+      -2.81,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.81
+  },
+  {
+    "id": 51,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3154.6787,
+      23.528,
+      -253.5057,
+      1
+    ],
+    "rotation": [
+      -0.3828,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.3828
+  },
+  {
+    "id": 52,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3153.1751,
+      115.6752,
+      -2679.7755,
+      1
+    ],
+    "rotation": [
+      2.2177,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2177
+  },
+  {
+    "id": 53,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      -3139.0823,
+      -28.9403,
+      -1824.866,
+      1
+    ],
+    "rotation": [
+      0.7679,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7679
+  },
+  {
+    "id": 54,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3134.9224,
+      208.06,
+      -3307.6695,
+      1
+    ],
+    "rotation": [
+      2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3562
+  },
+  {
+    "id": 55,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -3127.2857,
+      167.0281,
+      1990.4558,
+      1
+    ],
+    "rotation": [
+      -0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5236
+  },
+  {
+    "id": 56,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      -3116.0064,
+      22.0678,
+      3768.8722,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 57,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -3109.0099,
+      121,
+      1327.8224,
+      1
+    ],
+    "rotation": [
+      1.85,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.85
+  },
+  {
+    "id": 58,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3064.8936,
+      292.8178,
+      -3737.3092,
+      1
+    ],
+    "rotation": [
+      0.4538,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.4538
+  },
+  {
+    "id": 59,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -3029.2493,
+      119.8534,
+      1212.1956,
+      1
+    ],
+    "rotation": [
+      -3.0935,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.0935
+  },
+  {
+    "id": 60,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -3016.5017,
+      204.5579,
+      -3419.5704,
+      1
+    ],
+    "rotation": [
+      -3.1398,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1398
+  },
+  {
+    "id": 61,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -3014.6502,
+      143.1889,
+      1434.6467,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 62,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -2981.3329,
+      165.7857,
+      -2771.822,
+      1
+    ],
+    "rotation": [
+      1.8895,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.8895
+  },
+  {
+    "id": 63,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -2979.0994,
+      73.6125,
+      2653.6642,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 64,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2975.8609,
+      -1.9103,
+      3425.5794,
+      1
+    ],
+    "rotation": [
+      -1.1572,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.1572
+  },
+  {
+    "id": 65,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -2972.0689,
+      14.8739,
+      -753.7541,
+      1
+    ],
+    "rotation": [
+      2.3561,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3561
+  },
+  {
+    "id": 66,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -2942.4199,
+      73.625,
+      2662.644,
+      1
+    ],
+    "rotation": [
+      1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0472
+  },
+  {
+    "id": 67,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -2888.2425,
+      59.3803,
+      504.7407,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 68,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -2864.0361,
+      59.481,
+      648.6338,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 69,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -2831.0353,
+      59.4995,
+      607.9807,
+      1
+    ],
+    "rotation": [
+      1.3788,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3788
+  },
+  {
+    "id": 70,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2829.7578,
+      24.1348,
+      299.6712,
+      1
+    ],
+    "rotation": [
+      0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7854
+  },
+  {
+    "id": 71,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -2800.8225,
+      34.8032,
+      3973.9898,
+      1
+    ],
+    "rotation": [
+      0.2793,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2793
+  },
+  {
+    "id": 72,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2792.5229,
+      191.1547,
+      2024.7525,
+      1
+    ],
+    "rotation": [
+      -0.1385,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.1385
+  },
+  {
+    "id": 73,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -2768.6698,
+      -41.5679,
+      -1597.4197,
+      1
+    ],
+    "rotation": [
+      2.6442,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6442
+  },
+  {
+    "id": 74,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -2752.6894,
+      259.8647,
+      -3528.1786,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 75,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2746.6434,
+      -41.625,
+      -1574.4128,
+      1
+    ],
+    "rotation": [
+      -1.2566,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.2566
+  },
+  {
+    "id": 76,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -2740.4824,
+      195.7188,
+      2215.5063,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 77,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -2709.1678,
+      -37.2573,
+      -1511.5391,
+      1
+    ],
+    "rotation": [
+      -1.8064,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8064
+  },
+  {
+    "id": 78,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2702.755,
+      195.5927,
+      2206.7758,
+      1
+    ],
+    "rotation": [
+      -2.0857,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0857
+  },
+  {
+    "id": 79,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2677.2404,
+      -10.5111,
+      3553.4036,
+      1
+    ],
+    "rotation": [
+      1.185,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.185
+  },
+  {
+    "id": 80,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2671.9247,
+      -37.2707,
+      -1526.9453,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 81,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -2656.4566,
+      140.0152,
+      -3035.133,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 82,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2626.2392,
+      -17.9693,
+      -534.6045,
+      1
+    ],
+    "rotation": [
+      -0.0349,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.0349
+  },
+  {
+    "id": 83,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2568.1559,
+      -11.9689,
+      -264.1706,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 84,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -2565.3897,
+      -12.8306,
+      -350.4573,
+      1
+    ],
+    "rotation": [
+      -2.9259,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.9259
+  },
+  {
+    "id": 85,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      -2520.9985,
+      150.9011,
+      -3278.5974,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 86,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2507.0651,
+      33.4907,
+      1837.3745,
+      1
+    ],
+    "rotation": [
+      1.5045,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5045
+  },
+  {
+    "id": 87,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -2484.9236,
+      -11.5184,
+      903.657,
+      1
+    ],
+    "rotation": [
+      0.3096,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.3096
+  },
+  {
+    "id": 88,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2481.7048,
+      -29.9305,
+      1333.6675,
+      1
+    ],
+    "rotation": [
+      2.618,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.618
+  },
+  {
+    "id": 89,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2473.0099,
+      209.1049,
+      -2286.1145,
+      1
+    ],
+    "rotation": [
+      1.9559,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.9559
+  },
+  {
+    "id": 90,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      -2472.4671,
+      10,
+      3341.351,
+      1
+    ],
+    "rotation": [
+      2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3562
+  },
+  {
+    "id": 91,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -2460.9317,
+      -30.8258,
+      -1143.3993,
+      1
+    ],
+    "rotation": [
+      -0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5236
+  },
+  {
+    "id": 92,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2452.8393,
+      31.7366,
+      2654.6606,
+      1
+    ],
+    "rotation": [
+      2.2021,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2021
+  },
+  {
+    "id": 93,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2441.8447,
+      -20.5499,
+      -750.9743,
+      1
+    ],
+    "rotation": [
+      -0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7854
+  },
+  {
+    "id": 94,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2432.8987,
+      -15.7669,
+      789.514,
+      1
+    ],
+    "rotation": [
+      -0.1564,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.1564
+  },
+  {
+    "id": 95,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -2428.6189,
+      -30.6563,
+      1352.9711,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 96,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2342.4742,
+      187.2177,
+      -1930.3486,
+      1
+    ],
+    "rotation": [
+      0.8029,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.8029
+  },
+  {
+    "id": 97,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      -2311.25,
+      153.5,
+      -3238.5,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 98,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -2303.989,
+      132.8438,
+      -2806.7251,
+      1
+    ],
+    "rotation": [
+      -0.6981,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.6981
+  },
+  {
+    "id": 99,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2303.4558,
+      -7.5646,
+      3833.5986,
+      1
+    ],
+    "rotation": [
+      -2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0944
+  },
+  {
+    "id": 100,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -2293.6143,
+      132.8125,
+      -2742.6567,
+      1
+    ],
+    "rotation": [
+      -2.1642,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.1642
+  },
+  {
+    "id": 101,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -2213.2584,
+      -17.5662,
+      2308.3752,
+      1
+    ],
+    "rotation": [
+      -0.3184,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.3184
+  },
+  {
+    "id": 102,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 5,
+    "position": [
+      -2192.0229,
+      -31.0666,
+      -268.9341,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 103,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      -2174.7546,
+      -31,
+      -225.1617,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 104,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      -2173.6658,
+      -31.068,
+      80.3767,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 105,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -2167.4864,
+      -29.7528,
+      -1315.6184,
+      1
+    ],
+    "rotation": [
+      1.6407,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6407
+  },
+  {
+    "id": 106,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      -2130.6067,
+      -5.471,
+      -837.2943,
+      1
+    ],
+    "rotation": [
+      -1.9199,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.9199
+  },
+  {
+    "id": 107,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      -2127.4575,
+      -31,
+      85.8066,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 108,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -2118.0447,
+      -1.9294,
+      3205.8882,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 109,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -2112.0229,
+      -44.4069,
+      1640.7944,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 110,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -2100.583,
+      -27.6461,
+      2872.115,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 111,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -2100.0688,
+      109.1803,
+      -2408.3582,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 112,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      -2024.1317,
+      -31.168,
+      280.8372,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 113,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1968.8268,
+      320.9046,
+      -3679.5314,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 114,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1968.1461,
+      145.1767,
+      -3137.3362,
+      1
+    ],
+    "rotation": [
+      -1.0782,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0782
+  },
+  {
+    "id": 115,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      -1898.4993,
+      90.169,
+      -2584.2007,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 116,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1893.6613,
+      84.947,
+      -2193.2414,
+      1
+    ],
+    "rotation": [
+      2.7413,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.7413
+  },
+  {
+    "id": 117,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1892.0092,
+      -4.2181,
+      2347.8741,
+      1
+    ],
+    "rotation": [
+      -2.0956,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0956
+  },
+  {
+    "id": 118,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1866.6668,
+      90.319,
+      -2557.38,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 119,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -1853.7339,
+      -36.4137,
+      2861.1156,
+      1
+    ],
+    "rotation": [
+      1.3003,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3003
+  },
+  {
+    "id": 120,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      -1838.6003,
+      -30.26,
+      -743.0204,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 121,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      -1834.6003,
+      -27.7791,
+      -609.5917,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 122,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1820.389,
+      11.1445,
+      1195.5005,
+      1
+    ],
+    "rotation": [
+      -1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0472
+  },
+  {
+    "id": 123,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 5,
+    "position": [
+      -1792.2938,
+      -31.115,
+      -188.4082,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 124,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1788.6356,
+      -31.9698,
+      3398.9172,
+      1
+    ],
+    "rotation": [
+      0.9809,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.9809
+  },
+  {
+    "id": 125,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1765.2945,
+      -31.3,
+      -77.344,
+      1
+    ],
+    "rotation": [
+      -0.1396,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.1396
+  },
+  {
+    "id": 126,
+    "name": "City_Props_ParkingLot_Lines_Handicap",
+    "vehicleId": 5,
+    "position": [
+      -1763.375,
+      -31.125,
+      178.6488,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 127,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1645.477,
+      43.7606,
+      1120.2475,
+      1
+    ],
+    "rotation": [
+      3.0031,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.0031
+  },
+  {
+    "id": 128,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1641.5932,
+      291.7178,
+      -3618.4985,
+      1
+    ],
+    "rotation": [
+      2.2021,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2021
+  },
+  {
+    "id": 129,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1629.8212,
+      -31.3514,
+      -1521.0129,
+      1
+    ],
+    "rotation": [
+      -1.3096,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.3096
+  },
+  {
+    "id": 130,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1621.0205,
+      3.9849,
+      1600.5021,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 131,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1596.2634,
+      -31.0318,
+      -1530.5432,
+      1
+    ],
+    "rotation": [
+      -1.3088,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.3088
+  },
+  {
+    "id": 132,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1574.708,
+      237.1468,
+      -3243.4914,
+      1
+    ],
+    "rotation": [
+      -1.6057,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.6057
+  },
+  {
+    "id": 133,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -1573.8345,
+      -41.0207,
+      2755.9451,
+      1
+    ],
+    "rotation": [
+      1.8413,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.8413
+  },
+  {
+    "id": 134,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1567.5916,
+      -36.3735,
+      2121.8755,
+      1
+    ],
+    "rotation": [
+      2.6182,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6182
+  },
+  {
+    "id": 135,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -1541.7216,
+      71.9063,
+      -2687.0453,
+      1
+    ],
+    "rotation": [
+      -1.0996,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0996
+  },
+  {
+    "id": 136,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -1539.7526,
+      -28.3752,
+      -1554.7175,
+      1
+    ],
+    "rotation": [
+      -2.3548,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3548
+  },
+  {
+    "id": 137,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1512.4898,
+      71.8897,
+      -2536.1686,
+      1
+    ],
+    "rotation": [
+      -2.5482,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.5482
+  },
+  {
+    "id": 138,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1507.6178,
+      -23.75,
+      3161.2672,
+      1
+    ],
+    "rotation": [
+      -2.9845,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.9845
+  },
+  {
+    "id": 139,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -1498.6845,
+      237.9375,
+      -3254.7071,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 140,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -1489.5146,
+      -23.75,
+      3191.0134,
+      1
+    ],
+    "rotation": [
+      -2.3911,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3911
+  },
+  {
+    "id": 141,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -1487.9039,
+      -36.9722,
+      -1469.7464,
+      1
+    ],
+    "rotation": [
+      -0.5298,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5298
+  },
+  {
+    "id": 142,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1479.6099,
+      -41.3458,
+      2745.9429,
+      1
+    ],
+    "rotation": [
+      -3.0369,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.0369
+  },
+  {
+    "id": 143,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      -1478.8413,
+      -25.2151,
+      -1549.3988,
+      1
+    ],
+    "rotation": [
+      -2.7044,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.7044
+  },
+  {
+    "id": 144,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1454.6206,
+      29,
+      -146.3902,
+      1
+    ],
+    "rotation": [
+      2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0944
+  },
+  {
+    "id": 145,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -1444.0195,
+      71.9063,
+      -2671.689,
+      1
+    ],
+    "rotation": [
+      -0.8552,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.8552
+  },
+  {
+    "id": 146,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -1440.3595,
+      49.7804,
+      879.4457,
+      1
+    ],
+    "rotation": [
+      -2.234,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.234
+  },
+  {
+    "id": 147,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1419.9087,
+      66.0756,
+      507.2164,
+      1
+    ],
+    "rotation": [
+      -0.1863,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.1863
+  },
+  {
+    "id": 148,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -1390.6974,
+      -30.0642,
+      -1251.9295,
+      1
+    ],
+    "rotation": [
+      0.172,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.172
+  },
+  {
+    "id": 149,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1387.768,
+      -44.1711,
+      2331.3566,
+      1
+    ],
+    "rotation": [
+      2.1293,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1293
+  },
+  {
+    "id": 150,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -1380.7412,
+      71.9063,
+      -2599.1738,
+      1
+    ],
+    "rotation": [
+      -0.8727,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.8727
+  },
+  {
+    "id": 151,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1307.7513,
+      -28.4949,
+      2823.4072,
+      1
+    ],
+    "rotation": [
+      -2.6807,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.6807
+  },
+  {
+    "id": 152,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      -1252.1527,
+      -10.8681,
+      2006.1789,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 153,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -1218.1213,
+      -18.5506,
+      -682.8999,
+      1
+    ],
+    "rotation": [
+      2.5982,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.5982
+  },
+  {
+    "id": 154,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1202.9797,
+      55.25,
+      -2503.7518,
+      1
+    ],
+    "rotation": [
+      2.0769,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0769
+  },
+  {
+    "id": 155,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 5,
+    "position": [
+      -1198.8408,
+      50.6124,
+      1157.8337,
+      1
+    ],
+    "rotation": [
+      -0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7854
+  },
+  {
+    "id": 156,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1194.8184,
+      -25.429,
+      -776.9915,
+      1
+    ],
+    "rotation": [
+      -2.653,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.653
+  },
+  {
+    "id": 157,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -1179.6052,
+      64.944,
+      -150.1083,
+      1
+    ],
+    "rotation": [
+      -1.5254,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5254
+  },
+  {
+    "id": 158,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -1179,
+      42.1501,
+      1487.9984,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 159,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -1143.8413,
+      50.8659,
+      144.4692,
+      1
+    ],
+    "rotation": [
+      -2.3374,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3374
+  },
+  {
+    "id": 160,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1106.8247,
+      150.5625,
+      -3179.0534,
+      1
+    ],
+    "rotation": [
+      2.6607,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6607
+  },
+  {
+    "id": 161,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -1093.4038,
+      2.5005,
+      2102.747,
+      1
+    ],
+    "rotation": [
+      2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3562
+  },
+  {
+    "id": 162,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -1068.369,
+      44.275,
+      -1791.3007,
+      1
+    ],
+    "rotation": [
+      1.481,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.481
+  },
+  {
+    "id": 163,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -1065.4558,
+      68,
+      708.5986,
+      1
+    ],
+    "rotation": [
+      -2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0944
+  },
+  {
+    "id": 164,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -990.1455,
+      53.44,
+      -2647.541,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 165,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 5,
+    "position": [
+      -977.4738,
+      -13.4875,
+      2061.2061,
+      1
+    ],
+    "rotation": [
+      -2.3038,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3038
+  },
+  {
+    "id": 166,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -958.2431,
+      53.5538,
+      -2616.214,
+      1
+    ],
+    "rotation": [
+      -1.3443,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.3443
+  },
+  {
+    "id": 167,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      -945.4776,
+      50.8438,
+      1103.068,
+      1
+    ],
+    "rotation": [
+      0.8203,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.8203
+  },
+  {
+    "id": 168,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -922.7501,
+      -13.5,
+      2078.0002,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 169,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -912.1715,
+      -13.4688,
+      2004.1717,
+      1
+    ],
+    "rotation": [
+      0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7854
+  },
+  {
+    "id": 170,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -855.9689,
+      51.7403,
+      986.3317,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 171,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -832.1418,
+      118.2511,
+      -3240.861,
+      1
+    ],
+    "rotation": [
+      -2.8693,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.8693
+  },
+  {
+    "id": 172,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -822.5697,
+      -13.5,
+      1835.4236,
+      1
+    ],
+    "rotation": [
+      3.1241,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1241
+  },
+  {
+    "id": 173,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -799.2049,
+      35.6954,
+      3240.0554,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 174,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -780.2949,
+      -8.5695,
+      -640.8101,
+      1
+    ],
+    "rotation": [
+      -0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7854
+  },
+  {
+    "id": 175,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -737.4555,
+      36.0794,
+      -2182.317,
+      1
+    ],
+    "rotation": [
+      1.0544,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0544
+  },
+  {
+    "id": 176,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -729.9803,
+      191.4489,
+      -3544.0291,
+      1
+    ],
+    "rotation": [
+      -3.1413,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1413
+  },
+  {
+    "id": 177,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -703.3337,
+      57.5996,
+      -1353.5464,
+      1
+    ],
+    "rotation": [
+      2.9496,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.9496
+  },
+  {
+    "id": 178,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -694.8367,
+      42.3473,
+      951.5824,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 179,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 5,
+    "position": [
+      -682.7099,
+      43.7557,
+      -1944.0554,
+      1
+    ],
+    "rotation": [
+      1.6057,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6057
+  },
+  {
+    "id": 180,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -679.3929,
+      -7.2319,
+      2610.1185,
+      1
+    ],
+    "rotation": [
+      -2.3213,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3213
+  },
+  {
+    "id": 181,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      -648.5505,
+      225.2233,
+      4036.9244,
+      1
+    ],
+    "rotation": [
+      2.4435,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.4435
+  },
+  {
+    "id": 182,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -643.8143,
+      43.7813,
+      -1963.7882,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 183,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      -641.6197,
+      -7.221,
+      2588.1899,
+      1
+    ],
+    "rotation": [
+      0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7854
+  },
+  {
+    "id": 184,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      -635.376,
+      1.2765,
+      1434.9036,
+      1
+    ],
+    "rotation": [
+      2.1699,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1699
+  },
+  {
+    "id": 185,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -615.1945,
+      13.6226,
+      -1076.4961,
+      1
+    ],
+    "rotation": [
+      1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.8326
+  },
+  {
+    "id": 186,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      -596.0367,
+      33.25,
+      44.8412,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 187,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -543.25,
+      33.2642,
+      154.227,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 188,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      -537.5511,
+      33.0104,
+      -26.0964,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 189,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -536.0611,
+      48.6013,
+      -2075.6099,
+      1
+    ],
+    "rotation": [
+      2.8764,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8764
+  },
+  {
+    "id": 190,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      -528.3126,
+      33.25,
+      -155.4767,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 191,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -512.7025,
+      241.7283,
+      -3766.3707,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 192,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -484.3975,
+      238.1889,
+      -3711.5337,
+      1
+    ],
+    "rotation": [
+      2.8781,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8781
+  },
+  {
+    "id": 193,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -468.7804,
+      249.4838,
+      -3769.2673,
+      1
+    ],
+    "rotation": [
+      2.8801,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8801
+  },
+  {
+    "id": 194,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -432.9329,
+      -31.0378,
+      1860.1889,
+      1
+    ],
+    "rotation": [
+      2.6354,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6354
+  },
+  {
+    "id": 195,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -397.3456,
+      107.1294,
+      -3067.7266,
+      1
+    ],
+    "rotation": [
+      -2.3553,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3553
+  },
+  {
+    "id": 196,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -344.4047,
+      105.571,
+      -3087.8577,
+      1
+    ],
+    "rotation": [
+      2.8809,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8809
+  },
+  {
+    "id": 197,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -283.0238,
+      57.7452,
+      1154.5396,
+      1
+    ],
+    "rotation": [
+      -2.6746,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.6746
+  },
+  {
+    "id": 198,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -251.2346,
+      64.7662,
+      3296.366,
+      1
+    ],
+    "rotation": [
+      -0.6283,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.6283
+  },
+  {
+    "id": 199,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      -222.2354,
+      33.25,
+      520.2233,
+      1
+    ],
+    "rotation": [
+      -1.6581,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.6581
+  },
+  {
+    "id": 200,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      -219.7621,
+      -21.553,
+      -2309.012,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 201,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      -195.3184,
+      95.422,
+      -879.2896,
+      1
+    ],
+    "rotation": [
+      2.1751,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1751
+  },
+  {
+    "id": 202,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -192.5,
+      33.25,
+      462.2474,
+      1
+    ],
+    "rotation": [
+      -2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0944
+  },
+  {
+    "id": 203,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -182.2723,
+      70.9899,
+      3276.7731,
+      1
+    ],
+    "rotation": [
+      2.6136,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6136
+  },
+  {
+    "id": 204,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -154.3023,
+      36.3764,
+      840.5262,
+      1
+    ],
+    "rotation": [
+      -0.5847,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5847
+  },
+  {
+    "id": 205,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -127.1008,
+      68.0272,
+      2133.3909,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 206,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      -102.9858,
+      0.0175,
+      -2542.7162,
+      1
+    ],
+    "rotation": [
+      -0.3142,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.3142
+  },
+  {
+    "id": 207,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -101.2444,
+      47.4334,
+      -1257.6929,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 208,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      -92.4137,
+      14.448,
+      -1723.5185,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 209,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      -87.3864,
+      32.95,
+      -185.862,
+      1
+    ],
+    "rotation": [
+      1.0821,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0821
+  },
+  {
+    "id": 210,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      -58.2939,
+      33.2342,
+      300.2261,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 211,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      -30.8289,
+      103.2331,
+      -3166.073,
+      1
+    ],
+    "rotation": [
+      2.6177,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6177
+  },
+  {
+    "id": 212,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      -6.5,
+      33.1875,
+      -440.0005,
+      1
+    ],
+    "rotation": [
+      -0.0019,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.0019
+  },
+  {
+    "id": 213,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 2,
+    "position": [
+      29.5072,
+      33.1022,
+      -429.6375,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 214,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      62.3437,
+      33.25,
+      317.0875,
+      1
+    ],
+    "rotation": [
+      2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0944
+  },
+  {
+    "id": 215,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      86.3925,
+      31.0272,
+      -854.0426,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 216,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      91.9313,
+      -29.6535,
+      1676.7594,
+      1
+    ],
+    "rotation": [
+      1.4144,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4144
+  },
+  {
+    "id": 217,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      99.611,
+      82.2224,
+      2951.5005,
+      1
+    ],
+    "rotation": [
+      -1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0472
+  },
+  {
+    "id": 218,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      103.0038,
+      33.1022,
+      -402.766,
+      1
+    ],
+    "rotation": [
+      -2.6005,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.6005
+  },
+  {
+    "id": 219,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      146.9012,
+      33.25,
+      309.2652,
+      1
+    ],
+    "rotation": [
+      1.6581,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6581
+  },
+  {
+    "id": 220,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      166.9313,
+      -1.9771,
+      2232.7592,
+      1
+    ],
+    "rotation": [
+      1.4144,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4144
+  },
+  {
+    "id": 221,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      183.362,
+      32.25,
+      522.7986,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 222,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      229.9044,
+      55.7689,
+      -2842.391,
+      1
+    ],
+    "rotation": [
+      0.3856,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.3856
+  },
+  {
+    "id": 223,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      263.5581,
+      47.43,
+      -1479.3223,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 224,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      278.963,
+      99.4039,
+      -3118.2593,
+      1
+    ],
+    "rotation": [
+      -1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0472
+  },
+  {
+    "id": 225,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      281.3165,
+      32.1572,
+      533.8077,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 226,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      291.975,
+      26,
+      -1696.5425,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 227,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      322.9145,
+      35.7296,
+      -1266.8952,
+      1
+    ],
+    "rotation": [
+      -0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7854
+  },
+  {
+    "id": 228,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      331.5,
+      26,
+      -1671.1857,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 229,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      335.4795,
+      95.4652,
+      3436.5022,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 230,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      342.5426,
+      -22.2083,
+      -2172.7211,
+      1
+    ],
+    "rotation": [
+      -2.7751,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.7751
+  },
+  {
+    "id": 231,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      390.1461,
+      25.028,
+      -2511.9138,
+      1
+    ],
+    "rotation": [
+      2.0634,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0634
+  },
+  {
+    "id": 232,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      417.8148,
+      249.4501,
+      -3504.4489,
+      1
+    ],
+    "rotation": [
+      0.0873,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.0873
+  },
+  {
+    "id": 233,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      420.7262,
+      36.7935,
+      3164,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 234,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      450.579,
+      48.2131,
+      -2682.7534,
+      1
+    ],
+    "rotation": [
+      0.0349,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.0349
+  },
+  {
+    "id": 235,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      458.577,
+      -31.2555,
+      2230.4988,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 236,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      465.6934,
+      -29.8185,
+      1914.1606,
+      1
+    ],
+    "rotation": [
+      1.6515,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6515
+  },
+  {
+    "id": 237,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      487.492,
+      4,
+      1067.6145,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 238,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      503.0772,
+      4,
+      1360.25,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 239,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      523.4504,
+      32.95,
+      -197.7713,
+      1
+    ],
+    "rotation": [
+      2.2515,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2515
+  },
+  {
+    "id": 240,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      524.3979,
+      32.2155,
+      445.5,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 241,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      525.6489,
+      3.2541,
+      -1237.2361,
+      1
+    ],
+    "rotation": [
+      2.1991,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1991
+  },
+  {
+    "id": 242,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      530.7887,
+      -0.5764,
+      -878.435,
+      1
+    ],
+    "rotation": [
+      2.9251,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.9251
+  },
+  {
+    "id": 243,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      544,
+      32.25,
+      250,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 244,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      562.2005,
+      92.0539,
+      -3012.9239,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 245,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      567.4588,
+      3.1148,
+      -1233.3131,
+      1
+    ],
+    "rotation": [
+      0.8661,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.8661
+  },
+  {
+    "id": 246,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      620.6137,
+      24,
+      -1870.3043,
+      1
+    ],
+    "rotation": [
+      -1.8151,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8151
+  },
+  {
+    "id": 247,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      626.7823,
+      20.9022,
+      3244.4829,
+      1
+    ],
+    "rotation": [
+      -1.7279,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.7279
+  },
+  {
+    "id": 248,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      634.25,
+      4,
+      1148.5021,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 249,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      680.0449,
+      20.9689,
+      3236.1946,
+      1
+    ],
+    "rotation": [
+      -0.9425,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.9425
+  },
+  {
+    "id": 250,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      722.3676,
+      56.2278,
+      -2394.9196,
+      1
+    ],
+    "rotation": [
+      2.4086,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.4086
+  },
+  {
+    "id": 251,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      722.5964,
+      -30.972,
+      2667.5772,
+      1
+    ],
+    "rotation": [
+      -0.3858,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.3858
+  },
+  {
+    "id": 252,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      774.5258,
+      14.0084,
+      -89.2949,
+      1
+    ],
+    "rotation": [
+      -0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7854
+  },
+  {
+    "id": 253,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      791.7416,
+      -15.0359,
+      1638.2921,
+      1
+    ],
+    "rotation": [
+      -0.3184,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.3184
+  },
+  {
+    "id": 254,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      798.1521,
+      -15.7188,
+      1601.236,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 255,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      838.0933,
+      -7.4688,
+      651.5138,
+      1
+    ],
+    "rotation": [
+      -1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0472
+  },
+  {
+    "id": 256,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      839.9464,
+      56.0892,
+      -2390.7464,
+      1
+    ],
+    "rotation": [
+      0.8203,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.8203
+  },
+  {
+    "id": 257,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      855.3459,
+      36.903,
+      -1676.1147,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 258,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      885.449,
+      239.6292,
+      -3739.7508,
+      1
+    ],
+    "rotation": [
+      2.5614,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.5614
+  },
+  {
+    "id": 259,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      890.6639,
+      198.4505,
+      -3360.8257,
+      1
+    ],
+    "rotation": [
+      1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0472
+  },
+  {
+    "id": 260,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      894.7742,
+      198.4433,
+      -3412.2402,
+      1
+    ],
+    "rotation": [
+      1.0472,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0472
+  },
+  {
+    "id": 261,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      910.1722,
+      -4.0642,
+      1188.655,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 262,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 2,
+    "position": [
+      974.897,
+      -11.2813,
+      2305.873,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 263,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 2,
+    "position": [
+      983.3709,
+      -11.2813,
+      2271.876,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 264,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      996.8705,
+      12.3671,
+      -849.2635,
+      1
+    ],
+    "rotation": [
+      0.1396,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1396
+  },
+  {
+    "id": 265,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      1029.4149,
+      25.7013,
+      3464.9045,
+      1
+    ],
+    "rotation": [
+      0.0524,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.0524
+  },
+  {
+    "id": 266,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      1031.2825,
+      25.684,
+      3285.5381,
+      1
+    ],
+    "rotation": [
+      -3.0892,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.0892
+  },
+  {
+    "id": 267,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      1050.9115,
+      10,
+      622.5309,
+      1
+    ],
+    "rotation": [
+      0.0175,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.0175
+  },
+  {
+    "id": 268,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      1052.6445,
+      32.1007,
+      -432.5181,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 269,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      1062.4137,
+      8.9737,
+      333.0391,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 270,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      1071.8944,
+      -32.3275,
+      2711.7496,
+      1
+    ],
+    "rotation": [
+      0.1922,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1922
+  },
+  {
+    "id": 271,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      1076.9506,
+      9.9936,
+      605.4605,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 272,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      1084.9843,
+      8,
+      383.7155,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 273,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      1129.2919,
+      14.1789,
+      -1180.1741,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 274,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      1179.9491,
+      34.919,
+      -742.8923,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 275,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 5,
+    "position": [
+      1183,
+      50,
+      -1920,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 276,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      1220.0686,
+      50.2468,
+      -1916.0568,
+      1
+    ],
+    "rotation": [
+      -0.1222,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.1222
+  },
+  {
+    "id": 277,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 1,
+    "position": [
+      1252.7279,
+      160.3496,
+      -3146.4255,
+      1
+    ],
+    "rotation": [
+      -2.618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.618
+  },
+  {
+    "id": 278,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      1269.4943,
+      27.8252,
+      1403.4039,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 279,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      1273.2961,
+      7.4395,
+      -209.9831,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 280,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      1273.4943,
+      29.8354,
+      1544.6471,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 281,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 5,
+    "position": [
+      1286.7041,
+      160.275,
+      -3102.3115,
+      1
+    ],
+    "rotation": [
+      2.1031,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1031
+  },
+  {
+    "id": 282,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      1302.6066,
+      16.55,
+      2081.0594,
+      1
+    ],
+    "rotation": [
+      2.9322,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.9322
+  },
+  {
+    "id": 283,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      1333.0697,
+      160.7607,
+      -3204.1931,
+      1
+    ],
+    "rotation": [
+      2.234,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.234
+  },
+  {
+    "id": 284,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      1348.4169,
+      17.346,
+      1446.7516,
+      1
+    ],
+    "rotation": [
+      2.1485,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1485
+  },
+  {
+    "id": 285,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      1371.9922,
+      16.245,
+      1937.6469,
+      1
+    ],
+    "rotation": [
+      -1.9024,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.9024
+  },
+  {
+    "id": 286,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      1374.7427,
+      50,
+      -2253.8557,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 287,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      1394.1431,
+      40.8552,
+      -1318.5966,
+      1
+    ],
+    "rotation": [
+      -0.4853,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.4853
+  },
+  {
+    "id": 288,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      1399.1989,
+      16.235,
+      1870.9036,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 289,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      1426.1719,
+      147.008,
+      3986.7397,
+      1
+    ],
+    "rotation": [
+      2.8278,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8278
+  },
+  {
+    "id": 290,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      1430.0543,
+      16.4625,
+      2279.12,
+      1
+    ],
+    "rotation": [
+      -0.2618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.2618
+  },
+  {
+    "id": 291,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      1458.656,
+      15.95,
+      2209.2945,
+      1
+    ],
+    "rotation": [
+      1.4312,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4312
+  },
+  {
+    "id": 292,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      1481.5681,
+      20.2489,
+      -516.4322,
+      1
+    ],
+    "rotation": [
+      -2.4428,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.4428
+  },
+  {
+    "id": 293,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      1486.036,
+      108.3438,
+      -2605.7037,
+      1
+    ],
+    "rotation": [
+      -0.4712,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.4712
+  },
+  {
+    "id": 294,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      1490.1096,
+      14.2845,
+      1348.82,
+      1
+    ],
+    "rotation": [
+      1.047,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.047
+  },
+  {
+    "id": 295,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 5,
+    "position": [
+      1496.9297,
+      7.5589,
+      3167.0671,
+      1
+    ],
+    "rotation": [
+      0.1396,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1396
+  },
+  {
+    "id": 296,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      1522.5668,
+      108.3161,
+      -2685.6968,
+      1
+    ],
+    "rotation": [
+      0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7854
+  },
+  {
+    "id": 297,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 3,
+    "position": [
+      1534.9,
+      50.917,
+      -2153.4546,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 298,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 5,
+    "position": [
+      1541.3271,
+      108.3075,
+      -2658.6914,
+      1
+    ],
+    "rotation": [
+      2.6005,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.6005
+  },
+  {
+    "id": 299,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      1594.2624,
+      41,
+      -1972.8207,
+      1
+    ],
+    "rotation": [
+      -1.693,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.693
+  },
+  {
+    "id": 300,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      1605.7141,
+      16.25,
+      2238,
+      1
+    ],
+    "rotation": [
+      -0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5236
+  },
+  {
+    "id": 301,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      1619.0134,
+      40.95,
+      -2122.8752,
+      1
+    ],
+    "rotation": [
+      -2.3038,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3038
+  },
+  {
+    "id": 302,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      1623.7333,
+      82.3388,
+      -1231.7057,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 303,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      1646.8797,
+      -6.16,
+      3123.3768,
+      1
+    ],
+    "rotation": [
+      1.7301,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.7301
+  },
+  {
+    "id": 304,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      1720.3706,
+      16.2061,
+      2255.0881,
+      1
+    ],
+    "rotation": [
+      -1.8326,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8326
+  },
+  {
+    "id": 305,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      1726.558,
+      40.9158,
+      -2178.812,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 306,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      1743.564,
+      15.95,
+      1473.5,
+      1
+    ],
+    "rotation": [
+      2.4784,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.4784
+  },
+  {
+    "id": 307,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      1790.5081,
+      40.0441,
+      -2721.5086,
+      1
+    ],
+    "rotation": [
+      1.0822,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.0822
+  },
+  {
+    "id": 308,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      1794.2408,
+      17.9697,
+      3340.6161,
+      1
+    ],
+    "rotation": [
+      -1.0018,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0018
+  },
+  {
+    "id": 309,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 2,
+    "position": [
+      1849.25,
+      16.2642,
+      1823.7739,
+      1
+    ],
+    "rotation": [
+      -3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": -3.1416
+  },
+  {
+    "id": 310,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      1849.293,
+      43.0815,
+      -1886.7832,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 311,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      1870.303,
+      19.7125,
+      789.0099,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 312,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      1881.8778,
+      101.138,
+      -970.6763,
+      1
+    ],
+    "rotation": [
+      0.8553,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.8553
+  },
+  {
+    "id": 313,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      1925.231,
+      -25.9866,
+      2829.6234,
+      1
+    ],
+    "rotation": [
+      1.9199,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.9199
+  },
+  {
+    "id": 314,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      1947.7969,
+      15.1988,
+      1553.8171,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 315,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      1957.8547,
+      4.1179,
+      -166.131,
+      1
+    ],
+    "rotation": [
+      2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0944
+  },
+  {
+    "id": 316,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2011.8734,
+      -1.976,
+      326.9915,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 317,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      2033.5,
+      15.25,
+      1512,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 318,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2090.9224,
+      16.352,
+      -2552.6745,
+      1
+    ],
+    "rotation": [
+      1.6581,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6581
+  },
+  {
+    "id": 319,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      2111.5467,
+      60.4796,
+      -1978.6018,
+      1
+    ],
+    "rotation": [
+      2.1516,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1516
+  },
+  {
+    "id": 320,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2120.6102,
+      -4.5376,
+      3098.2678,
+      1
+    ],
+    "rotation": [
+      -1.0409,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.0409
+  },
+  {
+    "id": 321,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      2130.6204,
+      15.25,
+      1615.7234,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 322,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2143.2152,
+      105.9122,
+      3732.9006,
+      1
+    ],
+    "rotation": [
+      0.9087,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.9087
+  },
+  {
+    "id": 323,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2154.3708,
+      3.1242,
+      -2607.7121,
+      1
+    ],
+    "rotation": [
+      2.0634,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0634
+  },
+  {
+    "id": 324,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2205.9724,
+      57.0038,
+      1191.8867,
+      1
+    ],
+    "rotation": [
+      -2.9496,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.9496
+  },
+  {
+    "id": 325,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2213.4641,
+      18.2139,
+      847.9018,
+      1
+    ],
+    "rotation": [
+      0.7854,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.7854
+  },
+  {
+    "id": 326,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2243.8137,
+      109.9578,
+      -3745.0851,
+      1
+    ],
+    "rotation": [
+      0.1955,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1955
+  },
+  {
+    "id": 327,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2271.3749,
+      -10.026,
+      -457.0769,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 328,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 5,
+    "position": [
+      2290.9651,
+      -0.7732,
+      1987.8751,
+      1
+    ],
+    "rotation": [
+      1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.309
+  },
+  {
+    "id": 329,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2302.5961,
+      52.4244,
+      -1746.8988,
+      1
+    ],
+    "rotation": [
+      -2.6843,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.6843
+  },
+  {
+    "id": 330,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      2306.3872,
+      -2.2873,
+      3001.8551,
+      1
+    ],
+    "rotation": [
+      1.8151,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.8151
+  },
+  {
+    "id": 331,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2311.5552,
+      3.0418,
+      -2402.1401,
+      1
+    ],
+    "rotation": [
+      -2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.0944
+  },
+  {
+    "id": 332,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      2343.9423,
+      -4,
+      -1180.471,
+      1
+    ],
+    "rotation": [
+      0.4618,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.4618
+  },
+  {
+    "id": 333,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2389.1411,
+      -13.9439,
+      -591.2395,
+      1
+    ],
+    "rotation": [
+      0.1222,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1222
+  },
+  {
+    "id": 334,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      2402.7604,
+      52.4251,
+      -3140.0658,
+      1
+    ],
+    "rotation": [
+      -0.7157,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7157
+  },
+  {
+    "id": 335,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      2405.1716,
+      -2.3507,
+      2977.0705,
+      1
+    ],
+    "rotation": [
+      0.2967,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2967
+  },
+  {
+    "id": 336,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      2435.2839,
+      -4,
+      -1151.6339,
+      1
+    ],
+    "rotation": [
+      -1.5453,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5453
+  },
+  {
+    "id": 337,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 2,
+    "position": [
+      2449.126,
+      -6.7725,
+      384.5014,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 338,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2453.4052,
+      0.3125,
+      -384.1657,
+      1
+    ],
+    "rotation": [
+      2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.3562
+  },
+  {
+    "id": 339,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2485.2444,
+      125.2217,
+      -3531.4829,
+      1
+    ],
+    "rotation": [
+      -2.618,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.618
+  },
+  {
+    "id": 340,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2489.2165,
+      -9.9771,
+      -627.0914,
+      1
+    ],
+    "rotation": [
+      1.3845,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3845
+  },
+  {
+    "id": 341,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      2512.0908,
+      60.6193,
+      1202.0503,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 342,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      2540.8037,
+      -5.4443,
+      405.9775,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 343,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      2551.1422,
+      15.4048,
+      -2793.3854,
+      1
+    ],
+    "rotation": [
+      1.4248,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.4248
+  },
+  {
+    "id": 344,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      2567.8533,
+      -6.0154,
+      -612.8661,
+      1
+    ],
+    "rotation": [
+      -2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.8798
+  },
+  {
+    "id": 345,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      2570.0554,
+      -4.9375,
+      440.5119,
+      1
+    ],
+    "rotation": [
+      1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5708
+  },
+  {
+    "id": 346,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      2583.6829,
+      12.1685,
+      -2733.1746,
+      1
+    ],
+    "rotation": [
+      0.1658,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.1658
+  },
+  {
+    "id": 347,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      2585.4694,
+      17.1463,
+      -525.0013,
+      1
+    ],
+    "rotation": [
+      1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.309
+  },
+  {
+    "id": 348,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      2591.6686,
+      72.6309,
+      3611.1816,
+      1
+    ],
+    "rotation": [
+      3.0176,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.0176
+  },
+  {
+    "id": 349,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2591.7145,
+      -4.9375,
+      405.6267,
+      1
+    ],
+    "rotation": [
+      -1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.309
+  },
+  {
+    "id": 350,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      2617.0681,
+      16.7738,
+      -500.1737,
+      1
+    ],
+    "rotation": [
+      0.2705,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2705
+  },
+  {
+    "id": 351,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      2619.9263,
+      28.7157,
+      1965.157,
+      1
+    ],
+    "rotation": [
+      2.7413,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.7413
+  },
+  {
+    "id": 352,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2640.3753,
+      -13.2735,
+      2195.1861,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 353,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      2696.3975,
+      36.4028,
+      -2842.299,
+      1
+    ],
+    "rotation": [
+      0.0698,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.0698
+  },
+  {
+    "id": 354,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      2722.6581,
+      21.9823,
+      1069.9255,
+      1
+    ],
+    "rotation": [
+      0.6043,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.6043
+  },
+  {
+    "id": 355,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      2837.9729,
+      -7.0366,
+      -1244.2049,
+      1
+    ],
+    "rotation": [
+      -2.3562,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3562
+  },
+  {
+    "id": 356,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      2851.7485,
+      140.3389,
+      -3189.8545,
+      1
+    ],
+    "rotation": [
+      -2.2818,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.2818
+  },
+  {
+    "id": 357,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      2894.9771,
+      1.765,
+      -1123.2056,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 358,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2899.9663,
+      -35.1003,
+      2857.1538,
+      1
+    ],
+    "rotation": [
+      2.0944,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.0944
+  },
+  {
+    "id": 359,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 5,
+    "position": [
+      2905.5231,
+      27.028,
+      3272.5973,
+      1
+    ],
+    "rotation": [
+      -1.2106,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.2106
+  },
+  {
+    "id": 360,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2910.8467,
+      -35.0765,
+      2990.31,
+      1
+    ],
+    "rotation": [
+      -2.8623,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.8623
+  },
+  {
+    "id": 361,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      2941.9437,
+      -24.5166,
+      1464.7474,
+      1
+    ],
+    "rotation": [
+      2.8795,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8795
+  },
+  {
+    "id": 362,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      2980.9041,
+      -18.6485,
+      -1868.5034,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 363,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 3,
+    "position": [
+      2986.8923,
+      -35.0342,
+      3131.6123,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 364,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      3043.0315,
+      203.008,
+      -3155.6591,
+      1
+    ],
+    "rotation": [
+      2.1817,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.1817
+  },
+  {
+    "id": 365,
+    "name": "City_Props_ParkingLot_Lines_White",
+    "vehicleId": 5,
+    "position": [
+      3050.4773,
+      -19.7836,
+      -1976.1564,
+      1
+    ],
+    "rotation": [
+      2.8798,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.8798
+  },
+  {
+    "id": 366,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      3056.1344,
+      -18.0441,
+      -2112.9594,
+      1
+    ],
+    "rotation": [
+      1.274,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.274
+  },
+  {
+    "id": 367,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3057.147,
+      -24.974,
+      2537.1827,
+      1
+    ],
+    "rotation": [
+      -0.5501,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5501
+  },
+  {
+    "id": 368,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3061.1849,
+      -19.2334,
+      -2059.374,
+      1
+    ],
+    "rotation": [
+      -2.7227,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.7227
+  },
+  {
+    "id": 369,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      3112.5238,
+      219.9688,
+      -3339.9187,
+      1
+    ],
+    "rotation": [
+      0.576,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.576
+  },
+  {
+    "id": 370,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3115.5872,
+      -13.0149,
+      992.5558,
+      1
+    ],
+    "rotation": [
+      -1.5184,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5184
+  },
+  {
+    "id": 371,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 5,
+    "position": [
+      3139.1775,
+      -16,
+      -2163.3102,
+      1
+    ],
+    "rotation": [
+      0.2793,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2793
+  },
+  {
+    "id": 372,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      3153.7534,
+      -35.0614,
+      3059.5781,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 373,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3168.3221,
+      -35.1208,
+      2758.6482,
+      1
+    ],
+    "rotation": [
+      -2.3038,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.3038
+  },
+  {
+    "id": 374,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 3,
+    "position": [
+      3171.8811,
+      38.0358,
+      -1215.7669,
+      1
+    ],
+    "rotation": [
+      1.5142,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.5142
+  },
+  {
+    "id": 375,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      3209.032,
+      25.4489,
+      3687.32,
+      1
+    ],
+    "rotation": [
+      -0.74,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.74
+  },
+  {
+    "id": 376,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3210.517,
+      259.5346,
+      -3515.1737,
+      1
+    ],
+    "rotation": [
+      1.3662,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.3662
+  },
+  {
+    "id": 377,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      3226.9468,
+      110.2578,
+      -861.7871,
+      1
+    ],
+    "rotation": [
+      1.6023,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.6023
+  },
+  {
+    "id": 378,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 2,
+    "position": [
+      3232.063,
+      109.4375,
+      -822.8719,
+      1
+    ],
+    "rotation": [
+      1.1694,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.1694
+  },
+  {
+    "id": 379,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      3235.7109,
+      -25,
+      1761.25,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 380,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 2,
+    "position": [
+      3239.25,
+      -33.0927,
+      1427.4651,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 381,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 5,
+    "position": [
+      3255.9192,
+      -6.7353,
+      2341.1509,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 382,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 1,
+    "position": [
+      3284.8384,
+      -25.0755,
+      1779.0035,
+      1
+    ],
+    "rotation": [
+      -1.5708,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.5708
+  },
+  {
+    "id": 383,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3301.3559,
+      -8.7071,
+      -1464.543,
+      1
+    ],
+    "rotation": [
+      -1.7279,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.7279
+  },
+  {
+    "id": 384,
+    "name": "City_Props_ParkingLot_Lines_White_Single",
+    "vehicleId": 1,
+    "position": [
+      3349.6582,
+      -10.3037,
+      2293.8313,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 385,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      3351.9298,
+      -14.8903,
+      -1707.4979,
+      1
+    ],
+    "rotation": [
+      -2.9823,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.9823
+  },
+  {
+    "id": 386,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3359.1895,
+      173.258,
+      -324.4972,
+      1
+    ],
+    "rotation": [
+      -0.5756,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.5756
+  },
+  {
+    "id": 387,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3361.711,
+      277.9256,
+      -3669.92,
+      1
+    ],
+    "rotation": [
+      -1.3106,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.3106
+  },
+  {
+    "id": 388,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3373.8422,
+      43.059,
+      366.2505,
+      1
+    ],
+    "rotation": [
+      3.1067,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1067
+  },
+  {
+    "id": 389,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      3376.536,
+      279.7329,
+      -3621.0154,
+      1
+    ],
+    "rotation": [
+      0.5411,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5411
+  },
+  {
+    "id": 390,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3383.8159,
+      48.375,
+      289.0718,
+      1
+    ],
+    "rotation": [
+      3.1416,
+      0,
+      0,
+      0
+    ],
+    "orientation": 3.1416
+  },
+  {
+    "id": 391,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 3,
+    "position": [
+      3418.6495,
+      62.7663,
+      -86.4613,
+      1
+    ],
+    "rotation": [
+      0.2431,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.2431
+  },
+  {
+    "id": 392,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3447.178,
+      32.3676,
+      628.6649,
+      1
+    ],
+    "rotation": [
+      0.5236,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0.5236
+  },
+  {
+    "id": 393,
+    "name": "Residential_Driveway_Slab",
+    "vehicleId": 5,
+    "position": [
+      3447.6021,
+      -33.0345,
+      1439.5,
+      1
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "orientation": 0
+  },
+  {
+    "id": 394,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3564.1391,
+      -4.6632,
+      -1897.8408,
+      1
+    ],
+    "rotation": [
+      -0.7282,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.7282
+  },
+  {
+    "id": 395,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 2,
+    "position": [
+      3589.8766,
+      287.361,
+      -3738.6457,
+      1
+    ],
+    "rotation": [
+      1.309,
+      0,
+      0,
+      0
+    ],
+    "orientation": 1.309
+  },
+  {
+    "id": 396,
+    "name": "Common_Props_AbandonedSedan",
+    "vehicleId": 1,
+    "position": [
+      3599.0454,
+      -5.4242,
+      -1951.977,
+      1
+    ],
+    "rotation": [
+      2.5132,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.5132
+  },
+  {
+    "id": 397,
+    "name": "Common_Props_AbandonedSUV",
+    "vehicleId": 1,
+    "position": [
+      3740.5231,
+      25.028,
+      3438.5973,
+      1
+    ],
+    "rotation": [
+      -1.2106,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.2106
+  },
+  {
+    "id": 398,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 3,
+    "position": [
+      3803.6561,
+      24.7661,
+      2810.325,
+      1
+    ],
+    "rotation": [
+      -0.446,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.446
+  },
+  {
+    "id": 399,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 2,
+    "position": [
+      3835.7641,
+      84.8676,
+      -1833.9292,
+      1
+    ],
+    "rotation": [
+      -1.8954,
+      0,
+      0,
+      0
+    ],
+    "orientation": -1.8954
+  },
+  {
+    "id": 400,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      3857.4092,
+      133.8846,
+      272.7099,
+      1
+    ],
+    "rotation": [
+      -2.9461,
+      0,
+      0,
+      0
+    ],
+    "orientation": -2.9461
+  },
+  {
+    "id": 401,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 5,
+    "position": [
+      3894.8061,
+      281.8894,
+      2275.5228,
+      1
+    ],
+    "rotation": [
+      2.2177,
+      0,
+      0,
+      0
+    ],
+    "orientation": 2.2177
+  },
+  {
+    "id": 402,
+    "name": "Common_Props_AbandonedTruck",
+    "vehicleId": 1,
+    "position": [
+      3905.4993,
+      192.7604,
+      -2433.1603,
+      1
+    ],
+    "rotation": [
+      -0.9239,
+      0,
+      0,
+      0
+    ],
+    "orientation": -0.9239
+  }
+]

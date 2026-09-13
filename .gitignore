@@ -1,0 +1,25 @@
+**/bin/
+**/obj/
+**/out/
+**/TestResults/
+**/__pycache__/
+artifacts/
+.vs/
+*.user
+*.suo
+*.log
+*.pid
+.env
+.env.*
+*.pem
+*.pfx
+*.p12
+**/state/
+**/local-accounts.json
+**/launcher-host.json
+**/launcher.json
+# These duplicate/production-only slices are retained privately in the snapshot, not exported.
+server/src/Cranberry.Launcher/
+server/tools/launcher/
+launcher/tools/LauncherRelease/
+server/tools/capture/v*-run*.txt

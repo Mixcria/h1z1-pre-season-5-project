@@ -1,0 +1,225 @@
+{
+ "schema": "cranberry/august-captured-vehicle-adoption/1",
+ "captureSha256": "b7ba5102a3ea07b27ca7d83227ff6578d8be9719ad2dd7cc2542ff6a84c7a88a",
+ "augustWorldSha256": "b5b69c4ae0060bdef95e9728c0a091e0040a215799a67c7e6bcad2ab369afdb3",
+ "note": "Limited server adaptation of later-retail observations. Replace the nearest same-family West Peaks jeep (12.18 m away) to avoid adding a second jeep beside it; this identity pairing is a server decision, not a recovered retail spawn ID. Add the barn ATV; retain the nearby different-family pickup. Occupancy remains the owner-requested 100 percent. Other map positions remain unverified against retail.",
+ "geometryAudit": {
+  "method": "August collision-actor visual LOD0 triangle vs vehicle mesh envelope, all candidate actor origins within 128 m horizontal/64 m vertical, plus solid terrain and all static-vehicle envelopes. Not a PhysX simulation.",
+  "objectsChecked": 990,
+  "modelsChecked": 80,
+  "results": [
+   {
+    "candidate": {
+     "frame": 7440,
+     "vehicleId": 1,
+     "position": [
+      -473.7146911621094,
+      250.11473083496094,
+      -3780.408203125
+     ],
+     "rotation": [
+      0.0,
+      8.742277657347586e-08,
+      0.0,
+      1.0
+     ],
+     "yaw": 1.7484555314695127e-07,
+     "modelId": 10060
+    },
+    "terrainRange": [
+     249.65625,
+     249.84375
+    ],
+    "intersections": [
+     {
+      "object": {
+       "model": "Residential_Structures_Building03_2Story.adr",
+       "id": 2077477893,
+       "pos": [
+        -463.6135,
+        249.8522,
+        -3781.0415
+       ],
+       "rot": [
+        -0.366519,
+        0.0,
+        0.0
+       ],
+       "scale": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "renderDistance": 1500.0,
+       "flags": 0
+      },
+      "mesh": {
+       "bounds": [
+        -8.500685691833496,
+        -0.13048122823238373,
+        -7.870522499084473,
+        8.183040618896484,
+        8.978346824645996,
+        7.206604957580566
+       ],
+       "mesh": "Residential_Structures_Building03_2Story_LOD0.dme",
+       "crc32": "a9b9968b"
+      },
+      "witnesses": []
+     },
+     {
+      "object": {
+       "model": "Residential_Structures_Building03_2Story_Int.adr",
+       "id": 2077477970,
+       "pos": [
+        -463.6108,
+        249.8522,
+        -3781.0405
+       ],
+       "rot": [
+        -0.366519,
+        0.0,
+        0.0
+       ],
+       "scale": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "renderDistance": 260.0,
+       "flags": 0
+      },
+      "mesh": {
+       "bounds": [
+        -8.120866775512695,
+        0.1106313019990921,
+        -6.1056413650512695,
+        7.12562370300293,
+        6.5043158531188965,
+        6.627373695373535
+       ],
+       "mesh": "Residential_Structures_Building03_2Story_Int_LOD0.dme",
+       "crc32": "c5da442d"
+      },
+      "witnesses": []
+     }
+    ]
+   },
+   {
+    "candidate": {
+     "frame": 7441,
+     "vehicleId": 5,
+     "position": [
+      -524.2061157226562,
+      237.38125610351562,
+      -3721.393310546875
+     ],
+     "rotation": [
+      0.0,
+      0.866025447845459,
+      0.0,
+      0.4999999701976776
+     ],
+     "yaw": 2.09439519807335,
+     "modelId": 9588
+    },
+    "terrainRange": [
+     237.25,
+     237.25
+    ],
+    "intersections": [
+     {
+      "object": {
+       "model": "Farm_Structures_Buildings_Barn01.adr",
+       "id": 1644439754,
+       "pos": [
+        -524.1873,
+        237.2783,
+        -3721.9084
+       ],
+       "rot": [
+        1.570796,
+        -0.0,
+        0.0
+       ],
+       "scale": [
+        1.0,
+        1.0,
+        1.0
+       ],
+       "renderDistance": 1500.0,
+       "flags": 0
+      },
+      "mesh": {
+       "bounds": [
+        -8.289640426635742,
+        -0.7566338777542114,
+        -8.148601531982422,
+        9.75601863861084,
+        9.572427749633789,
+        7.673417091369629
+       ],
+       "mesh": "Farm_Structures_Buildings_Barn01_LOD0.dme",
+       "crc32": "4b17a00d"
+      },
+      "witnesses": []
+     }
+    ]
+   }
+  ]
+ },
+ "placements": [
+  {
+   "id": 194,
+   "frame": 7440,
+   "observation": {
+    "frame": 7440,
+    "zone": "Z2",
+    "vehicleId": 1,
+    "modelId": 10060,
+    "position": [
+     -473.7146911621094,
+     250.11473083496094,
+     -3780.408203125
+    ],
+    "rotation": [
+     0.0,
+     8.742277657347586e-08,
+     0.0,
+     1.0
+    ]
+   },
+   "replaces": {
+    "id": 194,
+    "x": -468.7804,
+    "y": 249.4838,
+    "z": -3769.2673,
+    "yaw": 2.8801,
+    "spaces": 1,
+    "area": "WestPeaksRanch",
+    "vehicleId": 1
+   }
+  },
+  {
+   "id": 406,
+   "frame": 7441,
+   "observation": {
+    "frame": 7441,
+    "zone": "Z2",
+    "vehicleId": 5,
+    "modelId": 9588,
+    "position": [
+     -524.2061157226562,
+     237.38125610351562,
+     -3721.393310546875
+    ],
+    "rotation": [
+     0.0,
+     0.866025447845459,
+     0.0,
+     0.4999999701976776
+    ]
+   }
+  }
+ ]
+}

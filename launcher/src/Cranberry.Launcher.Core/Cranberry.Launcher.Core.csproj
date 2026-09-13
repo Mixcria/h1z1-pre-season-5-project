@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup><PackageReference Include="Concentus" Version="2.2.2" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="Cranberry.Launcher.Tests" /></ItemGroup>
+  <ItemGroup><None Update="Notices/Concentus-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" /></ItemGroup>
+</Project>

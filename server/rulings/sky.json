@@ -1,0 +1,131 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "sky",
+  "class": "Sky",
+  "home": "src/Cranberry.Zone/Environment/EnvironmentPresets.cs, FrozenSkyClock.cs, SkySettings.cs",
+  "summary": "The fixed sky. Two different kinds of number live here and the distinction is the point of this file.\n\n(1) RULINGS - the frozen clock, the no-weather ruling and the no-clouds ruling. D16 froze time of day and removed all weather for reproducibility; D98 zeroed the four cloud weights and the cloud shadow off the owner's no-clouds ruling; D99 kept 12:00 UTC and REFUSED the owner's literal 14:00, shipping Aug2017KotkClear1400 as a named one-restart A/B instead of asserting the answer. D97 records that Z1's sky block is not re-adopted - D18 already ported it in full and D30's supersession stands.\n\n(2) CLIENT TRANSCRIPTION - the 33 sky floats of SkySettings.Default. Those are the sky_Z*.xml author's own 12:00 row, hand-copied into C# by the docs/30 lane. They are the CLIENT's numbers, so they are NOT rulings and get no constant here; S8 defect T7 already records that a re-extraction cannot detect drift in them, and closing that is a 2B/2A generator job (derive the preset from out/lighting-research), not a rulings job.",
+  "rulings": ["D16", "D18", "D19", "D30", "D97", "D98", "D99"],
+  "rows": [
+    {
+      "key": "EnvironmentPresets.DefaultName",
+      "value": "Aug2017KotkClear",
+      "ruling": "D98",
+      "source": "src/Cranberry.Zone/Environment/EnvironmentPresets.cs:346 - the owner's no-clouds ruling adopted as Cranberry's default sky",
+      "grade": "RULING",
+      "note": "Supersedes docs/38 cause L1 for the default preset only. Aug2017Clear (the unmodified sky_Z author's row) stays reachable by name.",
+      "csharp": { "name": "DefaultPresetName", "type": "string" }
+    },
+    {
+      "key": "Aug2017KotkClear.CloudWeight0",
+      "value": 0.0,
+      "ruling": "D98",
+      "source": "the owner's no-clouds ruling (D53, docs/82 s4); overrides the sky_Z author's own value",
+      "grade": "RULING",
+      "csharp": { "name": "KotkClearCloudWeight0", "type": "float" }
+    },
+    {
+      "key": "Aug2017KotkClear.CloudWeight1",
+      "value": 0.0,
+      "ruling": "D98",
+      "source": "the owner's no-clouds ruling (D53, docs/82 s4)",
+      "grade": "RULING",
+      "csharp": { "name": "KotkClearCloudWeight1", "type": "float" }
+    },
+    {
+      "key": "Aug2017KotkClear.CloudWeight2",
+      "value": 0.0,
+      "ruling": "D98",
+      "source": "the owner's no-clouds ruling (D53, docs/82 s4)",
+      "grade": "RULING",
+      "csharp": { "name": "KotkClearCloudWeight2", "type": "float" }
+    },
+    {
+      "key": "Aug2017KotkClear.CloudWeight3",
+      "value": 0.0,
+      "ruling": "D98",
+      "source": "the owner's no-clouds ruling (D53, docs/82 s4)",
+      "grade": "RULING",
+      "csharp": { "name": "KotkClearCloudWeight3", "type": "float" }
+    },
+    {
+      "key": "Aug2017KotkClear.CloudShadows",
+      "value": 0.0,
+      "ruling": "D98",
+      "source": "the owner's no-clouds ruling (D53, docs/82 s4)",
+      "grade": "RULING",
+      "note": "Not a black-screen risk: every session before D30 put exactly these five floats on the wire at 0 and the world rendered.",
+      "csharp": { "name": "KotkClearCloudShadows", "type": "float" }
+    },
+    {
+      "key": "FrozenSkyClock.HourUtc",
+      "value": 12,
+      "ruling": "D99",
+      "source": "docs/82 s5 - Lighting_Z2.txt [SunAngleTimes] DayAngle 0.700 is matched by the Z map's authored 12:00 sun pitch of 43.8 deg (sin 0.692) and missed at 14:00 (36.4 deg, sin 0.593)",
+      "grade": "RULING",
+      "note": "Z1's 14:00 is explicitly NOT adopted. The argument carries an open UNCERTAIN (docs/50 s3.2), which is why Aug2017KotkClear1400 exists rather than an assertion.",
+      "csharp": { "name": "FrozenHourUtc", "type": "int" }
+    },
+    {
+      "key": "FrozenSkyClock.LegacyD18Afternoon.HourUtc",
+      "value": 14,
+      "ruling": "D18",
+      "source": "Z1 C:/Z1/Server/Zone/ZoneSky.cs (TwoPmSeconds = 50400) - the owner's literal '~2 pm'",
+      "grade": "Z1",
+      "note": "Reachable as CRANBERRY_SKY=Aug2017KotkClear1400. One restart, his eyes decide (D99).",
+      "csharp": { "name": "LegacyAfternoonHourUtc", "type": "int" }
+    },
+    {
+      "key": "FrozenSkyClock.Freeze",
+      "value": true,
+      "ruling": "D16",
+      "source": "docs/38 - the world clock does not advance",
+      "grade": "RULING",
+      "note": "D26 explicitly does not reverse this: the owner is choosing authenticity per system, and the frozen clock is a deliberate departure for reproducibility.",
+      "csharp": { "name": "FreezeClock", "type": "bool" }
+    },
+    {
+      "key": "FrozenSkyClock.DateUtc",
+      "value": "2017-08-15",
+      "ruling": "none",
+      "source": "src/Cranberry.Zone/Environment/FrozenSkyClock.cs:26 - Cranberry design, mid-August of the client's own build month",
+      "grade": "RULING",
+      "note": "UNRULED. Only the solar declination depends on it, and it moves the sun by under a degree across the whole month.",
+      "csharp": { "name": "FrozenDateUtc", "type": "string" }
+    },
+    {
+      "key": "EnvironmentSettings.LightingFile",
+      "value": "Lighting_Z2.txt",
+      "ruling": "D19",
+      "source": "docs/38 - activate Lighting_Z2.txt in every initial SendZoneDetails",
+      "grade": "CLIENT+RULING",
+      "note": "The file is the client's; naming it in every SendZoneDetails is the ruling. Weather values and the fixed clock do not provide the zone's colour grading by themselves.",
+      "csharp": { "name": "LightingFile", "type": "string" }
+    },
+    {
+      "key": "WeatherSettings.GlobalPrecipitation",
+      "value": 0.0,
+      "ruling": "D16",
+      "source": "docs/38 - there is never any weather: no clouds, no rain, no fog",
+      "grade": "RULING",
+      "csharp": { "name": "GlobalPrecipitation", "type": "float" }
+    },
+    {
+      "key": "SkySettings.thirtyThreeFloats",
+      "value": null,
+      "ruling": "none",
+      "source": "the client's own sky_Z*.xml 12:00 row plus FUN_140a7c6d0, transcribed by hand into src/Cranberry.Zone/Environment/SkySettings.cs (D30)",
+      "grade": "CLIENT",
+      "note": "NOT A RULING and deliberately NOT given a constant here. Fog density 1.0e-4, fog floor 1, fog gradient 0.05, temperature 75, sun axis (38, -15), wind (-0.6, 0.4) at 2.099, the cumulus/stratus tiling, scroll, height and animation block, sky clarity 0.25, silver lining 20.5 / 20 - all of them are the sky_Z author's, i.e. the client's. S8 defect T7: a re-extraction cannot detect drift in a hand transcription, and the cure is a generator over out/lighting-research (lane 2A/2B), not a ruling row. Aug2017KotkClear overrides exactly five of them (the rows above) and nothing else.",
+      "csharp": null
+    },
+    {
+      "key": "EnvironmentPresets.Aug2017Vivid.SkyClarity",
+      "value": 0.25,
+      "ruling": "D41",
+      "source": "src/Cranberry.Zone/Environment/EnvironmentPresets.cs:181-213 - the vibrancy knob; the 50/75/100 variants are named presets, not defaults",
+      "grade": "RULING",
+      "note": "UNRULED as a number. D41 rules that the remaining dullness is a CLIENT-SIDE setting and that no new preset ships as the fix, so the Vivid ladder exists only as a named A/B. Left as a literal: it is written as WithSkyClarity(...) calls rather than as a field default (docs/101 s5).",
+      "csharp": null
+    }
+  ]
+}

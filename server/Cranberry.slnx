@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Cranberry.Launcher.Core/Cranberry.Launcher.Core.csproj" />
+    <Project Path="src/Cranberry.Launcher.Service/Cranberry.Launcher.Service.csproj" />
+    <Project Path="src/Cranberry.Host/Cranberry.Host.csproj" />
+    <Project Path="src/Cranberry.Login/Cranberry.Login.csproj" />
+    <Project Path="src/Cranberry.Protocol/Cranberry.Protocol.csproj" />
+    <Project Path="src/Cranberry.Transport/Cranberry.Transport.csproj" />
+    <Project Path="src/Cranberry.Zone/Cranberry.Zone.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cranberry.Launcher.Tests/Cranberry.Launcher.Tests.csproj" />
+    <Project Path="tests/Cranberry.Harness/Cranberry.Harness.csproj" />
+    <Project Path="tests/Cranberry.NetworkBots/Cranberry.NetworkBots.csproj" />
+    <Project Path="tests/Cranberry.Harness.Tests/Cranberry.Harness.Tests.csproj" />
+    <Project Path="tests/Cranberry.Tests/Cranberry.Tests.csproj" />
+  </Folder>
+</Solution>

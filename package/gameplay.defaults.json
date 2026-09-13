@@ -1,0 +1,11 @@
+{
+  "movement": {
+    "sprintAccel": 0.35,
+    "fwdAccel": 0.35,
+    "backAccel": 0.35,
+    "strafeAccel": 0.35
+  },
+  "dev": {
+    "autoMatchMs": 0
+  }
+}

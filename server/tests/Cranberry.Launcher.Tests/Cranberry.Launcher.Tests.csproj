@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <Using Include="Xunit" />
+    <ProjectReference Include="../../src/Cranberry.Launcher.Service/Cranberry.Launcher.Service.csproj" />
+  </ItemGroup>
+  <ItemGroup><None Update="Fixtures/headlook-august.hex" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="Fixtures/interaction-august.hex" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="Fixtures/interaction-throttle-august.hex" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fixtures/fire-projectile.original.bin" />
+    <EmbeddedResource Include="Fixtures/fire-rejected.original.bin" />
+    <EmbeddedResource Include="Fixtures/door-state.original.bin" />
+  </ItemGroup>
+</Project>

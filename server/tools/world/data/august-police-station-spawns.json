@@ -1,0 +1,25 @@
+{
+ "schema": "cranberry/august-police-station-spawns/1",
+ "note": "Server-selected police cars in individual empty August parking bays. The 403-row reference has no police-car location at either station. These are placement corrections, not recovered retail vehicle proxies. Local X/Z are the centre of the fourth bay of Z2_Parking_4Spaces_LOD0.dme; local Y retains the authored pavement origin. Its five painted divider strips lie at local Z approximately -4.18, -1.99, 0.01, 2.01, 4.01. The vehicle faces out of the bay along local +X.",
+ "parkingModel": "Z2_Parking_4Spaces.adr",
+ "localPosition": [0.0505, 0, 3.0116],
+ "localYaw": 1.5707963267948966,
+ "spawns": [
+  {
+   "id": 404,
+   "station": "Pleasant Valley Police Station",
+   "parkingInstanceId": 3798347764,
+   "parkingPosition": [-102.2939, 33.22, 252.25],
+   "parkingRotation": [1.570793, 0, 0],
+   "parkingScale": [1, 1, 1]
+  },
+  {
+   "id": 405,
+   "station": "Ranchito Police Station",
+   "parkingInstanceId": 3798347714,
+   "parkingPosition": [1681.75, 16.25, 1859.25],
+   "parkingRotation": [-0.000003, 0, 0],
+   "parkingScale": [1, 1, 1]
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Cranberry.Launcher</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets/launcher.ico</ApplicationIcon>
+    <LauncherRelease Condition="'$(LauncherRelease)' == ''">0</LauncherRelease>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../Cranberry.Launcher.Core/Cranberry.Launcher.Core.csproj" /></ItemGroup>
+  <ItemGroup><AssemblyMetadata Include="LauncherRelease" Value="$(LauncherRelease)" /></ItemGroup>
+  <ItemGroup><PackageReference Include="NAudio" Version="2.2.1" /></ItemGroup>
+  <ItemGroup><None Update="Notices/NAudio-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Notices/NAudio-LICENSE.txt" />
+    <EmbeddedResource Include="../Cranberry.Launcher.Core/Notices/Concentus-LICENSE.txt" Link="Notices/Concentus-LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets/kotk-keyart.jpg" />
+    <EmbeddedResource Include="Assets/Oswald-Regular.ttf" />
+    <EmbeddedResource Include="Assets/Oswald-OFL.txt" />
+    <EmbeddedResource Include="Assets/launcher.ico" />
+    <None Update="Assets/Oswald-OFL.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Oswald-OFL.txt" />
+  </ItemGroup>
+</Project>

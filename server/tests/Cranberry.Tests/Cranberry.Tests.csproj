@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <!-- Isolated verification outputs live here so data fixtures can find the repository. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);out/**;bin/**;obj/**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Cranberry.Transport\Cranberry.Transport.csproj" />
+    <ProjectReference Include="..\..\src\Cranberry.Protocol\Cranberry.Protocol.csproj" />
+    <ProjectReference Include="..\..\src\Cranberry.Login\Cranberry.Login.csproj" />
+    <ProjectReference Include="..\..\src\Cranberry.Zone\Cranberry.Zone.csproj" />
+    <!-- Lane 0D: the config record and its key table live in the host, and every one of its keys
+         has a test that flipping it moves that value and nothing else. -->
+    <ProjectReference Include="..\..\src\Cranberry.Host\Cranberry.Host.csproj" />
+  </ItemGroup>
+
+</Project>

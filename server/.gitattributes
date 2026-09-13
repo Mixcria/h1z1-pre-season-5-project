@@ -1,0 +1,4 @@
+# Keep the verified snapshot's original bytes; editors can choose line endings for new changes.
+* -text
+*.png binary
+*.bin binary

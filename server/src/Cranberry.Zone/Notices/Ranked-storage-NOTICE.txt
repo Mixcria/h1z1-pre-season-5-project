@@ -1,0 +1,18 @@
+Ranked leaderboard storage dependencies
+
+Microsoft.Data.Sqlite and Microsoft.Data.Sqlite.Core 10.0.11
+Copyright (c) .NET Foundation and Contributors; package copyright Microsoft Corporation.
+MIT license: Microsoft.Data.Sqlite-LICENSE.txt
+https://github.com/dotnet/efcore
+
+SQLitePCLRaw.core, SQLitePCLRaw.bundle_e_sqlite3, SQLitePCLRaw.provider.e_sqlite3,
+and SQLitePCLRaw.lib.e_sqlite3 2.1.12
+Copyright 2014-2024 SourceGear, LLC
+Apache License 2.0: SQLitePCLRaw-LICENSE.txt
+https://github.com/ericsink/SQLitePCL.raw/tree/v2.1.12
+
+The bundled SQLite engine is public domain.
+https://www.sqlite.org/copyright.html
+
+Upstream packages are used without modification. Restore resolves the platform-specific
+native SQLite library; publishing the host copies it and these notices into the runtime.

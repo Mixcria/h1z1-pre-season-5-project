@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Byte-level guards for tools/ConsoleOpener. Deliberately NOT a member of Cranberry.slnx, for the
+    same reason the tool is not (DESIGN-dev-console.md §3.4): a process-patching tool has no business
+    in the server build. Run it on its own:
+
+        dotnet test C:\Aug2017\Server\tests\ConsoleOpener.Tests
+
+    The interesting tests re-read C:\Aug2017\Client\H1Z1.exe (read-only) and compare it with the
+    hard-coded patch table, so the table can never drift from the binary unnoticed. They skip
+    themselves when the client is not installed.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\tools\ConsoleOpener\ConsoleOpener.csproj" />
+  </ItemGroup>
+
+</Project>

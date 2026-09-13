@@ -1,0 +1,206 @@
+[
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 1,
+    "hex": "46010040e20100070180"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 2,
+    "hex": "46020040e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 32,
+    "hex": "46200040e2010007003c"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 64,
+    "hex": "46400040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 128,
+    "hex": "46800040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 4,
+    "hex": "46040040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 8,
+    "hex": "46080040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 16,
+    "hex": "46100040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 256,
+    "hex": "46000140e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 512,
+    "hex": "46000240e20100070a0ab307"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 1024,
+    "hex": "46000440e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 2048,
+    "hex": "46000840e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 4096,
+    "hex": "46001040e20100070a0ab3071a1e630f2a3213173a46c31e4a5a73265a6e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 8192,
+    "hex": "46002040e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 16384,
+    "hex": "46004040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 8738,
+    "hex": "46222240e20100070a0ab3071a1e003c0a0ab3070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "c2s",
+    "mask": 32767,
+    "hex": "46ff7f40e201000701800a0ab3071a1e003c0a0a0a0a0a0a0a0a0a0a0a0ab3071a1e0a0ab3070a0a0a0a0a0ab3071a1e630f2a3213173a46c31e4a5a73265a6e0a0ab3071a1e0a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 1,
+    "hex": "450100000000000000010040e20100070180"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 2,
+    "hex": "450100000000000000020040e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 32,
+    "hex": "450100000000000000200040e2010007003c"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 64,
+    "hex": "450100000000000000400040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 128,
+    "hex": "450100000000000000800040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 4,
+    "hex": "450100000000000000040040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 8,
+    "hex": "450100000000000000080040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 16,
+    "hex": "450100000000000000100040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 256,
+    "hex": "450100000000000000000140e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 512,
+    "hex": "450100000000000000000240e20100070a0ab307"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 1024,
+    "hex": "450100000000000000000440e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 2048,
+    "hex": "450100000000000000000840e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 4096,
+    "hex": "450100000000000000001040e20100070a0ab3071a1e630f2a3213173a46c31e4a5a73265a6e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 8192,
+    "hex": "450100000000000000002040e20100070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 16384,
+    "hex": "450100000000000000004040e20100070a0a"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 8738,
+    "hex": "450100000000000000222240e20100070a0ab3071a1e003c0a0ab3070a0ab3071a1e"
+  },
+  {
+    "kind": "synthetic; no captured identity/position/time",
+    "direction": "s2c",
+    "mask": 32767,
+    "hex": "450100000000000000ff7f40e201000701800a0ab3071a1e003c0a0a0a0a0a0a0a0a0a0a0a0ab3071a1e0a0ab3070a0a0a0a0a0ab3071a1e630f2a3213173a46c31e4a5a73265a6e0a0ab3071a1e0a0a"
+  }
+]

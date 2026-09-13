@@ -1,0 +1,78 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cranberry.Login\Cranberry.Login.csproj" />
+    <ProjectReference Include="..\Cranberry.Transport\Cranberry.Transport.csproj" />
+    <ProjectReference Include="..\Cranberry.Protocol\Cranberry.Protocol.csproj" />
+  </ItemGroup>
+
+  <!--
+    The generated Z2 loot data (docs/33). LootDataPaths' second probe looks in
+    <AppContext.BaseDirectory>/Data/Loot, which is what makes a deployed build work; its third probe
+    walks up to src/Cranberry.Zone/Data/Loot, which is what makes `dotnet run` from the tree work
+    with no deployment step at all.
+  -->
+  <ItemGroup>
+    <Content Include="Data\Loot\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!--
+    The generated vehicle roster and Z2 spawn anchors (docs/43). Same two-step probe as the loot
+    data: VehicleDataPaths looks in <AppContext.BaseDirectory>/Data/Vehicles first, then walks up
+    to src/Cranberry.Zone/Data/Vehicles.
+  -->
+  <ItemGroup>
+    <Content Include="Data\Vehicles\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!--
+    The generated Z2 door placements (docs/42). Same two-step probe again: DoorDataPaths looks in
+    <AppContext.BaseDirectory>/Data/Doors first, then walks up to src/Cranberry.Zone/Data/Doors.
+  -->
+  <ItemGroup>
+    <Content Include="Data\Doors\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Data\Destructibles\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
+    <Content Include="Notices\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!--
+    The data-provenance gate (docs/96). Every *.g.cs in this project and every file under Data\
+    is written by tools/pipeline/pipeline.py, which stamps the sha256 of its generator and of
+    each of its inputs into the file. `pipeline.py check` recomputes those hashes and exits
+    non-zero when one has moved, i.e. when a generated file is stale.
+
+    OFF by default, on purpose: it costs a Python process per build and the owner turns it on
+    after the first clean run.
+
+        dotnet build Cranberry.slnx -p:CranberryDataCheck=true
+
+    Set it permanently in Directory.Build.props, or per-shell with the
+    CranberryDataCheck environment variable. CranberryPython overrides the interpreter.
+  -->
+  <PropertyGroup>
+    <CranberryDataCheck Condition="'$(CranberryDataCheck)' == ''">false</CranberryDataCheck>
+    <CranberryPython Condition="'$(CranberryPython)' == ''">python</CranberryPython>
+  </PropertyGroup>
+
+  <Target Name="CheckCranberryDataProvenance"
+          BeforeTargets="BeforeBuild"
+          Condition="'$(CranberryDataCheck)' == 'true'">
+    <Message Importance="high" Text="Cranberry data provenance check (docs/96)..." />
+    <Exec Command="&quot;$(CranberryPython)&quot; tools/pipeline/pipeline.py check"
+          WorkingDirectory="$(MSBuildThisFileDirectory)..\.." />
+  </Target>
+
+</Project>

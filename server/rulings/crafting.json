@@ -1,0 +1,947 @@
+{
+  "schema": "cranberry-rulings/1",
+  "subsystem": "crafting",
+  "class": "Crafting",
+  "home": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs, ShredTable.cs, CraftingOptions.cs, CharacterStatePackets.cs",
+  "summary": "Six recipes and eleven shred yield classes. The retail August recipe set is no longer a design guess: the owner's 2026-08-22 admin capture holds two identical 936-byte 26 09 Recipe.List packets, and docs/62's August-derived record layout consumes 936 of 936 bytes of them (D256). Every display field on the wire is that item's own ClientItemDefinitions row, so the six records are reproducible byte for byte from client data plus the captured counts. What stays DESIGN: the craft duration (D257 - the owner's own Z1 under D53, because the client carries none), the craft animation, and the shred yields, because no item row in the 2,643-row catalogue carries DATASHEET_ID 25 (ShreddableItemDatasheet) - the client ships no yields at all (docs/59 s1.1).",
+  "rulings": [
+    "D47",
+    "D48",
+    "D112",
+    "D116",
+    "D119",
+    "D256",
+    "D257",
+    "D258",
+    "D260",
+    "D351"
+  ],
+  "rows": [
+    {
+      "key": "CraftingCatalog.FieldBandage",
+      "value": 2423,
+      "ruling": "D47",
+      "source": "the client's own ClientItemDefinitions row 2423; selected as a recipe output by D47",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "FieldBandageItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.Procoagulant",
+      "value": 3375,
+      "ruling": "D47",
+      "source": "the client's own ClientItemDefinitions row 3375",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "ProcoagulantItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.MakeshiftArmor",
+      "value": 3378,
+      "ruling": "D47",
+      "source": "the client's own ClientItemDefinitions row 3378",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "MakeshiftArmorItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.CraftedBackpack",
+      "value": 93,
+      "ruling": "D47",
+      "source": "the client's own ClientItemDefinitions row 93; KOTK hint 15206 names the recipe in the client's own words",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "CraftedBackpackItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.Satchel",
+      "value": 2125,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 2125; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 2125, sort 6",
+      "grade": "CLIENT+RULING",
+      "note": "Retail August's container recipe. There is NO recipe for item 93 Crafted Backpack, which supersedes D47's choice of it.",
+      "csharp": {
+        "name": "SatchelItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.ExplosiveArrow",
+      "value": 138,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 138; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 138, sort 4, BundleCount 5",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "ExplosiveArrowItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.FlamingArrow",
+      "value": 1434,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 1434; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 1434, sort 5, BundleCount 0",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "FlamingArrowItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.ScrapOfCloth",
+      "value": 23,
+      "ruling": "D47",
+      "source": "the client's own text: 'Shred cloth items to get scrap cloth'",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "ScrapOfClothItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.DuctTape",
+      "value": 134,
+      "ruling": "D47",
+      "source": "the client's own ClientItemDefinitions row 134; chosen as the loot model's only binder",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "DuctTapeItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.ArmorScrap",
+      "value": 3499,
+      "ruling": "D47",
+      "source": "the client's own FTE table names 3499 as the remnant of destroyed helmets",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "ArmorScrapItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.CompositeFabric",
+      "value": 3500,
+      "ruling": "D47",
+      "source": "the client's own text: 'Shred large backpacks to get this fabric'",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "CompositeFabricItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.MolotovCocktail",
+      "value": 14,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 14; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) names it as a recipe component",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "MolotovCocktailItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.FragGrenade",
+      "value": 65,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 65; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) names it as a recipe component",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "FragGrenadeItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.WoodenArrow",
+      "value": 112,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 112; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) names it as a recipe component",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "WoodenArrowItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.BuckshotShell",
+      "value": 1511,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 1511; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) names it as a recipe component",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "BuckshotShellItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.FirstAidKit",
+      "value": 2424,
+      "ruling": "D256",
+      "source": "the client's own ClientItemDefinitions row 2424; C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) names it as a recipe component",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "FirstAidKitItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.Gunpowder",
+      "value": 11,
+      "ruling": "D260",
+      "source": "the client's own ClientItemDefinitions row 11 'Gunpowder'; the ammunition-material family of this catalogue (11 Gunpowder, 3779 Lead Alloy, 3780 Brass Shard) is what a salvaged round is made of in this build's own item set",
+      "grade": "CLIENT+RULING",
+      "note": "DESIGN in its role as a shred yield: no client sheet carries a salvage yield for ammunition. It exists so that option 87 (SalvageItem on the eight rounds) is never refused.",
+      "csharp": {
+        "name": "GunpowderItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CraftingCatalog.WoodStick",
+      "value": 111,
+      "ruling": "D260",
+      "source": "the client's own ClientItemDefinitions row 111 'Wood Stick'; item 1694's own description says 'This item is beyond repair, but can be dismantled for a wooden stick'",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "WoodStickItemId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "Recipe.FieldBandage.busyMs",
+      "value": 2000,
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs:198 - Cranberry design (docs/59 s1.6)",
+      "grade": "RULING",
+      "note": "The client ships no duration for any recipe.",
+      "csharp": {
+        "name": "FieldBandageBusyMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Recipe.FieldBandage.ingredients",
+      "value": [
+        23,
+        2
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 2423, one component, RequiredCount 2",
+      "grade": "CAPTURED",
+      "note": "Supersedes D47's design value of 1. Flattened as [itemId, quantity] pairs.",
+      "csharp": {
+        "name": "FieldBandageIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.Procoagulant.busyMs",
+      "value": 3000,
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs:212 - Cranberry design",
+      "grade": "RULING",
+      "csharp": {
+        "name": "ProcoagulantBusyMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Recipe.Procoagulant.ingredients",
+      "value": [
+        2423,
+        10,
+        2424,
+        1
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 3375, two components, RequiredCount 10 and 1",
+      "grade": "CAPTURED",
+      "note": "Supersedes D47's design value of 2 x Field Bandage + 1 x Duct Tape.",
+      "csharp": {
+        "name": "ProcoagulantIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.MakeshiftArmor.busyMs",
+      "value": 5000,
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs:227 - Cranberry design",
+      "grade": "RULING",
+      "csharp": {
+        "name": "MakeshiftArmorBusyMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Recipe.MakeshiftArmor.ingredients",
+      "value": [
+        134,
+        1,
+        3499,
+        2,
+        3500,
+        4
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 3378, three components in wire order, RequiredCount 1, 2 and 4",
+      "grade": "CAPTURED",
+      "note": "The widely repeated public figure - 2 armour scrap, 4 composite fabric, 1 duct tape - is exactly what the capture carries; D47 declined it as unconfirmable and that reason is gone.",
+      "csharp": {
+        "name": "MakeshiftArmorIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.Satchel.ingredients",
+      "value": [
+        23,
+        6
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 2125, one component, RequiredCount 6",
+      "grade": "CAPTURED",
+      "csharp": {
+        "name": "SatchelIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.ExplosiveArrow.ingredients",
+      "value": [
+        65,
+        1,
+        112,
+        5,
+        134,
+        1,
+        1511,
+        12
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 138, four components in wire order",
+      "grade": "CAPTURED",
+      "csharp": {
+        "name": "ExplosiveArrowIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.FlamingArrow.ingredients",
+      "value": [
+        14,
+        1,
+        112,
+        5,
+        134,
+        1,
+        1511,
+        5
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - recipe 1434, four components in wire order",
+      "grade": "CAPTURED",
+      "csharp": {
+        "name": "FlamingArrowIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.CraftedBackpack.busyMs",
+      "value": 5000,
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs:241 - Cranberry design",
+      "grade": "RULING",
+      "csharp": {
+        "name": "CraftedBackpackBusyMs",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Recipe.CraftedBackpack.ingredients",
+      "value": [
+        23,
+        4,
+        134,
+        1
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs:237-238 - 4 x Scrap of Cloth + 1 x Duct Tape",
+      "grade": "RULING",
+      "note": "KOTK hint 15206: 'a second t-shirt doesn't do you any good. Shred it to make bandages or a backpack.'",
+      "csharp": {
+        "name": "CraftedBackpackIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.legacy.fieldBandage.ingredients",
+      "value": [
+        23,
+        1
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - the wave-6 design set, kept only as the CRANBERRY_CRAFT_RECIPES=0 revert",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyFieldBandageIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.legacy.procoagulant.ingredients",
+      "value": [
+        2423,
+        2,
+        134,
+        1
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - the wave-6 design set (revert only)",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyProcoagulantIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.legacy.makeshiftArmor.ingredients",
+      "value": [
+        3499,
+        2,
+        3500,
+        3,
+        134,
+        1
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - the wave-6 design set (revert only)",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyMakeshiftArmorIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.legacy.craftedBackpack.ingredients",
+      "value": [
+        23,
+        4,
+        134,
+        1
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - the wave-6 design set (revert only)",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyCraftedBackpackIngredients",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.sortOrder",
+      "value": [
+        2423,
+        3375,
+        3378,
+        93
+      ],
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - SortOrdinal 1..4 of the wave-6 design set, kept only as the CRANBERRY_CRAFT_RECIPES=0 revert",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyRecipeSortOrder",
+        "type": "uint[]"
+      },
+      "note": "The RETAIL order is Recipe.retail.sortOrdinals over Recipe.retail.wireOrder (D256); this row is the legacy four."
+    },
+    {
+      "key": "Recipe.outputCount",
+      "value": 1,
+      "ruling": "D47",
+      "source": "src/Cranberry.Zone/Crafting/CraftingCatalog.cs - every recipe of the wave-6 design set yields exactly one (revert only)",
+      "grade": "RULING",
+      "csharp": {
+        "name": "LegacyRecipeOutputCount",
+        "type": "uint"
+      },
+      "note": "The RETAIL counts are Recipe.retail.bundleCounts / Recipe.retail.outputCounts (D256)."
+    },
+    {
+      "key": "Recipe.retail.wireOrder",
+      "value": [
+        2125,
+        1434,
+        3378,
+        138,
+        3375,
+        2423
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - the six records in the order the friend's server writes them, which is NOT sort order",
+      "grade": "CAPTURED",
+      "note": "Byte-for-byte reproduction of the captured packet needs the emission order, not the sort order: the client sorts the tab itself from SortOrdinal.",
+      "csharp": {
+        "name": "RetailRecipeWireOrder",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.retail.sortOrdinals",
+      "value": [
+        6,
+        5,
+        2,
+        4,
+        3,
+        1
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - rec+0x2c per record, in Recipe.retail.wireOrder order; a permutation of 1..6",
+      "grade": "CAPTURED",
+      "csharp": {
+        "name": "RetailRecipeSortOrdinals",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.retail.bundleCounts",
+      "value": [
+        1,
+        0,
+        1,
+        5,
+        1,
+        1
+      ],
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - rec+0x28 BundleCount per record, in Recipe.retail.wireOrder order",
+      "grade": "CAPTURED",
+      "note": "Flaming Arrow's 0 is on the wire as 0 and is written as 0.",
+      "csharp": {
+        "name": "RetailRecipeBundleCounts",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.retail.outputCounts",
+      "value": [
+        1,
+        5,
+        1,
+        5,
+        1,
+        1
+      ],
+      "ruling": "D256",
+      "source": "the wire's BundleCount on five of six; Flaming Arrow's 5 is the owner's own Z1 under D53 (C:/Z1/Server/Zone/ZoneCrafting.cs:48 ResultCount: 5)",
+      "grade": "CAPTURED",
+      "note": "How many units a completed craft GRANTS, as distinct from the BundleCount on the wire. They differ on exactly one row: a recipe that produces zero is not a recipe.",
+      "csharp": {
+        "name": "RetailRecipeOutputCounts",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.retail.reserved",
+      "value": 1,
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - rec+0x24 is 1 on all six records; FUN_1415126a0 never reads it",
+      "grade": "CAPTURED",
+      "note": "Cranberry wrote 0 here before the capture was decoded.",
+      "csharp": {
+        "name": "RetailRecipeReserved",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "Recipe.retail.componentRecipeType",
+      "value": 4294967295,
+      "ruling": "D256",
+      "source": "C:/Project/out/ingest-admin-20260822-part1/ops/cPacketIdRecipeBase.txt - the two identical 936-byte 26 09 Recipe.List packets of the owner's 2026-08-22 admin capture (packets_1118_62892.log:144, packets_1119_53544.log:1684), decoded with docs/62 s2/s2b's August record layout by C:/Aug2017/out/audit/decode-recipebase.py (936 of 936 bytes) - elem+0x30 RecipeType is 0xffffffff on all fifteen components",
+      "grade": "CAPTURED",
+      "csharp": {
+        "name": "RetailComponentRecipeType",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "ShredTable.BusyMilliseconds",
+      "value": 1000,
+      "ruling": "D116",
+      "source": "out/data_aug/ItemUseOptions.txt BUSY_MSEC on rows 6 and 63, the two SalvageItem rows the client offers on apparel",
+      "grade": "CLIENT+RULING",
+      "note": "CORRECTION 2026-09-03: ItemUseOptions.txt carries SEVEN SalvageItem rows (6, 15, 18, 31, 35, 63, 87) and BUSY_MSEC is 1,000 on only TWO of them - 6 and 63; the other five are 0. The earlier claim of '1,000 on every one of the eight groups' was wrong. The VALUE is unaffected: ItemVerbs.Salvage reads the clicked row's own BusyMsec and falls back to this constant only when the row is unknown. D116 still rules the August sheet beats the owner's 1087 3,000.",
+      "csharp": {
+        "name": "ShredBusyMilliseconds",
+        "type": "int"
+      }
+    },
+    {
+      "key": "ShredTable.Yields.itemClasses",
+      "value": [
+        25002,
+        25003,
+        25040,
+        25008,
+        25013,
+        25004,
+        25000,
+        25005,
+        25010,
+        16050,
+        16053
+      ],
+      "ruling": "D260",
+      "source": "out/data_aug/ItemUseOptions.txt x ItemUseOptionGroups.txt x ItemIdUseOptionGroupId.txt joined: the eight groups carrying a SalvageItem row (4, 14, 18, 33, 56, 62, 65, 68) hold exactly 645 items, whose ITEM_CLASS values are 25002 (248), 25000 (137), 25003 (109), 25040 (59), 25004 (58), 25008 (17), 16053 (10), 25013 (4), 25005 (1), 25010 (1) and 16050 (1)",
+      "grade": "CLIENT+RULING",
+      "note": "The last four classes are new in D260 and close the thirteen items whose context menu offered Shred and which the server refused with WrongItemType - Boots (94, 25005), Improvised Compass (1444, 25010), Blackberry Pie (1706, 16050) and ten class-16053 rows (the eight ammunition rounds on option 87, Broken Wooden Item 1694 and dev item 40). docs/59 s1.4.3's '133 helmets' is 137. Keying on class stays a deliberate SUPERSET of the real 645; the surplus is unreachable, because InventoryActions.Resolve gates on ItemUseOptionTable.Allows first. Body armour (25041) never has a yield - no SalvageItem row anywhere touches it.",
+      "csharp": {
+        "name": "ShredYieldItemClasses",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "ShredTable.Yields.outputs",
+      "value": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        3500,
+        3499,
+        3500,
+        23,
+        23,
+        11
+      ],
+      "ruling": "D351",
+      "source": "Owner instruction 2026-09-05; footwear -> composite fabric (3500)",
+      "grade": "RULING",
+      "note": "25008 and 25040 are PROVEN by the capture (packets_1119_53544.log:6958 ItemAdd item 23 count 1, :7444 ItemUpdate stack 2). Two more are pinned by the client's own text ('Shred cloth items to get scrap cloth', 'Shred large backpacks to get this fabric'). The helmet -> Armor Scrap row is DESIGN and reads against the client's wording, which calls Armor Scrap the remnant of DESTROYED helmets; without it Makeshift Armor can never be crafted in a match. 16053 -> Gunpowder is DESIGN (D260).",
+      "csharp": {
+        "name": "ShredYieldOutputItemIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "ShredTable.Yields.quantities",
+      "value": [
+        4,
+        4,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1
+      ],
+      "ruling": "D351",
+      "source": "Owner instruction 2026-09-05",
+      "grade": "RULING",
+      "note": "Chest/trousers 4 cloth; gloves/mask 1 cloth; helmets 2 armour scrap; sturdy/fast shoes 2 composite fabric. Stealth footwear uses the official August 29 yield of 2 cloth via a tier override.",
+      "csharp": {
+        "name": "ShredYieldQuantities",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "CraftingOptions.SendRecipeList",
+      "value": true,
+      "ruling": "D48",
+      "source": "docs/62 - crafting is delivered by the 0x26 09 Recipe.List packet, in the match, after the container bootstrap",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SendRecipeList",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.SendRecipesInSelfRecord",
+      "value": true,
+      "ruling": "D289",
+      "source": "docs/62 \u00a73 (2026-09-03 addendum) / DIAG-recipes-vehicles \u00a7A - the August crafting WINDOW reads its rows ONLY from the self record's 0x11a list (FUN_141513580, single caller FUN_140db5680); 0x26 09 Recipe.List fills the container and can never publish a UI row. So stage 2 is the delivery and must ride in EVERY self record; the record stream parsed twice live with no disconnect",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SendRecipesInSelfRecord",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.AllowCrafting",
+      "value": true,
+      "ruling": "D48",
+      "source": "docs/62",
+      "grade": "RULING",
+      "csharp": {
+        "name": "AllowCrafting",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.SendComponentCounts",
+      "value": false,
+      "ruling": "D48",
+      "source": "docs/62 - the client resolves component counts from its own item collection",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SendComponentCounts",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.SentinelFields",
+      "value": false,
+      "ruling": "D48",
+      "source": "docs/62 - display fields stay zero; the client resolves icon, name and bulk from its own ClientItemDefinitions row",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SentinelFields",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.SeedIngredients",
+      "value": false,
+      "ruling": "D48",
+      "source": "docs/62 - a dev convenience, off in a real match",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SeedIngredients",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "Recipe.display.itemIds",
+      "value": [
+        14,
+        23,
+        65,
+        112,
+        134,
+        138,
+        1434,
+        1511,
+        2125,
+        2423,
+        2424,
+        3375,
+        3378,
+        3499,
+        3500
+      ],
+      "ruling": "D256",
+      "source": "out/data_aug/ClientItemDefinitions.txt columns IMAGE_SET_ID / DESCRIPTION_ID / LOCATE_DESCRIPTION_ID for the fifteen items the retail recipe set names; every one of them equals the value at the matching offset of the captured 26 09 packet, which is what makes the display fields CLIENT data rather than pinned bytes",
+      "grade": "CLIENT",
+      "note": "The key column. NAME_ID is not repeated here - InventoryItemFacts already carries it.",
+      "csharp": {
+        "name": "RecipeDisplayItemIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.display.imageSetIds",
+      "value": [
+        559,
+        22,
+        562,
+        48,
+        87,
+        639,
+        638,
+        216,
+        298,
+        21,
+        171,
+        1172,
+        1453,
+        29,
+        166
+      ],
+      "ruling": "D256",
+      "source": "out/data_aug/ClientItemDefinitions.txt columns IMAGE_SET_ID / DESCRIPTION_ID / LOCATE_DESCRIPTION_ID for the fifteen items the retail recipe set names; every one of them equals the value at the matching offset of the captured 26 09 packet, which is what makes the display fields CLIENT data rather than pinned bytes",
+      "grade": "CLIENT",
+      "csharp": {
+        "name": "RecipeDisplayImageSetIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.display.descriptionStringIds",
+      "value": [
+        15703,
+        1027,
+        11942,
+        1220,
+        653,
+        661,
+        636,
+        9116,
+        1173,
+        12299,
+        12300,
+        14016,
+        14013,
+        14264,
+        14266
+      ],
+      "ruling": "D256",
+      "source": "out/data_aug/ClientItemDefinitions.txt columns IMAGE_SET_ID / DESCRIPTION_ID / LOCATE_DESCRIPTION_ID for the fifteen items the retail recipe set names; every one of them equals the value at the matching offset of the captured 26 09 packet, which is what makes the display fields CLIENT data rather than pinned bytes",
+      "grade": "CLIENT",
+      "csharp": {
+        "name": "RecipeDisplayDescriptionStringIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.display.locateDescriptionStringIds",
+      "value": [
+        15860,
+        15859,
+        15860,
+        15860,
+        15860,
+        0,
+        0,
+        15860,
+        0,
+        15863,
+        15860,
+        0,
+        0,
+        15861,
+        15862
+      ],
+      "ruling": "D256",
+      "source": "out/data_aug/ClientItemDefinitions.txt columns IMAGE_SET_ID / DESCRIPTION_ID / LOCATE_DESCRIPTION_ID for the fifteen items the retail recipe set names; every one of them equals the value at the matching offset of the captured 26 09 packet, which is what makes the display fields CLIENT data rather than pinned bytes",
+      "grade": "CLIENT",
+      "csharp": {
+        "name": "RecipeDisplayLocateDescriptionStringIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "Recipe.craft.millisecondsPerUnit",
+      "value": 1000,
+      "ruling": "D257",
+      "source": "C:/Z1/Server/Zone/ZoneCrafting.cs:24 MillisecondsPerCraft = 1_000, multiplied by the requested count (:161-163) - the owner's own value, adopted under D53",
+      "grade": "Z1",
+      "note": "No craft duration exists anywhere in the August client: no recipe field on the wire, no datasheet column, no InteractionAnimations row tied to a recipe. The friend's capture contains no craft either, so this is the best available authority.",
+      "csharp": {
+        "name": "CraftMillisecondsPerUnit",
+        "type": "int"
+      }
+    },
+    {
+      "key": "Recipe.craft.animationId",
+      "value": 10,
+      "ruling": "D257",
+      "source": "out/overhaul-20260901/unextracted/InteractionAnimations.txt row 10 - Action / ActionEnd, ActionType 22, EXPIRE_MSEC 2000; the only interaction animation the capture proves this client plays for an inventory work action (the two shreds at packets_1119_53544.log:6689 and :7226)",
+      "grade": "CLIENT+RULING",
+      "note": "DESIGN in its application to crafting: no client row names a craft animation, and the owner's own Z1 sends animationId 0 (ZoneCrafting.cs:186). 10 is chosen because its EXPIRE_MSEC of 2,000 covers a 1,000 ms craft and because cf 03 now ends it; CRANBERRY_CRAFT_CAST_BAR=0 removes it.",
+      "csharp": {
+        "name": "CraftInteractionAnimationId",
+        "type": "uint"
+      }
+    },
+    {
+      "key": "CharacterState.interactionStopRepeat",
+      "value": 2,
+      "ruling": "D258",
+      "source": "packets_1119_53544.log:6960/:6964, :7446/:7447, :8009/:8010 - three completions, each answered with two d0 03 InteractionStop packets 8-9 ms apart",
+      "grade": "CAPTURED",
+      "note": "Retail sends it twice at every completion. Cranberry reproduces the count rather than guessing that once is enough.",
+      "csharp": {
+        "name": "InteractionStopRepeat",
+        "type": "int"
+      }
+    },
+    {
+      "key": "ShredTable.itemOverrides.itemIds",
+      "value": [
+        1694
+      ],
+      "ruling": "D260",
+      "source": "item 1694's own DESCRIPTION_ID 1508: 'This item is beyond repair, but can be dismantled for a wooden stick'",
+      "grade": "CLIENT+RULING",
+      "note": "Checked before the class table. Item 1694 is ITEM_CLASS 16053 alongside the eight ammunition rounds, so the class rule alone would turn a broken wooden item into gunpowder.",
+      "csharp": {
+        "name": "ShredItemOverrideItemIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "ShredTable.itemOverrides.outputs",
+      "value": [
+        111
+      ],
+      "ruling": "D260",
+      "source": "the client's own ClientItemDefinitions row 111 'Wood Stick'",
+      "grade": "CLIENT+RULING",
+      "csharp": {
+        "name": "ShredItemOverrideOutputItemIds",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "ShredTable.itemOverrides.quantities",
+      "value": [
+        1
+      ],
+      "ruling": "D260",
+      "source": "src/Cranberry.Zone/Crafting/ShredTable.cs - 'a wooden stick', singular",
+      "grade": "RULING",
+      "csharp": {
+        "name": "ShredItemOverrideQuantities",
+        "type": "uint[]"
+      }
+    },
+    {
+      "key": "CraftingOptions.RetailRecipes",
+      "value": true,
+      "ruling": "D256",
+      "source": "docs/116 s1 - the six decoded recipes replace the wave-6 design four",
+      "grade": "RULING",
+      "csharp": {
+        "name": "RetailRecipes",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.CraftCastBar",
+      "value": true,
+      "ruling": "D257",
+      "source": "docs/116 s2 - a craft runs on a cf 02 cast bar and a timer instead of completing synchronously",
+      "grade": "RULING",
+      "csharp": {
+        "name": "CraftCastBar",
+        "type": "bool"
+      }
+    },
+    {
+      "key": "CraftingOptions.SendInteractionStop",
+      "value": true,
+      "ruling": "D258",
+      "source": "docs/116 s3 - cf 03 InteractionStop closes every completed cast",
+      "grade": "RULING",
+      "csharp": {
+        "name": "SendInteractionStop",
+        "type": "bool"
+      }
+    }
+  ]
+}

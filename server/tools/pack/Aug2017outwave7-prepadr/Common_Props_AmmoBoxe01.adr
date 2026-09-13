@@ -1,0 +1,26 @@
+<ActorRuntime>
+    <AnimationNetwork fileName="" animSetName="" />
+    <AnimationEnumerations />
+    <AnimationValues />
+    <Base fileName="Common_Props_AmmoBoxe01_LOD0.dme" paletteName="Common_Props_AmmoBoxe01_Lod0.dma" updateRadius="150.000000" waterDisplacementHeight="0.000000" objectTerrainDataId="0" sharedTextureAliases="" />
+    <TextureAliases>
+        <Alias aliasName="default0" textureName="AmmoBox01_S.dds" modelType="0" materialIndex="0" semanticHash="-773254801" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="light_coral.dds" modelType="0" materialIndex="0" semanticHash="1716414136" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="detail_cube.dds" modelType="0" materialIndex="0" semanticHash="-1856785929" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="AmmoBox01_N.dds" modelType="0" materialIndex="0" semanticHash="678189709" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+        <Alias aliasName="default0" textureName="AmmoBox01_C.dds" modelType="0" materialIndex="0" semanticHash="1735042216" defaultTextureAlias="1" occlusionSlotBitmask="0" />
+    </TextureAliases>
+    <TintAliases />
+    <Lods>
+        <Lod distance="50" />
+    </Lods>
+    <CollisionType type="4119585228" />
+    <CollisionData fileName="Common_Props_AmmoBoxe01.cdt" createAsKinematic="0" useBoundingBox="0" />
+    <Usage actorUsage="0" borrowSkeleton="0" validatePcNpc="1" />
+    <Shadows CheckShadowVisibility="0" Shadowless="0" />
+    <EquipType EquippedSlotName="None" ParentAttachSlot="None" />
+    <ChildAttachSlotsEx />
+    <OcclusionData SimpleVisibility="0" UseAsOccluder="1" />
+    <MaterialType type="CARDBOARD" />
+    <Invisible value="0" />
+</ActorRuntime>
