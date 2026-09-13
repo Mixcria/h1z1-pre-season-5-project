@@ -2,7 +2,7 @@
 
 Maintained by Mixcria.
 
-https://www.youtube.com/watch?v=qL_Sh2vITYw&t=119s
+https://www.youtube.com/watch?v=qL_Sh2vITYw&t
 
 A community project for H1Z1's August 2017 client. Its Cranberry Local Windows package includes the server and launcher. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
 
