@@ -2,6 +2,8 @@
 
 Maintained by Mixcria.
 
+https://www.youtube.com/watch?v=qL_Sh2vITYw&t=119s
+
 A community project for H1Z1's August 2017 client. Its Cranberry Local Windows package includes the server and launcher. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
 
 This is a community preview prepared from the running `20260913-landing-fall-grace` server and launcher `2026.9.13.3`. Startup, account persistence, the encrypted connection and client installation have automated verification. Native game playtesting of this local package is still pending.
