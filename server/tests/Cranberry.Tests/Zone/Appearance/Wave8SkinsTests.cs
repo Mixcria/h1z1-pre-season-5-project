@@ -18,7 +18,7 @@ public sealed class Wave8SkinsTests
 {
     // The only appearance source the filter accepts. Every test that needs the real table is
     // skipped when it is absent, so the suite stays green on a machine that does not have it.
-    private const string AppearanceSource = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string AppearanceSource = TestData.DynamicAppearanceSource;
 
     // ---------------------------------------------------------------------------------------
     // Edit 1 - the stowed weapons.

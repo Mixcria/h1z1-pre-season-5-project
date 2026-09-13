@@ -13,7 +13,7 @@ namespace Cranberry.Tests.Zone.Appearance;
 [Collection(AppearanceStaticsCollection.Name)]
 public sealed class FullAppearanceTableTests
 {
-    private const string Source = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string Source = TestData.DynamicAppearanceSource;
 
     // The capture, as its own three arrays count themselves (verified by an independent parse of
     // C:\Z1\Server\Data\dynamicAppearanceFriend.bin: 6,625,396 inflated bytes, consumed exactly).

@@ -9,7 +9,7 @@ public sealed class AugustDynamicAppearanceTableTests
     // The only source the filter accepts (length + md5 gated in AugustDynamicAppearanceTable).
     // Every assertion below is skipped when it is absent, so the suite stays green on a machine
     // that does not have it.
-    private const string Source = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string Source = TestData.DynamicAppearanceSource;
 
     /// <summary>
     /// The regression itself: the overrides shipped enabled between 15:07 and 18:32 on 2026-08-29

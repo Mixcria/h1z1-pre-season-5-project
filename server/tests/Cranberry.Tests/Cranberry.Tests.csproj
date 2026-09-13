@@ -18,6 +18,9 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Content Include="..\..\..\compatibility\dynamicAppearance.bin"
+             Link="Fixtures\dynamicAppearance.bin"
+             CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

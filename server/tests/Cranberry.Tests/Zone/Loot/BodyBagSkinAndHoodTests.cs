@@ -9,7 +9,7 @@ namespace Cranberry.Tests.Zone.Loot;
 [Collection(Cranberry.Tests.Zone.Appearance.AppearanceStaticsCollection.Name)]
 public sealed partial class BodyBagGatewayTests
 {
-    private const string AppearanceSource = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string AppearanceSource = TestData.DynamicAppearanceSource;
 
     [Theory]
     [InlineData(2229u, 2600u)]

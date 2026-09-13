@@ -179,7 +179,7 @@ public sealed class CharacterIdentityTests
             _zone = new ZoneService(this, this, tickets, new ZoneOptions
             {
                 AutoMatchMs = 1, SendProximateItems = false,
-                DynamicAppearanceSourcePath = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin",
+                DynamicAppearanceSourcePath = TestData.DynamicAppearanceSource,
                 Skins = new SkinOptions { WardrobeStoreRoot = wardrobeRoot },
             }) { Post = _pending.Enqueue };
             _connection = Connect(_zone, ZoneService.ProtocolName);

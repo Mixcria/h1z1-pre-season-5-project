@@ -71,7 +71,7 @@ public sealed class MenuSkinLookTests
     {
         var session = Admit(new ZoneOptions
         {
-            DynamicAppearanceSourcePath = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin",
+            DynamicAppearanceSourcePath = TestData.DynamicAppearanceSource,
         }, gender);
         var skin = AugustSkinCatalog.Weapons.Single(s => s.RewardItemId == 4032);
         byte[] before = Assert.Single(Dresses(session.Send(WindowEvent("CUSTOMIZATION_WINDOW", "open"))));

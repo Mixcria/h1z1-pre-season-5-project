@@ -8,7 +8,7 @@ namespace Cranberry.Tests.Zone.Vehicles;
 public sealed partial class VehicleDamageIntegrationTests
 {
     [Fact]
-    public async Task RecoveryTimerPostsIntermediateFramesThroughTheListenerDispatcher()
+    public async Task RecoveryTimerPostsThroughTheListenerDispatcherAndCompletes()
     {
         var (service, connection, _) = Admit(useDrivingTuning: true);
         var pending = new System.Collections.Concurrent.ConcurrentQueue<Action>();
@@ -22,19 +22,20 @@ public sealed partial class VehicleDamageIntegrationTests
         request.WriteByte(9); request.WriteUInt16(7); request.WriteUInt64(car.Guid);
         session.Deliver(request.Written);
         var timeout = System.Diagnostics.Stopwatch.StartNew();
-        bool intermediate = false;
-        while (car.CoastingOwnerGuid == 0 && timeout.ElapsedMilliseconds < 5000)
-        {
+        while (pending.IsEmpty && timeout.ElapsedMilliseconds < 10000)
             await Task.Delay(10);
+        Assert.False(pending.IsEmpty, "The recovery timer did not post to the listener dispatcher.");
+        Assert.Equal(0ul, car.CoastingOwnerGuid);
+        Assert.Equal(-1f, VehicleFlipDetector.UpDot(car.LastRotation!.Value), 4);
+
+        // A busy runner can deliver the first callback after the full animation duration.
+        // The deterministic test below checks every intermediate pose and the handoff time.
+        while (car.CoastingOwnerGuid == 0 && timeout.ElapsedMilliseconds < 10000)
+        {
             while (pending.TryDequeue(out var frame))
-            {
                 frame();
-                float up = VehicleFlipDetector.UpDot(car.LastRotation!.Value);
-                intermediate |= up > -0.9f && up < 0.9f;
-            }
+            if (car.CoastingOwnerGuid == 0) await Task.Delay(10);
         }
-        Assert.True(intermediate);
-        Assert.True(timeout.ElapsedMilliseconds >= 1000);
         Assert.Equal(session.Guid, car.CoastingOwnerGuid);
         Assert.Equal(1f, VehicleFlipDetector.UpDot(car.LastRotation!.Value), 4);
     }

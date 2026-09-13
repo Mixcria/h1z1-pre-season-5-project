@@ -30,7 +30,7 @@ namespace Cranberry.Tests.Zone.Appearance;
 public sealed class AuthoredAppearanceTests
 {
     /// <summary>The MD5-gated source (D22). Assertions that need it are skipped when it is absent.</summary>
-    private const string Source = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string Source = TestData.DynamicAppearanceSource;
 
     /// <summary>
     /// The thirteen ids, transcribed from the boot census of the last session before this lane

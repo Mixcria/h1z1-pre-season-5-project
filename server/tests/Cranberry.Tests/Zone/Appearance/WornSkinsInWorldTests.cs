@@ -283,7 +283,7 @@ public sealed class WornSkinsInWorldTests
     }
 
     /// <summary>The MD5-gated compatibility source (D22); every session case skips without it.</summary>
-    private const string Source = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string Source = TestData.DynamicAppearanceSource;
 
     private const ulong Self = 0x1101;
 

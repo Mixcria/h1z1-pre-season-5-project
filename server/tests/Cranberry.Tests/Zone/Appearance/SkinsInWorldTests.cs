@@ -42,7 +42,7 @@ public sealed class SkinsInWorldTests
     /// The MD5-gated compatibility source (D22). Every assertion that needs the real table is
     /// skipped when it is absent so the suite stays green on a machine without it.
     /// </summary>
-    private const string Source = @"C:\Z1\Server\Data\dynamicAppearanceFriend.bin";
+    private static readonly string Source = TestData.DynamicAppearanceSource;
 
     private sealed class RecordingRecorder : IPacketRecorder
     {

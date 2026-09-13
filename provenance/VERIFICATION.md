@@ -13,6 +13,8 @@ The Windows x64 release was built from the isolated community source with .NET S
 - Static server data: all 14 `Data/` files from the deployed runtime match this Windows package by hash. The additional appearance compatibility input matches the live server's separate input.
 - Export review: no private key files, account databases or launcher-host credentials are included. Seven pattern matches were reviewed and found to be explicit test fixtures/canaries. This is a targeted source/package check, not a guarantee about every possible sensitive value.
 
-Existing test-analyzer warnings remain (five xUnit2031 warnings and one xUnit2027 warning). Native game gameplay was not launched during this verification. The included GitHub Actions workflow has not yet run on GitHub; its build/test commands were exercised locally.
+Existing test-analyzer warnings remain (five xUnit2031 warnings and one xUnit2027 warning). Native game gameplay was not launched during this verification.
 
-The result is a technically verified **community preview candidate**. A native gameplay check and the unresolved publication/license decisions remain before calling it a stable public release.
+The first GitHub run on a clean Windows machine found 42 test failures: 40 depended on the original appearance-file path, one needed an external crate-data reference, and one assumed timely scheduling during a real-time animation. The test setup now uses the bundled appearance input, explicitly opts into the external reference comparison, and checks timer dispatch separately from deterministic animation timing. The Windows runtime and its gameplay code are unchanged by these test fixes. Current clean-checkout build, full-suite and package-smoke results are available on the [Actions page](https://github.com/Mixcria/h1z1-pre-season-5-project/actions).
+
+This is a **community preview**. Native gameplay of this local package still needs a playtest before it is called stable. No overall project license has been selected.

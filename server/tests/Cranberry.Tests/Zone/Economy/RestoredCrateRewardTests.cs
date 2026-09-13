@@ -6,11 +6,10 @@ namespace Cranberry.Tests.Zone.Economy;
 
 public sealed class RestoredCrateRewardTests
 {
-    [Fact]
+    [AccountCratesReferenceFact]
     public void EveryAugustReferencePoolRetainsAllOriginalOutcomesAndWeights()
     {
-        using var reference = JsonDocument.Parse(File.ReadAllBytes(
-            "C:/h1z1project/reference/h1z1-server/data/2016/dataSources/AccountCrates.json"));
+        using var reference = JsonDocument.Parse(File.ReadAllBytes(TestData.AccountCratesReference!));
         var bagCrates = new Dictionary<uint, uint>
         {
             [1840] = 3812, [1879] = 3813, [2033] = 3814, [3239] = 3815,
