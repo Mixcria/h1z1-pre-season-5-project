@@ -1,14 +1,14 @@
-# Cranberry Local
+# H1Z1 Pre-Season 5 Project
 
 Maintained by Mixcria.
 
-A Windows local-server edition of Cranberry's August 2017 game server. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
+A community project for H1Z1's August 2017 client. Its Cranberry Local Windows package includes the server and launcher. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
 
 This is a community preview prepared from the running `20260913-landing-fall-grace` server and launcher `2026.9.13.3`. Startup, account persistence, the encrypted connection and client installation have automated verification. Native game playtesting of this local package is still pending.
 
 ## Play
 
-Download a numbered **Cranberry Local Windows x64 ZIP** from the project's Releases page when one is published. Extract the entire ZIP and open `Cranberry.Launcher.exe`. Register your first local account with **Make this the local administrator** selected, then use **Install / repair** and **Play**. See [PLAYER-GUIDE.txt](PLAYER-GUIDE.txt).
+Download the **Cranberry Local Windows x64 ZIP** from [Releases](https://github.com/Mixcria/h1z1-pre-season-5-project/releases). Extract the entire ZIP and open `Cranberry.Launcher.exe`. Register your first local account with **Make this the local administrator** selected, then use **Install / repair** and **Play**. See [PLAYER-GUIDE.txt](PLAYER-GUIDE.txt).
 
 The package includes the launcher, server and their .NET runtimes. The game download is approximately 14.6 GB. Installation verifies every client file against the release's SHA-256 manifest. Installed files are reused; only missing or changed files need downloading. A complete installation can be verified with every download request blocked.
 
