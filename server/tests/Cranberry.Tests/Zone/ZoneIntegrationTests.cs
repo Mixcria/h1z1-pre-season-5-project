@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.Collections.Concurrent;
 using System.Net;
 using Cranberry.Login;
@@ -147,6 +148,23 @@ public partial class ZoneIntegrationTests
         Assert.True(SpinWait.SpinUntil(() => !pending.IsEmpty, 30_000), $"{what} was never posted");
         Assert.True(pending.TryDequeue(out Action? work));
         work!();
+    }
+
+    private static void WaitForDevelopmentDrop(ConcurrentQueue<Action> pending, RecordingRecorder recorder)
+    {
+        // Admission watchdogs share this queue with the loot timer. A callback running
+        // does not prove the pickup exists; wait for this item's actual spawn packet.
+        long deadline = Environment.TickCount64 + 30_000;
+        while (!Sent(recorder).Any(packet => packet.Length >= 10
+            && packet[1] == AddLightweightItem.Opcode
+            && BinaryPrimitives.ReadUInt64LittleEndian(packet.AsSpan(2)) == LootWorld.DefaultWorldGuidBase))
+        {
+            int remaining = (int)Math.Max(0, deadline - Environment.TickCount64);
+            Assert.True(remaining > 0 && SpinWait.SpinUntil(() => !pending.IsEmpty, remaining),
+                "the development item's spawn was never emitted");
+            Assert.True(pending.TryDequeue(out Action? work));
+            work!();
+        }
     }
 
     private static byte[][] Sent(RecordingRecorder recorder, int skip = 0) =>
@@ -481,7 +499,7 @@ public partial class ZoneIntegrationTests
             pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -570,8 +588,10 @@ public partial class ZoneIntegrationTests
     /// tested the wire.
     /// </para>
     /// </summary>
-    [Fact]
-    public void WithTheFirstPickupDrawnTheRhandRowNamesTheGrantedRifle()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void WithTheFirstPickupDrawnTheRhandRowNamesTheGrantedRifle(bool earlierCallback)
     {
         var pending = new ConcurrentQueue<Action>();
         var (service, connection, recorder) = Admit(
@@ -589,8 +609,10 @@ public partial class ZoneIntegrationTests
             },
             pending.Enqueue);
 
+        // Deterministically cover unrelated work arriving before the loot timer.
+        if (earlierCallback) pending.Enqueue(() => { });
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -642,7 +664,7 @@ public partial class ZoneIntegrationTests
             pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -703,7 +725,7 @@ public partial class ZoneIntegrationTests
             pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -763,7 +785,7 @@ public partial class ZoneIntegrationTests
             pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the hotbar test development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -822,7 +844,7 @@ public partial class ZoneIntegrationTests
             pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -868,7 +890,7 @@ public partial class ZoneIntegrationTests
         var (service, connection, recorder) = Admit(WeaponStanceOptions(), pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
 
         int beforePickup = SentCount(recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
@@ -913,7 +935,7 @@ public partial class ZoneIntegrationTests
         var (service, connection, recorder) = Admit(options, pending.Enqueue);
 
         SendClientIsReady(service, connection);
-        Pump(pending, "the development drop");
+        WaitForDevelopmentDrop(pending, recorder);
         SendInteractRequest(service, connection, LootWorld.DefaultWorldGuidBase);
 
         Assert.DoesNotContain(Sent(recorder), IsWeaponStance);
