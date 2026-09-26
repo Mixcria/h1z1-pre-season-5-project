@@ -20,12 +20,30 @@ jobs:
       - name: Test server
         shell: pwsh
         run: dotnet test ./server/Cranberry.slnx -c Release
+      - name: Test community updater
+        shell: pwsh
+        run: dotnet test ./tests/CommunityUpdater.Tests -c Release
+      - name: Build offline community publisher
+        shell: pwsh
+        run: dotnet build ./tools/CommunityRelease -c Release --artifacts-path ./artifacts/publisher
+      - name: Verify offline publisher fixtures
+        shell: pwsh
+        run: ./tools/CommunityRelease/Smoke-Publisher.ps1 -Publisher ./artifacts/publisher/bin/CommunityRelease/release/CommunityRelease.dll -Evidence ./artifacts/publisher-smoke
       - name: Build local package
         shell: pwsh
         run: ./Build-Local.ps1 -Output ./artifacts/Cranberry-Local -Zip
       - name: Verify isolated startup and persistence
         shell: pwsh
         run: dotnet run --project ./tests/LocalEdition.Smoke -c Release -- ./artifacts/Cranberry-Local ./artifacts/local-smoke
+      - name: Verify updater handoff and rollback
+        shell: pwsh
+        run: dotnet run --project ./tests/CommunityUpdater.Smoke -c Release -- ./artifacts/Cranberry-Local ./artifacts/updater-smoke
+      - name: Prepare signed GUI smoke fixtures
+        shell: pwsh
+        run: ./tools/CommunityRelease/Prepare-GuiSmoke.ps1 -Package ./artifacts/Cranberry-Local -Publisher ./artifacts/publisher/bin/CommunityRelease/release/CommunityRelease.dll -Evidence ./artifacts/gui-fixtures
+      - name: Verify real launcher update and startup rollback
+        shell: pwsh
+        run: dotnet run --project ./tests/CommunityUpdater.GuiSmoke -c Release -- ./artifacts/gui-fixtures/seed ./artifacts/gui-fixtures/signed-good ./artifacts/gui-fixtures/signed-broken ./artifacts/gui-smoke
       - uses: actions/upload-artifact@v7
         with:
           name: Cranberry-Local-preview

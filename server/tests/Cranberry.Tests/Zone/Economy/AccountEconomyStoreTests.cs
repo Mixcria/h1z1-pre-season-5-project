@@ -187,16 +187,28 @@ public sealed class AccountEconomyStoreTests : IDisposable
         initial.GetOrCreate("a", Seed());
         string path = Path.Combine(_root, AccountEconomyStore.FileNameFor("a"));
         FileStream? reader = null;
-        using var release = new Timer(_ => reader?.Dispose(), null, Timeout.Infinite, Timeout.Infinite);
+        using var release = new ManualResetEventSlim();
+        using var releaserReady = new ManualResetEventSlim();
+        // A pool timer can remain queued longer than the store's bounded retry window
+        // under parallel CI load. Keep this deliberately brief reader independent of it.
+        var releaser = new Thread(() =>
+        {
+            releaserReady.Set();
+            release.Wait();
+            Thread.Sleep(50);
+            reader?.Dispose();
+        }) { IsBackground = true };
+        releaser.Start();
         int mutations = 0;
         var store = new AccountEconomyStore(_root, persistenceFault: stage =>
         {
             if (stage != EconomyPersistenceStage.AfterFlushBeforeReplace) return;
             reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            release.Change(50, Timeout.Infinite);
+            release.Set();
         });
         try
         {
+            Assert.True(releaserReady.Wait(TimeSpan.FromSeconds(5)), "Reader release thread did not start.");
             var result = store.Execute("a", "initialize", "admission", draft =>
             {
                 mutations++;
@@ -209,7 +221,12 @@ public sealed class AccountEconomyStoreTests : IDisposable
             Assert.Single(result.Snapshot!.Receipts);
             Assert.Empty(Directory.GetFiles(_root, "*.pending-*"));
         }
-        finally { reader?.Dispose(); }
+        finally
+        {
+            release.Set();
+            Assert.True(releaser.Join(TimeSpan.FromSeconds(5)), "Reader release thread did not finish.");
+            reader?.Dispose();
+        }
     }
 
     [Fact]

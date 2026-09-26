@@ -13,6 +13,7 @@ using Cranberry.Zone.HostedGames;
 namespace Cranberry.Tests.Zone.MatchLobby;
 
 /// <summary>Real gateway dispatcher and durable store; these are send-side tests, not UI screenshots.</summary>
+[Collection(GatewayTimerCollection.Name)]
 public sealed partial class BountyGatewayTests
 {
     private sealed class Recorder : IPacketRecorder
@@ -114,15 +115,15 @@ public sealed partial class BountyGatewayTests
         }
         public void Ready(SoeConnection connection) => Send(connection, w => { w.WriteByte(ZoneOpcodes.ClientFinishedLoading); w.WriteByte(0); });
         public void Cancel(SoeConnection connection) => Send(connection, w => w.WriteByte(ZoneOpcodes.CancelQueueOnWorld));
-        public void Pump(Func<bool> done)
+        public void Pump(Func<bool> done, int timeoutMs = 5000)
         {
             var watch = Stopwatch.StartNew();
-            while (!done() && watch.ElapsedMilliseconds < 5000)
+            while (!done() && watch.ElapsedMilliseconds < timeoutMs)
             {
                 if (Pending.TryDequeue(out Action? action)) action();
                 else Thread.Sleep(1);
             }
-            Assert.True(done(), "Expected gateway transition did not occur within five seconds.");
+            Assert.True(done(), $"Expected gateway transition did not occur within {timeoutMs} milliseconds.");
         }
         public BountyBackingRecord Record(string account = "a") => JsonSerializer.Deserialize<BountyBackingRecord>(
             Assert.Single(Store.GetOrCreate(account).States, row => row.Key.StartsWith(BountyLedger.RecordPrefix)).Value)!;

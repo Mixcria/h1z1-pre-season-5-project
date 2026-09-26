@@ -18,6 +18,8 @@ Requires Windows 10/11 x64. The game download is about 14.6 GB.
 
 The current download runs locally on your PC. LAN play isn't supported yet.
 
+Launcher and server updates install automatically. Older launchers need the updater-enabled ZIP once; your local accounts and settings are kept.
+
 ## Build
 
 Requires Windows and the .NET 10 SDK.

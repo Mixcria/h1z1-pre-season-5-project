@@ -9,22 +9,62 @@ public sealed class PublicMatchQueueTests
     [InlineData(MatchMode.Solo, 1u)]
     [InlineData(MatchMode.Duos, 6u)]
     [InlineData(MatchMode.Fives, 7u)]
-    public void LocalPolicyStartsEachModeAloneFiveSecondsAfterLoadingEvenWithOldSavedSettings(MatchMode mode, uint world)
+    public void LocalPolicyWaitsForTwoReadyPlayersThenCountsThreeMinutesDespiteOldSavedSettings(MatchMode mode, uint world)
     {
         var saved = PublicQueueOptions.FromEnvironment(key => key switch
-        { "CRANBERRY_QUEUE_WAIT_MS" => "180000", "CRANBERRY_QUEUE_MIN_PLAYERS" => "2", _ => null });
+        { "CRANBERRY_QUEUE_WAIT_MS" => "5000", "CRANBERRY_QUEUE_MIN_PLAYERS" => "1", _ => null });
         var queue = new PublicMatchQueue(saved.ForLocalPlay());
         ulong match = Add(queue, 1, world: world, mode: mode);
         queue.Poll(0); queue.Poll(300000);
         Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
         queue.SetReadyPlayers(match, [1], 300000);
-        queue.Poll(304999);
+        queue.Poll(600000);
         Assert.Equal(PublicMatchPhase.PRE_GAME, queue.Snapshots.Single().Phase);
-        queue.Poll(305000);
+        Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
+
+        Assert.Equal(match, Add(queue, 2, world: world, mode: mode, now: 600000));
+        queue.SetReadyPlayers(match, [1], 600000); // A second player still loading is not enough.
+        queue.Poll(900000);
+        Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.SetReadyPlayers(match, [1, 2], 900000);
+        Assert.Equal(1080000L, queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.Poll(1079999);
+        Assert.Equal(PublicMatchPhase.PRE_GAME, queue.Snapshots.Single().Phase);
+        queue.Poll(1080000);
         Assert.Equal(PublicMatchPhase.ROSTER_FROZEN, queue.Snapshots.Single().Phase);
-        Assert.Equal(new ulong[] { 1 }, queue.Snapshots.Single().Roster);
+        Assert.Equal(new ulong[] { 1, 2 }, queue.Snapshots.Single().Roster);
         Assert.False(saved.AllowSinglePlayer);
-        Assert.Equal(2, saved.MinPlayers);
+        Assert.Equal(5000, saved.WaitMs); // Applying local policy does not mutate saved options.
+    }
+
+    [Theory]
+    [InlineData(MatchMode.Solo, 1u)]
+    [InlineData(MatchMode.Duos, 6u)]
+    [InlineData(MatchMode.Fives, 7u)]
+    public void LocalCountdownCancelsBelowTwoAndRestartsInFullWhenTheMinimumReturns(MatchMode mode, uint world)
+    {
+        var queue = new PublicMatchQueue(new PublicQueueOptions().ForLocalPlay());
+        ulong match = Add(queue, 1, world: world, mode: mode);
+        Add(queue, 2, world: world, mode: mode);
+        queue.Poll(0);
+        queue.SetReadyPlayers(match, [1, 2], 0);
+        queue.SetReadyPlayers(match, [1], 100000);
+        Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.Poll(180000);
+        Assert.Equal(PublicMatchPhase.PRE_GAME, queue.Snapshots.Single().Phase);
+
+        queue.SetReadyPlayers(match, [1, 2], 200000);
+        Assert.Equal(380000L, queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.Leave(2);
+        Assert.Null(queue.Snapshots.Single().CountdownDeadlineMs);
+        Add(queue, 3, world: world, mode: mode, now: 300000);
+        queue.SetReadyPlayers(match, [1, 3], 300000);
+        Assert.Equal(480000L, queue.Snapshots.Single().CountdownDeadlineMs);
+        queue.Poll(479999);
+        Assert.Equal(PublicMatchPhase.PRE_GAME, queue.Snapshots.Single().Phase);
+        queue.Poll(480000);
+        Assert.Equal(PublicMatchPhase.ROSTER_FROZEN, queue.Snapshots.Single().Phase);
+        Assert.Equal(new ulong[] { 1, 3 }, queue.Snapshots.Single().Roster);
     }
 
     private static ulong Add(PublicMatchQueue queue, ulong first, int size = 1, uint world = 1, MatchMode mode = MatchMode.Solo, long now = 0)
@@ -127,11 +167,12 @@ public sealed partial class BountyGatewayTests
     [InlineData(MatchMode.Solo, 1u)]
     [InlineData(MatchMode.Duos, 6u)]
     [InlineData(MatchMode.Fives, 7u)]
-    public void LocalPlayUsesNormalMenuTransferAndStartsAloneAfterLauncherAndWorldReadiness(MatchMode mode, uint world)
+    public void LocalPlayWaitsAloneAfterWorldReadinessUntilTheOwnerStartsMatch(MatchMode mode, uint world)
     {
         using var f = new Fixture(mode: mode, lobby: ArrivalLobby,
             admissions: MatchAdmissionRegistry.Default,
-            publicQueue: new PublicQueueOptions().ForLocalPlay() with { WaitMs = 100 });
+            publicQueue: new PublicQueueOptions().ForLocalPlay(), console: PublicForceConsole);
+        f.Service.LocalOwnerAccountId = "local-player";
         var player = f.Connect("local-player");
         bool initialized = false;
         f.Service.DoorSwingClientReady = _ => initialized;
@@ -139,15 +180,63 @@ public sealed partial class BountyGatewayTests
         Assert.Empty(f.Service.PublicMatches);
         Assert.Equal("Menu", f.Service.ForTest(player).Step);
         initialized = true;
-        f.Pump(() => f.Sent(player).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning));
+        // Readiness/queue polls, the 3-second prompt and zoning delay already need
+        // about 4 seconds. Allow CI scheduling margin without changing those timers.
+        f.Pump(() => f.Sent(player).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning), timeoutMs: 10_000);
         f.Send(player, w => w.WriteByte(ZoneOpcodes.ClientIsReady));
         Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
         f.Ready(player);
+        f.Pump(() => f.Sent(player).Any(p => Hud(p, 0x0f)));
+        Assert.Equal("Lobby", f.Service.ForTest(player).Step);
+        Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
+        byte[] waiting = f.Sent(player).Last(p => Hud(p, 0x0f));
+        Assert.Equal(0u, BitConverter.ToUInt32(waiting, 8));
+        Assert.Equal(13198u, BitConverter.ToUInt32(waiting, 12));
+        Assert.DoesNotContain(f.Sent(player), p => Hud(p, 0x16));
+
+        ForcePublicStart(f, player);
         f.Pump(() => f.Service.ForTest(player).Step == "Dropping");
-        Assert.Contains(f.Sent(player), p => Hud(p, 0x16));
+        Assert.Single(f.Sent(player), p => Hud(p, 0x16));
         Assert.DoesNotContain(f.Sent(player), p => Hud(p, 0x18)); // No immediate victory with one player.
         Assert.Equal(mode, Assert.Single(f.Service.PublicMatches).Mode);
         Assert.Single(f.Service.PublicMatches.Single().Roster);
+        ForcePublicStart(f, player);
+        Assert.Single(f.Sent(player), p => Hud(p, 0x16));
+    }
+
+    [Theory]
+    [InlineData(MatchMode.Solo, 1u)]
+    [InlineData(MatchMode.Duos, 6u)]
+    [InlineData(MatchMode.Fives, 7u)]
+    public void LocalSecondReadyPlayerPublishesThreeMinuteCountdownAndLeavingRestoresWaiting(MatchMode mode, uint world)
+    {
+        using var f = new Fixture(mode: mode, lobby: ArrivalLobby,
+            admissions: MatchAdmissionRegistry.Default,
+            publicQueue: new PublicQueueOptions().ForLocalPlay());
+        var first = f.Connect("first"); var second = f.Connect("second");
+        LoadPublicPregame(f, first, world);
+        f.Transfer(second, world);
+        f.Pump(() => f.Sent(second).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning));
+        f.Send(second, w => w.WriteByte(ZoneOpcodes.ClientIsReady));
+        Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
+        long readyAt = Environment.TickCount64;
+        f.Ready(second);
+        f.Pump(() => f.Service.PublicMatches.Single().CountdownDeadlineMs is not null);
+        Assert.InRange(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs!.Value,
+            readyAt + 180_000, Environment.TickCount64 + 180_000);
+        foreach (var player in new[] { first, second })
+        {
+            byte[] countdown = f.Sent(player).Last(p => Hud(p, 0x0f));
+            Assert.InRange(BitConverter.ToUInt32(countdown, 8), 179_000u, 180_000u);
+            Assert.Equal(13356u, BitConverter.ToUInt32(countdown, 12));
+            Assert.DoesNotContain(f.Sent(player), p => Hud(p, 0x16));
+        }
+        f.Disconnect(second);
+        f.Pump(() => BitConverter.ToUInt32(f.Sent(first).Last(p => Hud(p, 0x0f)), 12) == 13198);
+        Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
+        Assert.Equal(0u, BitConverter.ToUInt32(f.Sent(first).Last(p => Hud(p, 0x0f)), 8));
+        Assert.Equal("Lobby", f.Service.ForTest(first).Step);
+        Assert.DoesNotContain(f.Sent(first), p => Hud(p, 0x16));
     }
 
     [Theory]
