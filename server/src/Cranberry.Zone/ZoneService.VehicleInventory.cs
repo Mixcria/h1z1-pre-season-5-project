@@ -152,8 +152,10 @@ public sealed partial class ZoneService
     private void StartVehicleComponentRemoval(SoeConnection connection, GatewaySessionState state,
         PlayerInventory player, MatchVehicle vehicle, InventoryItem item, MoveItemRequest move)
     {
+        DiscardStaleInventoryCasts(state);
         long now = Environment.TickCount64;
-        if (state.PendingMedicalCast is not null || state.ShredBusyUntil > now || state.CraftBusyUntil > now
+        if (state.PendingMedicalCast is not null || state.PendingShred is not null || state.PendingCraft is not null
+            || state.ShredBusyUntil > now || state.CraftBusyUntil > now
             || state.ConsumeBusyUntil > now)
         {
             SendTunnel(connection, new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo);

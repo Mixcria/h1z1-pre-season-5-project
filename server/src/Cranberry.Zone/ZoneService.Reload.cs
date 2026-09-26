@@ -16,8 +16,8 @@ public sealed partial class ZoneService
             return;
 
         // An ItemAdd tail carries magazine, groups and idle state, but no reload counters.
-        // Reconcile the counter after drawing or unloading, including an item previously
-        // recreated by a placement change, so expected=ack+1 matches our next acknowledgement.
+        // Reconcile after drawing, unloading or a skin refresh, including stowed items
+        // recreated by these changes, so expected=ack+1 matches our next acknowledgement.
         // Keep the server's ammunition, durability, firing deadlines and counter intact.
         int reserve = new PlayerAmmoContext(inventory, state.Guid, _options.Combat.Ammo).Count(ammoItemId);
         byte[] reply = WeaponReplyPackets.Reload(WeaponReplyPackets.ImmediateGameTime, instance.Guid,

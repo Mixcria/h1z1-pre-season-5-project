@@ -31,8 +31,11 @@ are not established merely by decoding the client.
 Binoculars still use the existing custom zoom approximation. Native camera and
 reticle paths have been traced, but original server-authored camera values are
 missing. No guessed replacement or client patch is included. The later inventory
-cast-ownership and rejected-fire-mode follow-ups remain separate research changes;
-they were not part of the owner-playtested baseline exported here.
+cast-ownership and rejected-fire-mode follow-ups were not part of the
+owner-playtested baseline exported here. They are now included in the separate
+[reload and cast fixes](../server/docs/reload-cast-fixes-20260926.md) increment,
+which has since received general native acceptance from the owner. Individual
+observations and repetition counts remain as recorded in that note.
 
 The owner's stable live death/menu/lobby report remains useful baseline evidence.
 Repeated local native transition cycles have not yet been counted. A successful
@@ -72,8 +75,8 @@ and any live deployment are separate actions. The existing workflow builds/tests
 PRs and main pushes and uploads a preview artifact; it has no deployment step.
 This baseline update does not change the pinned client manifest or game assets.
 
-Next priorities: record repeated local death/menu/lobby cycles, verify the rebuilt
-package's native medical behavior, review the two bounded lifecycle follow-ups,
+Next priorities: record repeated local death/menu/lobby cycles, verify the
+rebuilt package's native medical behavior,
 and obtain same-build binocular camera values. Wider gameplay remains an
 [evidence-backed inventory and backlog](../server/docs/compatibility-status.md),
 not a claim that the game is retail-complete.

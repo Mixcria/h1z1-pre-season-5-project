@@ -1361,6 +1361,14 @@ public static partial class WeaponFireArm
                 null, false, null);
         }
 
+        // The descriptor we actually send contains one group and two modes. The decoder's
+        // signed-byte ceiling is a wire check, not evidence that other indices exist. Validate
+        // before declaring: a rejected/stale request must not recreate runtime state after
+        // inventory teardown. Native 1422935d0 likewise rejects absent modes before applying.
+        if (request.FireGroupIndex != 0 || request.FireModeIndex > 1
+            || !AugustWeaponTable.HasFireGroup(heldWeaponItemDefinitionId, out _))
+            return new WeaponArmResult($"{seen} - REFUSED, mode absent from the weapon descriptor", null, false, null);
+
         // The mode switch can be a weapon's first sight, exactly as the trigger can (the owner's
         // sessions send 82 0c before the first 82 01), so the parity rule runs here too or the
         // switch would be dropped for an undeclared guid and the first shot would then re-declare
@@ -1369,12 +1377,6 @@ public static partial class WeaponFireArm
             request.WeaponGuid,
             heldWeaponItemDefinitionId,
             ShooterCombatState.DefaultMagazineFor(heldWeaponItemDefinitionId, options.Ammo));
-
-        // The descriptor we actually send contains one group and two modes. The decoder's
-        // signed-byte ceiling is a wire check, not evidence that other indices exist.
-        if (request.FireGroupIndex != 0 || request.FireModeIndex > 1
-            || !AugustWeaponTable.HasFireGroup(heldWeaponItemDefinitionId, out _))
-            return new WeaponArmResult($"{seen} - REFUSED, mode absent from the weapon descriptor", null, false, null);
 
         bool changed = session.Shooter.FireGroupOf(request.WeaponGuid) != request.FireGroupIndex
             || session.Shooter.FireModeOf(request.WeaponGuid) != request.FireModeIndex;

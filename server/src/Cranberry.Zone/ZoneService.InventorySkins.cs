@@ -1,5 +1,6 @@
 using Cranberry.Transport;
 using Cranberry.Zone.Appearance;
+using Cranberry.Zone.Combat;
 using Cranberry.Zone.Economy;
 using Cranberry.Zone.Inventory;
 using Cranberry.Zone.Match;
@@ -143,7 +144,8 @@ public sealed partial class ZoneService
     /// The inventory skin picker uses the existing category selection request. Its accepted
     /// selection must also repaint already-carried weapons. ItemUpdate intentionally ignores
     /// definition id in August (141479ae0), so use the established delete/add refresh with the
-    /// same instance, magazine, durability and bindings; no inventory or combat state is replaced.
+    /// same instance, magazine, durability and bindings. A target reload must end before its
+    /// client component is reconstructed, and the replacement needs its retained reload counter.
     /// </summary>
     private void RefreshCarriedWeaponSkin(
         SoeConnection connection, GatewaySessionState state, uint categoryPrototypeId)
@@ -165,6 +167,16 @@ public sealed partial class ZoneService
     {
         foreach (var item in affected)
         {
+            // ItemAdd reconstructs the native weapon in idle state. End only this item's
+            // pending work, and interrupt observers before appearance replaces their hand.
+            if (WeaponFireArm.CancelReload(state.Combat, item.Guid,
+                "weapon skin changed", stopClientReload: true) is { } stopped)
+            {
+                state.WeaponArmResults.Clear();
+                state.WeaponArmResults.Add(stopped);
+                DrainCombatArm(connection, state);
+            }
+
             var record = item.ToRecord(state.Guid);
             int durability = state.Combat.Shooter.DurabilityOf(item.Guid);
             if (durability >= 0)
@@ -176,6 +188,7 @@ public sealed partial class ZoneService
                 };
             SendTunnel(connection, new ItemDelete(state.Guid, item.Guid).WriteTo);
             SendTunnel(connection, state.Weapons.CreateItemAdd(state.Guid, record));
+            SyncDrawnWeaponReloadCounter(connection, state, item);
         }
         SendLoadoutSlots(connection, inventory);
         foreach (var container in inventory.Containers.Values)
