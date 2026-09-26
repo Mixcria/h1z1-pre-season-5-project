@@ -6,8 +6,10 @@ Cranberry Local - community preview
    your first account. These credentials belong only to this installation.
 4. Choose INSTALL / REPAIR to download the matching client from Cloudflare.
    In Settings, you can instead select an existing matching game installation.
-5. Press PLAY. Select Solo, Duos or Fives in the game. Each mode accepts one
-   local player and starts five seconds after the pre-game world finishes loading.
+5. Press PLAY. Select Solo, Duos or Fives in the game. Alone, the lobby shows
+   "Waiting for players..." until the local administrator types /startmatch.
+   Two fully loaded players start a three-minute countdown in every mode.
+   Falling below two resets it; the administrator can use /startmatch to skip it.
    The launcher must finish initializing the game before it can enter a world.
 
 All local accounts, including the administrator, receive the complete skin

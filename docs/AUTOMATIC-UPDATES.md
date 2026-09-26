@@ -38,6 +38,15 @@ replacement can require a separately reviewed manual installation. Its original
 prerelease preference controls discovery even when the selected bundle's build
 preference differs.
 
+## Local lobby policy
+
+Solo, Duos and Fives wait indefinitely with one ready player. Two ready players
+start a 180-second countdown; dropping below two cancels it, and returning to two
+starts a fresh countdown. The local administrator can use `/startmatch` to start
+alone or skip the countdown. These local runtime rules override older saved
+one-player/five-second settings without rewriting the settings file. This is
+community hosting policy, not a claim about original retail population rules.
+
 ## Signed format
 
 `community-release.json` uses camel-case JSON with schema 1. Its signature is
@@ -95,11 +104,24 @@ and return to the main menu. This is one reported sequence; repeated transition
 cycles and reopening/preferences retention were not separately confirmed in that
 report. GitHub check results are recorded on the updater pull request.
 
+That playtest preceded the revised waiting/two-player lobby policy. The revised
+source passed the complete server solution: 7,591 tests passed and 36 existing
+external-input/live scenarios were skipped. All three modes passed waiting,
+two-ready-player countdown, cancellation/restart and owner-start checks. The
+rebuilt signed package passed all 22 startup/account/persistence checks. Native
+waiting-to-`/startmatch` confirmation remains pending; the earlier launch/death/menu
+result does not validate this revision. Evidence is retained locally under
+`C:\Aug2017\out\restoration-20260926\community-lobby-ready`.
+
 The first GitHub run exposed an existing gateway test with a five-second wait
 budget for roughly four seconds of chained timers. Only that wait now permits
 ten seconds of CI scheduling margin; gameplay timers and assertions are unchanged.
+The next run exposed an identity test's callback-order assumption and contention
+in real-timer gateway tests. The identity test now waits for zoning, and gateway
+timer tests run separately from concurrent classes. Their behavior assertions
+remain in place.
 
 The 0.2.0-preview.1 source change adds the updater, offline publisher, package
-inventory and build/test integration. It changes no client binaries/assets or
-gameplay rules. Publication remains a separate approval step; build success alone
-is not a playtest.
+inventory, build/test integration and the local lobby policy above. Client
+binaries and assets are unchanged. Publication remains a separate approval step;
+build success alone is not a playtest.

@@ -13,15 +13,16 @@ public sealed record PublicQueueOptions
     public int WaitMs { get; init; } = 180_000;
     public int MaxPlayers { get; init; } = 150;
     public int MinPlayers { get; init; } = 2;
-    /// <summary>Local practice may start without an opposing team. Public hosts keep this off.</summary>
+    /// <summary>Allow underfilled local teams; MinPlayers still applies. Public hosts keep this off.</summary>
     public bool AllowSinglePlayer { get; init; }
     public int MaxAllocatedMatches { get; init; } = 2;
     public int AcceptTimeoutMs { get; init; } = 60_000;
     public int LoadTimeoutMs { get; init; } = 180_000;
 
-    // Apply after saved settings, including preview.1's multiplayer minimum and three-minute wait.
+    // Apply after saved settings so earlier five-second solo defaults cannot auto-start a lobby.
+    // All local modes need two ready players; the owner's explicit startmatch can start alone.
     public PublicQueueOptions ForLocalPlay() => this with
-    { AllowSinglePlayer = true, MinPlayers = 1, WaitMs = 5_000 };
+    { AllowSinglePlayer = true, MinPlayers = 2, WaitMs = 180_000 };
 
     public static PublicQueueOptions FromEnvironment(Func<string, string?> read)
     {
