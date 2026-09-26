@@ -214,15 +214,15 @@ public sealed class InventoryAutoAssignTests
         Assert.Equal(0u, plan.EquipmentSlotId);
     }
 
-    /// <summary>docs/41 §5c — grenades are accepted by wheel 1 and 4, never wheel 3.</summary>
+    /// <summary>Grenades leave all three weapon slots available.</summary>
     [Fact]
-    public void GrenadeUsesTheSecondWeaponSlotInLoadoutSeventeen()
+    public void GrenadeUsesTheDedicatedSlotInLoadoutSeventeen()
     {
         PlayerInventory inventory = Fresh();
         inventory.TryPickUp(Ar15, 1, out _);        // takes wheel slot 1
 
         InventoryPlacement plan = inventory.TryPickUp(FragGrenade, 1, out _);
-        Assert.Equal(SurvivorLoadout.Wheel2, plan.LoadoutSlotId);
+        Assert.Equal(SurvivorLoadout.Grenades, plan.LoadoutSlotId);
     }
 
     // -------------------------------------------------------------------------------------

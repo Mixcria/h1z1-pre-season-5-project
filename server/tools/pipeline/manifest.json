@@ -11,8 +11,8 @@
     "THIRD_PARTY_SHAPED": "the shape follows a third-party artefact - flagged, never silent"
   },
   "gradeHistogram": {
-    "CLIENT": 13,
-    "CLIENT+RULING": 7,
+    "CLIENT": 12,
+    "CLIENT+RULING": 8,
     "Z1": 2,
     "CAPTURED": 2,
     "CLIENT+RULING+CAPTURED": 1,
@@ -24,19 +24,19 @@
       "outputs": [
         {
           "path": "src/Cranberry.Zone/Inventory/InventorySlots.g.cs",
-          "sha256": "8aaabc0468945dc0d888b8dd7e92a9b3feaad666c1aee9b97753ae8ed49a7ce7",
-          "size": 43981,
+          "sha256": "a43a127c58cc1b9e276b43eeb961b67b01df4df566fe4d3f33d6cd8610a0af81",
+          "size": 44234,
           "header": true
         },
         {
           "path": "src/Cranberry.Zone/Inventory/InventoryItemFacts.g.cs",
-          "sha256": "ca7837ed622060adf5e7095af77ca216c5929506b05750930b249dea21e957e0",
-          "size": 286002,
+          "sha256": "8d1f2ddacd42020875b798b0d0771fb6c07ce9a0b714ccb5e26cd2cd0cb5f5a9",
+          "size": 286160,
           "header": true
         }
       ],
       "generator": "tools/data/gen-inventory-slots.py",
-      "generatorSha256": "78bfa946be3c83ab50a73c5d887b8af5b3768ddec3598f3823da2f9f0b86a9ee",
+      "generatorSha256": "f35d3daa4888072aa509cf1d511db9602cc09f7b867da958eb966eb600c2127e",
       "inputs": [
         {
           "path": "out/data_aug/EquipmentSlotDefinitions.txt",
@@ -148,6 +148,14 @@
             "menu-economy",
             "loot-tables"
           ]
+        },
+        {
+          "path": "tools/data/survivor_loadout.py",
+          "sha256": "9370cf4539f7b18fab777197060f16d5ca03f8e205cc08fef52069e3e5b65657",
+          "crc32": "fc59f2f4",
+          "size": 2230,
+          "grade": "RULING",
+          "thirdParty": false
         }
       ],
       "rulings": [
@@ -156,10 +164,10 @@
         "D141"
       ],
       "gradeNotes": {},
-      "grade": "CLIENT",
+      "grade": "CLIENT+RULING",
       "thirdParty": false,
-      "note": "the slot/loadout/container model and the nine item columns the resolver reads; the client's own FUN_140d35510 predicate is driven by these exact sheets",
-      "generatedUtc": "2026-09-11T17:56:45Z",
+      "note": "the slot/loadout/container model and the nine item columns the resolver reads; the client's own FUN_140d35510 predicate is driven by these sheets; the owner's 2026-09-20 grenade-slot request applies survivor_loadout.py to both the client package and server table",
+      "generatedUtc": "2026-09-20T10:30:19Z",
       "clientBuild": "0.0.118.208059"
     },
     {

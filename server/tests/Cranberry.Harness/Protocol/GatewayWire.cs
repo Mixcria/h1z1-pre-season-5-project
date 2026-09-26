@@ -39,6 +39,30 @@ public static class GatewayWire
 
     public static (byte Opcode, byte Channel) SplitHeader(byte value) => ((byte)(value & 0x1F), (byte)(value >> 5));
 
+    /// <summary>Cheap journal classification only, not movement validation. Requires exact
+    /// s2c channel-zero 05/78, a canonical non-self recipient id and a complete movement
+    /// header (including flags when present). Truncated/foreign prefixes stay journaled.
+    /// Remaining movement fields are still decoded by the normal application observer.</summary>
+    public static bool HasInboundMovementJournalPrefix(ReadOnlySpan<byte> message)
+    {
+        if (message.Length < 10 || message[0] != 5 || message[1] != 0x78) return false;
+        int idLength = 1 + (message[2] & 3);
+        int movement = 2 + idLength;
+        if (message.Length < movement + 7) return false;
+        uint packed = 0;
+        for (int i = 0; i < idLength; i++) packed |= (uint)message[2 + i] << (8 * i);
+        uint id = packed >> 2;
+        if (id <= 1 || idLength != (id < 64 ? 1 : id < 16384 ? 2 : id < 4194304 ? 3 : 4))
+            return false;
+        if ((message[movement] & 1) != 0)
+        {
+            int flags = movement + 7;
+            if (message.Length <= flags || message.Length < flags + 1 + (message[flags] & 3))
+                return false;
+        }
+        return true;
+    }
+
     /// <summary>Wraps ClientProtocol bytes in a client tunnel header on the given channel.</summary>
     public static byte[] Tunnel(byte channel, ReadOnlySpan<byte> zoneBytes)
     {

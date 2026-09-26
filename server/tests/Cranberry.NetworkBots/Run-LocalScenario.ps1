@@ -4,6 +4,9 @@ param(
     [Parameter(Mandatory=$true)][string]$Output,
     [int]$Bots = 150,
     [int]$Seconds = 60,
+    [ValidateRange(20,120)][int]$MovementHz,
+    [ValidateRange(1,120)][int]$CanopyHz,
+    [switch]$OmitMovementJournal,
     [int]$CombatSeconds = 0,
     [ValidateRange(1,20)][int]$MatchCycles = 1,
     [int]$MenuBots = 0,
@@ -20,6 +23,9 @@ param(
     [switch]$ReliableMovement
 )
 $ErrorActionPreference = 'Stop'
+if ($PSBoundParameters.ContainsKey('MovementHz') -and $MenuOnly) { throw 'MovementHz requires a single-match gameplay scenario.' }
+if ($PSBoundParameters.ContainsKey('CanopyHz') -and (-not $PSBoundParameters.ContainsKey('MovementHz') -or $MatchCycles -ne 1)) { throw 'CanopyHz requires MovementHz and one match cycle.' }
+if ($OmitMovementJournal -and $MenuOnly) { throw 'OmitMovementJournal requires a gameplay scenario.' }
 $ServerDll = (Resolve-Path -LiteralPath $ServerDll).Path
 if (-not $ClientDll) { $ClientDll = $ServerDll }
 $ClientDll = (Resolve-Path -LiteralPath $ClientDll).Path
@@ -37,6 +43,8 @@ function BinaryManifest([string]$entry) {
 [pscustomobject]@{
     startedUtc=[DateTime]::UtcNow.ToString('o'); serverDll=$ServerDll; clientDll=$ClientDll
     bots=$Bots; menuBots=$MenuBots; seconds=$Seconds; combatSeconds=$CombatSeconds; matchCycles=$MatchCycles
+    movementHz=$(if ($PSBoundParameters.ContainsKey('MovementHz')) { $MovementHz } else { $null })
+    canopyHz=$(if ($PSBoundParameters.ContainsKey('CanopyHz')) { $CanopyHz } else { $null }); omitMovementJournal=[bool]$OmitMovementJournal
     menuOnly=[bool]$MenuOnly; tls=[bool]$Tls; voice=[bool]$Voice; wireAudit=[bool]$WireAudit; serverGcMode=$ServerGcMode; clientGcMode=$ClientGcMode
     delayMs=$DelayMs; jitterMs=$JitterMs; loss=$Loss; slowClient=[bool]$SlowClient
     reliableMovement=[bool]$ReliableMovement; serverBinaries=(BinaryManifest $ServerDll); clientBinaries=(BinaryManifest $ClientDll)
@@ -78,6 +86,9 @@ try {
     $clientArguments += @('--menu-bots',"$MenuBots")
     $clientArguments += @('--combat-seconds',"$CombatSeconds")
     $clientArguments += @('--match-cycles',"$MatchCycles")
+    if ($PSBoundParameters.ContainsKey('MovementHz')) { $clientArguments += @('--movement-hz',"$MovementHz") }
+    if ($PSBoundParameters.ContainsKey('CanopyHz')) { $clientArguments += @('--canopy-hz',"$CanopyHz") }
+    if ($OmitMovementJournal) { $clientArguments += '--omit-movement-journal' }
     if ($MenuOnly) { $clientArguments += '--menu-only' }
     if ($Voice) { $clientArguments += '--voice-load' }
     if ($WireAudit) { $clientArguments += '--wire-audit' }

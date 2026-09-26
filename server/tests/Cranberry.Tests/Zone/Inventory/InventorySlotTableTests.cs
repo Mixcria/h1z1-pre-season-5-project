@@ -91,7 +91,7 @@ public sealed class InventorySlotTableTests
 
         uint[] slots = LoadoutSlotTable.Slots(SurvivorLoadout.Id).Select(s => s.SlotId).ToArray();
         Assert.Equal(
-            [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 16, 25, 27, 28, 29, 38, 40, 41, 43, 45, 47, 48],
+            [1, 2, 4, 5, 7, 9, 10, 11, 12, 13, 14, 16, 25, 27, 28, 29, 38, 40, 41, 43, 45, 47, 48],
             slots);
     }
 
@@ -105,7 +105,7 @@ public sealed class InventorySlotTableTests
 
         uint[] wheel = LoadoutSlotTable.Slots(SurvivorLoadout.Id)
             .Where(s => s.Wheelable).Select(s => s.SlotId).ToArray();
-        Assert.Equal([1, 2, 4, 5, 7], wheel);
+        Assert.Equal([1, 2, 4, 5, 7, 9], wheel);
     }
 
     /// <summary>
@@ -124,15 +124,15 @@ public sealed class InventorySlotTableTests
     }
 
     /// <summary>
-    /// docs/41 §5c — grenades (class 25078) are accepted by wheel slots 1 and 4 but not 3. That is
-    /// the client's table, and the owner will see it.
+    /// The shared client/server layout dedicates key 4 to grenades, keeping all three gun slots.
     /// </summary>
     [Fact]
-    public void LoadoutSeventeenAcceptsGrenadesInAllThreeWeaponSlots()
+    public void LoadoutSeventeenAcceptsGrenadesOnlyInTheDedicatedSlot()
     {
-        Assert.Contains(25078u, LoadoutSlotTable.ItemClasses(SurvivorLoadout.Id, SurvivorLoadout.Wheel1));
-        Assert.Contains(25078u, LoadoutSlotTable.ItemClasses(SurvivorLoadout.Id, SurvivorLoadout.Wheel2));
-        Assert.Contains(25078u, LoadoutSlotTable.ItemClasses(SurvivorLoadout.Id, SurvivorLoadout.Wheel3));
+        Assert.Equal(new uint[] { SurvivorLoadout.Grenades },
+            InventoryAutoAssign.SupportingLoadoutSlots(65));
+        Assert.Equal(new uint[] { 25078 },
+            LoadoutSlotTable.ItemClasses(SurvivorLoadout.Id, SurvivorLoadout.Grenades));
     }
 
     /// <summary>

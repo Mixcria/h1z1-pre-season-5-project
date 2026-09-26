@@ -437,7 +437,8 @@ public sealed record FreeInteractionNpcEcho
 //
 // All three layouts below were derived from the August client's own parsers, not from any capture.
 // The zone dispatcher is `FUN_140af3950`, which switches on the packet's base byte
-// (`switch(*(undefined1 *)(param_2 + 8))`, line 506 of the dispatcher decompile) and hands each family
+// (`switch(*(undefined1 *)(param_2 + 8))`, line 506 of
+// `out\ghidra-aug\zone-bootstrap-codex\_140af3950\FUN_140af3950_140af3950.c`) and hands each family
 // handler the WHOLE packet, base byte included - every handler below re-reads byte 0.
 //
 //   case 0x87  -> FUN_140cfaac0(mgr + 0xdd20, body, len)   Experience family      (line 1518)

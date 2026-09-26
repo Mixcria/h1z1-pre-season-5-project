@@ -4090,7 +4090,8 @@ public sealed partial class ZoneService : ISoeService
         int? worldGeneration = null)
     {
         worldGeneration ??= state.WorldGeneration;
-        if (worldGeneration != state.WorldGeneration || connection.State != ConnectionState.Open) return;
+        if (worldGeneration != state.WorldGeneration || connection.State != ConnectionState.Open
+            || !ReferenceEquals(connection.Tag, state)) return;
         // Clamped so that "no pacing" (BurstSliceSize = int.MaxValue, the host's rollback switch)
         // cannot overflow the addition below.
         int slice = Math.Clamp(_options.BurstSliceSize, 1, Math.Max(1, burst.Count));
@@ -4731,10 +4732,12 @@ public sealed partial class ZoneService : ISoeService
         }
 
         state.DevGroundLootArmed = true;
+        int generation = state.WorldGeneration;
         _log.Info($"{connection} loot: dev ground loot armed by {trigger} — "
             + $"{_options.DevGroundLootCount} × item {_options.GroundLootItemDefinitionId} in {_options.DevGroundLootMs} ms");
         Later(connection, _options.DevGroundLootMs, () =>
         {
+            if (generation != state.WorldGeneration || !ReferenceEquals(connection.Tag, state)) return;
             SpawnDevGroundLoot(connection, state);
             if (_options.SendProximateItems && state.Loot.Count > 0)
             {
@@ -6492,20 +6495,30 @@ public sealed partial class ZoneService : ISoeService
     /// <summary>
     /// D341: the heal ticks. <see cref="MedicalModel.HealUnitsPerTick"/> per second for the row's
     /// <c>OverSeconds</c>, clamped at the bar's maximum, publishing both client health paths.
-    /// Stops on death. Two medicals stack their ticks; retail's Z1 model does the same.
+    /// Stops on death. Independent medicals stack under the existing server policy;
+    /// this is not evidence of the original August server's stacking rules.
     /// </summary>
     private void BeginHeal(SoeConnection connection, GatewaySessionState state, Medical row)
     {
+        if (state.Hitpoints == 0 || state.DeathSent) return;
         if (row.StopsBleed) StopPlayerBleeding(connection, state);
         int ticks = Math.Max(1, row.OverSeconds);
         uint perTick = (uint)MedicalModel.HealUnitsPerTick(in row);
         uint max = _options.Gas.MaxHitpoints;
         uint startedAt = state.Hitpoints;
+        // RunConsume calls this only after validating and consuming the completed cast.
+        // Publish both August health paths before starting the independent 1 Hz timer.
+        if (row.CompletionHp > 0)
+        {
+            uint completion = (uint)RetailBalance.Units(row.CompletionHp);
+            state.Hitpoints = (uint)Math.Min(max, (ulong)startedAt + completion);
+            if (state.Hitpoints != startedAt) PublishPlayerHealth(connection, state, startedAt);
+        }
         int healWorldGeneration = state.WorldGeneration;
         int healVitalsGeneration = state.PlayerVitalsGeneration;
         PlayerInventory? healInventory = state.Inventory;
         int healHudGeneration = state.HealingHudGeneration;
-        uint healEffect = AddHealingHud(connection, state, row);
+        ulong healEffect = AddHealingHud(connection, state, row);
 
         void Tick(int remaining)
         {
@@ -6519,7 +6532,7 @@ public sealed partial class ZoneService : ISoeService
             }
 
             uint before = state.Hitpoints;
-            uint after = Math.Min(max, before + perTick);
+            uint after = (uint)Math.Min(max, (ulong)before + perTick);
             state.Hitpoints = after;
             PublishPlayerHealth(connection, state, before);
 
@@ -6535,7 +6548,8 @@ public sealed partial class ZoneService : ISoeService
             }
         }
 
-        _log.Info($"{connection} medical: {row.Name} heals {row.TotalHp} HP over {row.OverSeconds} s "
+        _log.Info($"{connection} medical: {row.Name} gives {row.CompletionHp} HP on completion, "
+            + $"then {row.TotalHp} HP over {row.OverSeconds} s "
             + $"({perTick} units/tick) from {startedAt}/{max}");
         Later(connection, (int)MedicalModel.TickIntervalMs, () => Tick(ticks));
     }
@@ -9809,12 +9823,14 @@ public sealed partial class ZoneService : ISoeService
         /// <summary>The unspent medical cast whose identity makes cancelled callbacks inert.</summary>
         public PendingMedicalCast? PendingMedicalCast { get; set; }
         public MedicalState PlayerMedical;
-        public Dictionary<uint, int> HealingHudCounts { get; } = [];
+        public Dictionary<ulong, (uint EffectId, MedicalResourceEffect Resource)> HealingEffects { get; } = [];
+        public uint MedicalEffectSequence { get; set; }
         public int HealingHudGeneration { get; set; }
         public Armour BleedArmour;
         public int BleedGeneration { get; set; }
         public int QueueWaitGeneration { get; set; } = -1;
         public uint BleedEffect { get; set; }
+        public ulong BleedHudInstance { get; set; }
         public ulong WoundAttacker { get; set; }
         public string? WoundAttackerName { get; set; }
         public uint WoundAttackerHealth { get; set; }

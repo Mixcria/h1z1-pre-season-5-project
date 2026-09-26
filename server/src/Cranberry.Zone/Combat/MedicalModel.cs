@@ -1,35 +1,38 @@
 namespace Cranberry.Zone.Combat;
 
-/// <summary>One healing item, as the owner's retail research states it.</summary>
+/// <summary>One healing item under the current server policy; not an August retail specification.</summary>
 /// <param name="Name">For the log and the cast bar.</param>
-/// <param name="TotalHp">Hit points restored in total.</param>
+/// <param name="TotalHp">Hit points restored by the continuing heal, excluding completion.</param>
 /// <param name="OverSeconds">Over how long, once it starts.</param>
 /// <param name="ApplySeconds">The cast bar: how long the animation runs before any of it lands.</param>
-/// <param name="StopsBleed">Every one of them does; carried so a future item that does not can say so.</param>
+/// <param name="StopsBleed">Whether successful application clears the current server bleed state.</param>
 public readonly record struct Medical(
     string Name,
     double TotalHp,
     int OverSeconds,
     double ApplySeconds,
-    bool StopsBleed);
+    bool StopsBleed)
+{
+    /// <summary>Immediate HP after a successful cast. The September 20 ROTK bandage
+    /// capture shows +3 before independent +1 HP/s timers. The uncapped total was
+    /// not observed; the existing continuing-heal budget is retained separately.</summary>
+    public double CompletionHp { get; init; }
+}
 
 /// <summary>
-/// <b>Bleeding and healing</b>, adopted from the owner's retail Pre-Season-3 research (D53) with one
-/// honest subtraction at 1148.
+/// <b>Bleeding and healing policy.</b> These pre-existing values include older research (D53)
+/// and a September 20 other-game bandage completion observation. They are preserved for
+/// compatibility with existing server behaviour, not verified August 2017 server rules.
 /// <para>
-/// <b>The subtraction.</b> He shows bleed severity on the HUD by pushing a <c>ResourceEvent</c> with
-/// resource id 21. At 1148 <c>ResourceEventBase 0x8d</c> is undecoded (docs/20 §4), so Cranberry
-/// implements bleeding as damage over time with <b>no HUD number</b>: the player will see health
-/// falling with no cause shown until <c>0x8d</c> is read. That is stated rather than papered over -
-/// inventing a packet to fill the gap is how a client gets desynchronised.
+/// The live August adapter publishes health and bleed severity through the derived
+/// <c>ResourceEventBase 0x8d</c> paths. Successful medical completion stops the bleeding effect;
+/// the model below supplies the healing values and the existing bleed policy.
 /// </para>
 /// <para>
-/// <b>Where the numbers come from, graded.</b> The item rows and the apply times are his research
-/// (SECONDARY). Five severity states is PROVEN for this build window - the August-2017 note reads
-/// "Bleed mechanic simplified to three states (from five)", so five is what this client ships with.
-/// The drain rate is his loudest stated GUESS and is carried as one. The increment cooldown is a
-/// guess with a concrete reason: a shotgun blast is 8-12 separate hit reports and without it one
-/// trigger pull takes a player from no bleed to the maximum in a single frame.
+/// The stock August HUD recognizes five named bleeding effect IDs, but this establishes the
+/// presentation vocabulary, not original wound probabilities, damage rates or transitions.
+/// The rates, cooldown and armour parity below are existing server policy. Native presentation
+/// evidence and unresolved gameplay questions are in docs/restoration-medical-20260926.md.
 /// </para>
 /// <para>
 /// <b>Armour halves bleeding by counting, not by rolling</b> - every second qualifying hit raises
@@ -39,7 +42,7 @@ public readonly record struct Medical(
 /// </summary>
 public static class MedicalModel
 {
-    /// <summary>Severity states. PROVEN for this build window.</summary>
+    /// <summary>Current server severity cap; the client recognizes five named bleed tags.</summary>
     public const int MaxBleedSeverity = 5;
 
     /// <summary>Health units lost per second per severity state. 0.5 HP/s/state - <b>the owner's
@@ -66,10 +69,10 @@ public static class MedicalModel
     public static IReadOnlyDictionary<uint, Medical> Items { get; } =
         new Dictionary<uint, Medical>
         {
-            [24] = new("Field Bandage", 10, 10, 3, true),
+            [24] = new("Field Bandage", 10, 10, 3, true) { CompletionHp = 3 },
             [1751] = new("Gauze", 10, 10, 3, true),
             [78] = new("Tactical First Aid Kit", 60, 60, 5, true),
-            [2423] = new("Field Bandage", 10, 10, 3, true),
+            [2423] = new("Field Bandage", 10, 10, 3, true) { CompletionHp = 3 },
             [2424] = new("Tactical First Aid Kit", 60, 60, 5, true),
             [3375] = new("Procoagulant", 5, 1, 1, true),
         };

@@ -373,7 +373,7 @@ public sealed class DoorInstance
     /// <summary>Timestamp of the last accepted toggle, for the press window.</summary>
     public long LastToggleMs { get => _motion.LastToggleMs; internal set => _motion.LastToggleMs = value; }
 
-    /// <summary>0 for a legacy scripted toggle, otherwise the retained +90 or -90 degree direction.</summary>
+    /// <summary>Zero selects the original controller's fixed +90-degree opening.</summary>
     public int SwingDirection { get => _motion.SwingDirection; internal set => _motion.SwingDirection = value; }
 
     /// <summary>The <c>0xd6</c> that spawns this door. Always the closed pose (docs/42 §8 rule 3).</summary>
@@ -402,8 +402,8 @@ public sealed class DoorInstance
                 ? "flag"
                 : "no-collision";
 
-    /// <summary>The shared open state and chosen direction, including for a newly streamed viewer.</summary>
-    public DoorStateUpdate StateUpdate() => new(WorldGuid, IsOpen, SwingDirection: SwingDirection);
+    /// <summary>The original 22-byte open state, identical for existing and newly streamed viewers.</summary>
+    public DoorStateUpdate StateUpdate() => new(WorldGuid, IsOpen);
 
     public override string ToString() =>
         $"{KindName}#{InstanceId} guid={WorldGuid} transient={TransientId} "
@@ -954,8 +954,10 @@ public sealed class MatchDoors
         }
 
         instance.LastToggleMs = nowMs;
-        if (!instance.IsOpen && openerPosition is { } player)
-            instance.SwingDirection = DoorSwing.AwayFrom(instance.Position, instance.Yaw, instance.KindName, player);
+        // Every viewer uses the unmodified native controller's closed yaw + pi/2.
+        // Choosing a side requires a protected-code patch and would give patched
+        // and unpatched clients conflicting door geometry in the shared world.
+        instance.SwingDirection = 0;
         instance.IsOpen = !instance.IsOpen;
         NoteOpen(instance.InstanceId, instance.IsOpen);
         TotalToggles++;

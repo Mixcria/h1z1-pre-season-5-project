@@ -5,7 +5,7 @@ using Cranberry.Launcher.Core;
 
 namespace Cranberry.Launcher.Service;
 
-/// <summary>Readiness belongs to one authenticated game launch, never to a persisted account.</summary>
+/// <summary>Native compatibility belongs to one authenticated game launch, never to a persisted account.</summary>
 public sealed class DoorClientReadiness
 {
     private sealed record Launch(string TicketHash, bool Ready);
@@ -13,14 +13,18 @@ public sealed class DoorClientReadiness
 
     public static void RequireProtocol(int version)
     {
-        if (version != BidirectionalDoors.ProtocolVersion)
-            throw new InvalidOperationException("Close the game and reopen the launcher to install the required game update.");
+        // Protocol 1 launchers inject protected native code. Require the updated
+        // protocol 0 launcher, which uses the client's original door controller.
+        if (version != 0)
+            throw new InvalidOperationException("Close the game and reopen the launcher to install the native-client compatibility update.");
     }
 
     public void Begin(string account, string ticket, int version)
     {
         RequireProtocol(version);
-        _launches[account] = new Launch(Hash(ticket), false);
+        // Original doors need no injected helper or asynchronous patch receipt.
+        // This is admission for a declared compatible launch, not patch attestation.
+        _launches[account] = new Launch(Hash(ticket), true);
     }
 
     public bool Confirm(string account, string ticket, int version)

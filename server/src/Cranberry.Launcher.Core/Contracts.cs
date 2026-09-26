@@ -32,9 +32,9 @@ public sealed record LauncherSettings
 {
     public string ServerUrl { get; init; } = "https://localhost:20040/";
     public string CertificateSha256 { get; init; } = "";
-    // Explicitly trusted local configuration, never supplied by a game manifest or redirect.
-    // Empty keeps authenticated api/content/{hash} downloads on ServerUrl.
+    // Optional local override. Otherwise the trusted API supplies the current content origin.
     public string ContentBaseUrl { get; init; } = "";
+    public int ConcurrentDownloads { get; init; } = 4;
     public bool TransportDiagnostics { get; init; }
     public string InstallDirectory { get; init; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Cranberry", "Game");

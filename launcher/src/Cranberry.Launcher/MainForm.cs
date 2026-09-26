@@ -233,14 +233,13 @@ internal sealed partial class MainForm : Form
                 _gameLease = new FileStream(GameInstaller.SafePath(_settings.InstallDirectory, ".cranberry.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _tunnel = new GameTunnel();
                 await _tunnel.Connect(_settings, _session!.Token, _install.Token);
-                var launch = await Post<GameLaunch>("api/launch", new LaunchRequest(_tunnel.GatewayPort, BidirectionalDoors.ProtocolVersion));
+                var launch = await Post<GameLaunch>("api/launch", new LaunchRequest(_tunnel.GatewayPort, 0));
                 if (launch.BuildId != manifest.BuildId) throw new InvalidOperationException("The game package changed. Run Install / repair again.");
                 var info = GameProcess.StartInfo(_settings.InstallDirectory, launch with { LoginAddress = "127.0.0.1:" + _tunnel.LoginPort });
                 _game = Process.Start(info) ?? throw new InvalidOperationException("Could not start the game.");
-                StartLootReloadFix(_game, _settings.InstallDirectory);
-                StartBinocularScopeFix(_game, _settings.InstallDirectory);
-                StartOwnBulletTracerFix(_game, _settings.InstallDirectory);
-                StartDoorSwingFix(_game, _settings.InstallDirectory, launch);
+                // The original client checks its executable code during loading and relogin.
+                // Native helper writes invalidate those checks; keep gameplay code original.
+                RecordUpdateStatus("Original native client code; standard door protocol.");
                 _gameInput = new GameInput(_game.Id);
                 StartVoice(_game.Id);
                 try { StartOverlayHotkey(_game.Id); _status.Text = "Game started. Shift+Tab opens friends and messages once you enter the game."; }

@@ -378,11 +378,13 @@ GENERATORS: list[dict] = [
         "inputs": _sheets(
             "EquipmentSlotDefinitions.txt", "EquipSlotItemClasses.txt", "Loadouts.txt",
             "LoadoutSlots.txt", "LoadoutSlotItemClasses.txt", "ContainerDefinitions.txt",
-            "ClientItemDefinitions.txt"),
-        "grade": "CLIENT",
+            "ClientItemDefinitions.txt") + [REPO / "tools/data/survivor_loadout.py"],
+        "grade": "CLIENT+RULING",
         "rulings": ["D33", "D72", "D141"],
         "note": "the slot/loadout/container model and the nine item columns the resolver reads; "
-                "the client's own FUN_140d35510 predicate is driven by these exact sheets",
+                "the client's own FUN_140d35510 predicate is driven by these sheets; "
+                "the owner's 2026-09-20 grenade-slot request applies survivor_loadout.py "
+                "to both the client package and server table",
     },
     {
         "id": "footwear",

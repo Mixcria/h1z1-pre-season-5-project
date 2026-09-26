@@ -69,7 +69,7 @@ public sealed class HttpsIntegrationTests
             await using (var tunnel = new GameTunnel())
             {
             await tunnel.Connect(settings, account.Token);
-                using var launchResponse = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, BidirectionalDoors.ProtocolVersion));
+                using var launchResponse = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, 0));
             launchResponse.EnsureSuccessStatusCode();
             var launch = (await launchResponse.Content.ReadFromJsonAsync<GameLaunch>())!;
             byte[] request = [0, 1, 0, 0, 0, 3, 0xCA, 0xFE, 0xBA, 0xBE, 0, 0, 2, 0, (byte)'T', 0];
@@ -190,16 +190,16 @@ public sealed class HttpsIntegrationTests
             Assert.Equal(content[3..], await response.Content.ReadAsByteArrayAsync());
             Assert.Equal(HttpStatusCode.NotFound, (await http.GetAsync("api/content/" + new string('0', 64))).StatusCode);
             await using var tunnel = new GameTunnel(); await tunnel.Connect(settings, alice.Token);
-            using var oldLaunch = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort));
+            using var oldLaunch = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, 1));
             Assert.Equal(HttpStatusCode.BadRequest, oldLaunch.StatusCode);
             Assert.Contains("reopen the launcher", (await oldLaunch.Content.ReadFromJsonAsync<ApiError>())!.Error);
-            var launchResponse = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, BidirectionalDoors.ProtocolVersion));
+            var launchResponse = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, 0));
             launchResponse.EnsureSuccessStatusCode(); var launch = (await launchResponse.Content.ReadFromJsonAsync<GameLaunch>())!;
-            Assert.False(zone.DoorSwingClientReady!(alice.AccountId));
-            using var wrongReady = await http.PostAsJsonAsync("api/client/doors-ready", new DoorClientReadyRequest("wrong-ticket", 1));
+            Assert.True(zone.DoorSwingClientReady!(alice.AccountId));
+            using var wrongReady = await http.PostAsJsonAsync("api/client/doors-ready", new DoorClientReadyRequest("wrong-ticket", 0));
             Assert.Equal(HttpStatusCode.BadRequest, wrongReady.StatusCode);
-            Assert.False(zone.DoorSwingClientReady(alice.AccountId));
-            using var ready = await http.PostAsJsonAsync("api/client/doors-ready", new DoorClientReadyRequest(launch.Ticket, 1));
+            Assert.True(zone.DoorSwingClientReady(alice.AccountId));
+            using var ready = await http.PostAsJsonAsync("api/client/doors-ready", new DoorClientReadyRequest(launch.Ticket, 0));
             ready.EnsureSuccessStatusCode();
             Assert.True(zone.DoorSwingClientReady(alice.AccountId));
             using var gameLogin = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));

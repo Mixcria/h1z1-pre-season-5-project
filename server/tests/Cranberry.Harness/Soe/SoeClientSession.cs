@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Channels;
 using Cranberry.Harness.Runtime;
+using Cranberry.Harness.Protocol;
 using Cranberry.Harness.Wire;
 
 namespace Cranberry.Harness.Soe;
@@ -29,10 +30,17 @@ public enum LinkCloseCause
 }
 
 /// <summary>One application message the server delivered to the harness.</summary>
-public sealed record InboundMessage(TimeSpan At, byte[] Bytes, bool WasEncrypted, long KeystreamPosition);
+public sealed record InboundMessage(TimeSpan At, byte[] Bytes, bool WasEncrypted, long KeystreamPosition)
+{
+    internal TimeSpan EnqueuedAt { get; init; }
+}
 
 public sealed record SoeClientOptions
 {
+    public bool CaptureReceiveTimings { get; init; }
+    /// <summary>Opt-in load-generator policy: omit structurally identified inbound gateway
+    /// movement from the diagnostic journal only. Delivery and decoding remain unchanged.</summary>
+    public bool OmitInboundMovementJournal { get; init; }
     /// <summary>"LoginUdp_14" or "ExternalGatewayApi_3".</summary>
     public required string ProtocolName { get; init; }
 
@@ -78,7 +86,8 @@ public sealed class SoeClientSession : IAsyncDisposable
     private readonly PacketJournal _journal;
     private readonly Func<byte[], string> _nameOf;
     private readonly Socket _socket;
-    private readonly Channel<byte[]> _datagrams = Channel.CreateUnbounded<byte[]>(
+    private readonly record struct ReceivedDatagram(byte[] Bytes, TimeSpan At);
+    private readonly Channel<ReceivedDatagram> _datagrams = Channel.CreateUnbounded<ReceivedDatagram>(
         new UnboundedChannelOptions { SingleReader = true, SingleWriter = true });
     private readonly Channel<InboundMessage> _inbox = Channel.CreateUnbounded<InboundMessage>(
         new UnboundedChannelOptions { SingleReader = false, SingleWriter = true });
@@ -109,6 +118,7 @@ public sealed class SoeClientSession : IAsyncDisposable
     {
         _remote = remote;
         _options = options;
+        ReceiveTimings = options.CaptureReceiveTimings ? new ReceiveTimings() : null;
         _clock = clock;
         _journal = journal;
         _nameOf = nameOf;
@@ -149,6 +159,9 @@ public sealed class SoeClientSession : IAsyncDisposable
 
     /// <summary>Complete application messages from the server, in order.</summary>
     public ChannelReader<InboundMessage> Messages => _inbox.Reader;
+    public ReceiveTimings? ReceiveTimings { get; }
+    /// <summary>Application entries omitted from the journal, never from Messages.</summary>
+    public long InboundMovementJournalSuppressed { get; private set; }
 
     public LinkCloseCause CloseCause { get; private set; } = LinkCloseCause.None;
 
@@ -429,7 +442,7 @@ public sealed class SoeClientSession : IAsyncDisposable
 
             byte[] datagram = buffer.AsSpan(0, received).ToArray();
             ObserveDatagram?.Invoke(true, datagram);
-            _datagrams.Writer.TryWrite(datagram);
+            _datagrams.Writer.TryWrite(new ReceivedDatagram(datagram, ReceiveTimings is null ? default : _clock.Now));
             _wake.Writer.TryWrite(true);
         }
     }
@@ -445,13 +458,14 @@ public sealed class SoeClientSession : IAsyncDisposable
             bool moreWork = DrainWork();
 
             int handled = 0;
-            while (handled < 64 && _datagrams.Reader.TryRead(out byte[]? datagram))
+            while (handled < 64 && _datagrams.Reader.TryRead(out ReceivedDatagram datagram))
             {
+                ReceiveTimings?.DatagramQueue.Record(_clock.Now - datagram.At);
                 handled++;
                 DatagramsReceived++;
                 try
                 {
-                    HandlePacket(datagram, isSubPacket: false);
+                    HandlePacket(datagram.Bytes, isSubPacket: false);
                 }
                 catch (WireFormatException ex)
                 {
@@ -788,8 +802,18 @@ public sealed class SoeClientSession : IAsyncDisposable
     private void DeliverApplication(byte[] message, bool wasEncrypted, long keystreamPosition)
     {
         MessagesReceived++;
-        var inbound = new InboundMessage(_clock.Now, message, wasEncrypted, keystreamPosition);
-        Journal(PacketDirection.FromServer, message, wasEncrypted ? $"rc4@{keystreamPosition}" : "clear");
+        TimeSpan at = _clock.Now;
+        if (_options.OmitInboundMovementJournal
+            && _options.ProtocolName == AugustClient.GatewayProtocolName
+            && GatewayWire.HasInboundMovementJournalPrefix(message))
+        {
+            InboundMovementJournalSuppressed++;
+            _journal.RecordMovementSuppressed();
+        }
+        else
+            Journal(PacketDirection.FromServer, message, wasEncrypted ? $"rc4@{keystreamPosition}" : "clear");
+        var inbound = new InboundMessage(at, message, wasEncrypted, keystreamPosition)
+            { EnqueuedAt = ReceiveTimings is null ? default : _clock.Now };
         _inbox.Writer.TryWrite(inbound);
     }
 

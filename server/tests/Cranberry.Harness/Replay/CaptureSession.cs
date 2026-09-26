@@ -44,7 +44,7 @@ public sealed class CaptureMessage
     public override string ToString() => $"{At.TotalSeconds,8:F3}s {Direction} {Signature.Name} ({Length} B)";
 }
 
-/// <summary>One SOE session in a capture: everything recorded for one remote UDP endpoint.</summary>
+/// <summary>One recorded segment for a protocol/remote pair and observed SOE request id.</summary>
 public sealed class CaptureSession
 {
     private readonly List<CaptureMessage> _messages = [];
@@ -53,7 +53,12 @@ public sealed class CaptureSession
     {
         Remote = remote;
         Protocol = protocol;
-        Link = protocol == AugustClient.LoginProtocolName ? CaptureLink.Login : CaptureLink.Gateway;
+        Link = protocol switch
+        {
+            AugustClient.LoginProtocolName => CaptureLink.Login,
+            AugustClient.GatewayProtocolName => CaptureLink.Gateway,
+            _ => throw new FormatException("Unsupported capture protocol."),
+        };
     }
 
     public string Remote { get; }
@@ -64,6 +69,12 @@ public sealed class CaptureSession
 
     /// <summary>The session id the client asked for, from the <c>session-request</c> line.</summary>
     public uint SessionId { get; internal set; }
+
+    /// <summary>
+    /// A valid request id was observed for this segment; distinguishes id zero from missing
+    /// metadata. An unreadable request starts a fresh unknown segment, not an inherited id.
+    /// </summary>
+    public bool HasSessionRequest { get; internal set; }
 
     public uint CrcLength { get; internal set; }
 
@@ -122,16 +133,21 @@ public static class CaptureSessionReader
     /// <summary>Every session in the file, in the order their first line appears.</summary>
     public static IReadOnlyList<CaptureSession> ReadSessions(string path)
     {
-        var byRemote = new Dictionary<string, CaptureSession>(StringComparer.Ordinal);
+        var active = new Dictionary<(string Protocol, string Remote), CaptureSession>();
         var order = new List<CaptureSession>();
 
         foreach (CaptureLine line in CaptureFile.Read(path))
         {
-            if (!byRemote.TryGetValue(line.Remote, out CaptureSession? session))
+            var key = (line.Protocol, line.Remote);
+            uint? requestId = line.Direction == CaptureDirection.SessionRequest
+                ? ReadSessionId(line.SessionText) : null;
+            if (!active.TryGetValue(key, out CaptureSession? session)
+                || (line.Direction == CaptureDirection.SessionRequest
+                    && (!requestId.HasValue || !session.HasSessionRequest || session.SessionId != requestId.Value)))
             {
                 session = new CaptureSession(line.Remote, line.Protocol);
                 session.StartedAt = line.At;
-                byRemote[line.Remote] = session;
+                active[key] = session;
                 order.Add(session);
             }
 
@@ -140,6 +156,11 @@ public static class CaptureSessionReader
             if (line.Direction == CaptureDirection.SessionRequest)
             {
                 ApplySessionRequest(session, line.SessionText);
+                if (requestId.HasValue)
+                {
+                    session.SessionId = requestId.Value;
+                    session.HasSessionRequest = true;
+                }
                 continue;
             }
 
@@ -167,7 +188,9 @@ public static class CaptureSessionReader
     /// Pairs each gateway session with the most recent login session that started before it. The
     /// client opens the two links in that order and the recorder writes them interleaved on one
     /// file, so file order is the only association available — the capture format records no
-    /// account id, and the gateway ticket is not echoed on the login link.
+    /// account id, and the gateway ticket is not echoed on the login link. This temporal
+    /// heuristic is not proof that two links belong to the same player, especially with peers
+    /// interleaved in one file. Session segmentation does not strengthen that association.
     /// </summary>
     public static IReadOnlyList<CaptureRun> ReadRuns(string path)
     {
@@ -215,6 +238,31 @@ public static class CaptureSessionReader
         return new CaptureMessage(line.At - session.StartedAt, line.Direction, line.Length, bytes, truncated, signature);
     }
 
+    private static uint? ReadSessionId(string text)
+    {
+        uint? result = null;
+        int fields = 0;
+        foreach (string field in text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries))
+        {
+            if (!field.StartsWith("id=", StringComparison.Ordinal))
+            {
+                continue;
+            }
+            if (++fields != 1)
+                return null;
+            ReadOnlySpan<char> value = field.AsSpan(3);
+            if (value.Length is < 1 or > 8)
+                continue;
+            bool hexadecimal = true;
+            foreach (char digit in value)
+                if (!(digit is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F'))
+                    hexadecimal = false;
+            if (hexadecimal && uint.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint id))
+                result = id;
+        }
+        return result;
+    }
+
     private static void ApplySessionRequest(CaptureSession session, string text)
     {
         foreach (string field in text.Split(' ', StringSplitOptions.RemoveEmptyEntries))
@@ -235,9 +283,6 @@ public static class CaptureSessionReader
                     break;
                 case "udp" when uint.TryParse(value, out uint udp):
                     session.UdpLength = udp;
-                    break;
-                case "id" when uint.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint id):
-                    session.SessionId = id;
                     break;
             }
         }

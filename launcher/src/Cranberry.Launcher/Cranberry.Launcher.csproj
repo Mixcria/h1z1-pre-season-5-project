@@ -25,4 +25,8 @@
     <EmbeddedResource Include="Assets/launcher.ico" />
     <None Update="Assets/Oswald-OFL.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Oswald-OFL.txt" />
   </ItemGroup>
+  <!-- Retain these historical sources, but never ship their native patch startup paths. -->
+  <ItemGroup>
+    <Compile Remove="MainForm.LootReload.cs;MainForm.BinocularScope.cs;MainForm.OwnBulletTracers.cs;MainForm.BidirectionalDoors.cs" />
+  </ItemGroup>
 </Project>

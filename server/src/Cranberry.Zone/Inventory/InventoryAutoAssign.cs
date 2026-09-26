@@ -385,8 +385,8 @@ public static class InventoryAutoAssign
         }
 
         // RULE 3 (docs/41 §5b). Take the first free candidate in loadout-17 hotbar order:
-        // Slot1(1), Slot2(2), Slot3(4), Slot5/binoculars(5), Q(40), E(41).
-        // Never loadout slot 7: that is the required Slot5/Fists binding (FLAG_REQUIRED, ITEM_ID 85).
+        // Slot1(1), Slot2(2), Slot3(4), Slot4/grenades(9), Slot5/binoculars(5), Q(40), E(41).
+        // Never loadout slot 7: that is the required Slot6/Fists binding (FLAG_REQUIRED, ITEM_ID 85).
         // (Loadout slot 7 and BODY slot 7 are unrelated numbers that happen to collide; the body
         // slot is the one docs/45 forbids.)
         foreach (uint wheel in SurvivorLoadout.WheelOrder)

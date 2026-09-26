@@ -14,17 +14,229 @@ namespace Cranberry.Tests.Zone.Combat;
 
 public sealed class MedicalMovementTests
 {
+    [Theory]
+    [InlineData(2423u, 10_000, 0.1f)]
+    [InlineData(2424u, 60_000, 0.1f)]
+    [InlineData(3375u, 1_000, 0.5f)]
+    public void SuccessfulApplicationPublishesNativeProjectedRecovery(uint item, int duration, float rate)
+    {
+        using var world = new Fixture(item, initialHitpoints: 1000);
+        world.Start();
+        Assert.DoesNotContain(world.Sent, p => p[0] == 0x9e && p[1] == 7);
+        long before = Environment.TickCount64;
+        world.TakeTimer()();
+        long after = Environment.TickCount64;
+        byte[] modifier = Assert.Single(world.Sent, p => p[0] == 0x9e && p[1] == 7);
+        Assert.Equal(42, modifier.Length);
+        Assert.Equal(0x1001ul, BitConverter.ToUInt64(modifier, 2));
+        Assert.NotEqual(0ul, BitConverter.ToUInt64(modifier, 10));
+        Assert.Equal(1u, BitConverter.ToUInt32(modifier, 18));
+        Assert.Equal(rate, BitConverter.ToSingle(modifier, 22));
+        Assert.Equal(0f, BitConverter.ToSingle(modifier, 26));
+        Assert.InRange(BitConverter.ToUInt64(modifier, 30), (ulong)before, (ulong)after);
+        Assert.Equal(duration, BitConverter.ToInt32(modifier, 38));
+        if (item != 3375)
+        {
+            byte[] tag = Assert.Single(world.Sent, p => p[0] == 0x9e && p[1] == 6);
+            Assert.Equal(BitConverter.ToUInt64(modifier, 10), BitConverter.ToUInt64(tag, 10));
+            Assert.Equal(item == 2424 ? 120581u : 120583u, BitConverter.ToUInt32(tag, 22));
+            Assert.Equal(item == 2424 ? 8887u : 8886u, BitConverter.ToUInt32(tag, 34));
+        }
+        else Assert.DoesNotContain(world.Sent, p => p[0] == 0x9e && p[1] == 6);
+        Assert.DoesNotContain(world.Sent, p => p[0] == ZoneOpcodes.UpdateStringHashToValueManager
+            && System.Text.Encoding.UTF8.GetString(p).Contains("Cranberry.Healing", StringComparison.Ordinal));
+        // The client computes remaining milliseconds * rate, then divides by max.
+        // These are the server's existing heal budgets, independent of completion HP.
+        Assert.Equal(MedicalModel.For(item)!.Value.TotalHp,
+            (double)(duration * BitConverter.ToSingle(modifier, 22) / 100f));
+    }
+
+    [Fact]
+    public void ConcurrentRecoveryUsesDistinctInstancesAndFinishingOnePreservesTheOther()
+    {
+        using var world = new Fixture(initialHitpoints: 1000);
+        world.Invoke("BeginHeal", MedicalModel.For(2424)!.Value with { OverSeconds = 1, TotalHp = 1 });
+        Action first = world.TakeTimer();
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        Action second = world.TakeTimer();
+        ulong[] instances = world.Sent.Where(p => p[0] == 0x9e && p[1] == 7)
+            .Select(p => BitConverter.ToUInt64(p, 10)).ToArray();
+        Assert.Equal(2, instances.Length);
+        Assert.NotEqual(instances[0], instances[1]);
+        first();
+        byte[] remove = Assert.Single(world.Sent, p => p[0] == 0x9e && p[1] == 8);
+        Assert.Equal(instances[0], BitConverter.ToUInt64(remove, 10));
+        world.Invoke("ResetPlayerVitals");
+        Assert.Contains(world.Sent, p => p[0] == 0x9e && p[1] == 8
+            && BitConverter.ToUInt64(p, 10) == instances[1]);
+        int mark = world.Sent.Count;
+        second();
+        Assert.Equal(mark, world.Sent.Count);
+    }
+
+    [Theory]
+    [InlineData("DeathSent")]
+    [InlineData("WorldGeneration")]
+    [InlineData("PlayerVitalsGeneration")]
+    [InlineData("Inventory")]
+    [InlineData("Hitpoints")]
+    public void InvalidRecoveryAndFullHealthRemoveTheNativeProjection(string transition)
+    {
+        using var world = new Fixture(initialHitpoints: 1000);
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        ulong instance = BitConverter.ToUInt64(Assert.Single(world.Sent,
+            p => p[0] == 0x9e && p[1] == 7), 10);
+        switch (transition)
+        {
+            case "DeathSent": world.Set(transition, true); break;
+            case "WorldGeneration": case "PlayerVitalsGeneration": world.Set(transition, 1); break;
+            case "Inventory": world.Set(transition, new PlayerInventory(0x1001, () => 1)); break;
+            case "Hitpoints": world.Set(transition, 10000u); break;
+        }
+        world.TakeTimer()();
+        byte[] remove = Assert.Single(world.Sent, p => p[0] == 0x9e && p[1] == 8);
+        Assert.Equal(instance, BitConverter.ToUInt64(remove, 10));
+    }
+
+    [Fact]
+    public void CustomMaximumNormalizesTheProjectionAndHealingCannotWrapUintHealth()
+    {
+        using var world = new Fixture(initialHitpoints: uint.MaxValue - 10, maximumHitpoints: uint.MaxValue);
+        world.Invoke("BeginHeal", MedicalModel.For(2424)!.Value);
+        byte[] modifier = Assert.Single(world.Sent, p => p[0] == 0x9e && p[1] == 7);
+        Assert.Equal(100 * 10_000f / uint.MaxValue / 1000, BitConverter.ToSingle(modifier, 22));
+        world.TakeTimer()();
+        Assert.Equal(uint.MaxValue, world.Get<uint>("Hitpoints"));
+        Assert.Contains(world.Sent, p => p[0] == 0x9e && p[1] == 8);
+    }
+
+    [Theory]
+    [InlineData((byte)1, 120107u, 9034u)]
+    [InlineData((byte)2, 120111u, 1110u)]
+    [InlineData((byte)3, 120112u, 14116u)]
+    [InlineData((byte)4, 120113u, 9035u)]
+    [InlineData((byte)5, 120114u, 14117u)]
+    public void CurrentServerBleedLevelsUseStockHudTagsAndClearingDoesNotRemoveAnActiveHeal(
+        byte severity, uint effect, uint name)
+    {
+        using var world = new Fixture(initialHitpoints: 1000);
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        ulong healInstance = BitConverter.ToUInt64(Assert.Single(world.Sent,
+            p => p[0] == 0x9e && p[1] == 7), 10);
+        int mark = world.Sent.Count;
+        world.SetBleed(severity);
+        world.Invoke("PublishPlayerBleeding", (byte)0);
+        byte[] bleed = Assert.Single(world.Sent.Skip(mark), p => p[0] == 0x9e && p[1] == 6);
+        ulong bleedInstance = BitConverter.ToUInt64(bleed, 10);
+        Assert.NotEqual(healInstance, bleedInstance);
+        Assert.Equal(effect, BitConverter.ToUInt32(bleed, 22));
+        Assert.Equal(name, BitConverter.ToUInt32(bleed, 34));
+        world.Invoke("StopPlayerBleeding");
+        Assert.Contains(world.Sent.Skip(mark), p => p[0] == 0x9e && p[1] == 8
+            && BitConverter.ToUInt64(p, 10) == bleedInstance);
+        Assert.DoesNotContain(world.Sent.Skip(mark), p => p[0] == 0x9e && p[1] == 8
+            && BitConverter.ToUInt64(p, 10) == healInstance);
+        Assert.Equal("120583", HealingValue(world.Sent));
+    }
+
+    [Fact]
+    public void EscalatingBleedingReplacesItsNativeInstanceEvenWhenTheParticleLoopIsUnchanged()
+    {
+        using var world = new Fixture();
+        world.SetBleed(1);
+        world.Invoke("PublishPlayerBleeding", (byte)0);
+        ulong old = world.Get<ulong>("BleedHudInstance");
+        int mark = world.Sent.Count;
+        world.SetBleed(2);
+        world.Invoke("PublishPlayerBleeding", (byte)1);
+        byte[][] packets = world.Sent.Skip(mark).Where(p => p[0] == 0x9e).ToArray();
+        Assert.Equal(2, packets.Length);
+        Assert.Equal(8, packets[0][1]);
+        Assert.Equal(old, BitConverter.ToUInt64(packets[0], 10));
+        Assert.Equal(6, packets[1][1]);
+        Assert.NotEqual(old, BitConverter.ToUInt64(packets[1], 10));
+        world.Invoke("ResetPlayerVitals");
+        Assert.Equal(0ul, world.Get<ulong>("BleedHudInstance"));
+    }
+
+    [Theory]
+    [InlineData(24u)]
+    [InlineData(2423u)]
+    public void ReferenceBandageCompletionGivesThreeHpOnceBeforeRegeneration(uint itemId)
+    {
+        using var world = new Fixture(itemId, initialHitpoints: 8258);
+        world.Start();
+        Assert.Equal(8258u, world.Get<uint>("Hitpoints"));
+        Action complete = world.TakeTimer();
+        int mark = world.Sent.Count;
+        complete();
+        Assert.Equal(8558u, world.Get<uint>("Hitpoints"));
+        Assert.False(world.Inventory.Items.ContainsKey(world.Item.Guid));
+        byte[] resource = Assert.Single(world.Sent.Skip(mark), p => p.Length == 101 && p[0] == 0x8d
+            && p[5] == 3 && BitConverter.ToUInt32(p, 14) == 1);
+        Assert.Equal(8558u, BitConverter.ToUInt32(resource, 22));
+        Assert.Equal(8258u, BitConverter.ToUInt32(resource, 26));
+        complete();
+        Assert.Equal(8558u, world.Get<uint>("Hitpoints"));
+        world.TakeTimer()();
+        Assert.Equal(8658u, world.Get<uint>("Hitpoints"));
+    }
+
+    [Fact]
+    public void ReferenceBandageCompletionsKeepIndependentOneHpTicks()
+    {
+        using var world = new Fixture(initialHitpoints: 8258);
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        Assert.Equal(8558u, world.Get<uint>("Hitpoints"));
+        Action first = world.TakeTimer();
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        Assert.Equal(8858u, world.Get<uint>("Hitpoints"));
+        Action second = world.TakeTimer();
+        first(); second();
+        Assert.Equal(9058u, world.Get<uint>("Hitpoints"));
+    }
+
+    [Theory]
+    [InlineData(9900u, false, 10000u)]
+    [InlineData(0u, false, 0u)]
+    [InlineData(5000u, true, 5000u)]
+    public void ReferenceBandageCompletionClampsAndCannotResurrect(uint health, bool dead, uint expected)
+    {
+        using var world = new Fixture(initialHitpoints: health);
+        world.Set("DeathSent", dead);
+        world.Invoke("BeginHeal", MedicalModel.For(2423)!.Value);
+        Assert.Equal(expected, world.Get<uint>("Hitpoints"));
+    }
+
+    [Fact]
+    public void ReferenceBandageCompletesInAStationaryVehicle()
+    {
+        using var world = new Fixture();
+        world.Seat(driver: true);
+        world.Start();
+        world.TakeTimer()();
+        Assert.Equal(5300u, world.Get<uint>("Hitpoints"));
+        Assert.False(world.Inventory.Items.ContainsKey(world.Item.Guid));
+    }
     private static string? HealingValue(IEnumerable<byte[]> packets)
     {
-        string? value = null;
+        var active = new Dictionary<ulong, uint>();
+        bool seen = false;
         foreach (var packet in packets)
         {
-            if (packet[0] != ZoneOpcodes.UpdateStringHashToValueManager) continue;
-            var reader = new PacketReader(packet);
-            reader.ReadByte();
-            if (reader.ReadString() == "Cranberry.Healing") value = reader.ReadString();
+            if (packet[0] != 0x9e) continue;
+            if (packet[1] == 6 && packet.Length == 115)
+            {
+                uint effect = BitConverter.ToUInt32(packet, 22);
+                if (effect is not (120581 or 120583)) continue;
+                seen = true;
+                active[BitConverter.ToUInt64(packet, 10)] = effect;
+            }
+            else if (packet[1] == 8 && packet.Length == 18)
+                active.Remove(BitConverter.ToUInt64(packet, 10));
         }
-        return value;
+        return !seen ? null : active.Values.Contains(120581u) ? "120581"
+            : active.Values.Contains(120583u) ? "120583" : "0";
     }
 
     [Theory]
@@ -93,9 +305,9 @@ public sealed class MedicalMovementTests
     }
 
     [Theory]
-    [InlineData(2423u, 5100u)]
-    [InlineData(3375u, 5500u)]
-    public void CompletedMedicalTickUpdatesTheHealthResourceReadByTheHud(uint itemId, uint expected)
+    [InlineData(2423u, 5400u, 5300u)]
+    [InlineData(3375u, 5500u, 5000u)]
+    public void CompletedMedicalTickUpdatesTheHealthResourceReadByTheHud(uint itemId, uint expected, uint previous)
     {
         using var world = new Fixture(itemId);
         world.Start();
@@ -107,7 +319,7 @@ public sealed class MedicalMovementTests
             && p[5] == 3 && BitConverter.ToUInt32(p, 14) == 1);
         Assert.Equal(0x1001ul, BitConverter.ToUInt64(resource, 6));
         Assert.Equal(expected, BitConverter.ToUInt32(resource, 22));
-        Assert.Equal(5000u, BitConverter.ToUInt32(resource, 26));
+        Assert.Equal(previous, BitConverter.ToUInt32(resource, 26));
         Assert.Equal(expected, world.Get<uint>("Hitpoints"));
     }
 
@@ -205,9 +417,9 @@ public sealed class MedicalMovementTests
     }
 
     [Theory]
-    [InlineData(2423u)]
-    [InlineData(2424u)]
-    public void ComingToAStopAndSmallAdjustmentsAllowBandageOrMedkitToFinish(uint itemId)
+    [InlineData(2423u, 5400u)]
+    [InlineData(2424u, 5100u)]
+    public void ComingToAStopAndSmallAdjustmentsAllowBandageOrMedkitToFinish(uint itemId, uint expected)
     {
         using var world = new Fixture(itemId);
         world.Start();
@@ -221,7 +433,7 @@ public sealed class MedicalMovementTests
         Assert.Null(world.Cast);
         Assert.False(world.Inventory.Items.ContainsKey(world.Item.Guid));
         world.TakeTimer()();
-        Assert.Equal(5100u, world.Get<uint>("Hitpoints"));
+        Assert.Equal(expected, world.Get<uint>("Hitpoints"));
     }
 
     [Fact]
@@ -247,10 +459,10 @@ public sealed class MedicalMovementTests
         world.TakeTimer()();
         Assert.Null(world.Cast);
         Assert.False(world.Inventory.Items.ContainsKey(world.Item.Guid));
-        Assert.Equal(5000u, world.Get<uint>("Hitpoints"));
+        Assert.Equal(5300u, world.Get<uint>("Hitpoints"));
         world.Move(Fixture.StartPosition + Vector3.UnitX);
         world.TakeTimer()();
-        Assert.Equal(5100u, world.Get<uint>("Hitpoints"));
+        Assert.Equal(5400u, world.Get<uint>("Hitpoints"));
     }
 
     [Fact]
@@ -302,7 +514,7 @@ public sealed class MedicalMovementTests
         world.TakeTimer()();
         world.Set("WorldGeneration", 1);
         world.TakeTimer()();
-        Assert.Equal(5000u, world.Get<uint>("Hitpoints"));
+        Assert.Equal(5300u, world.Get<uint>("Hitpoints"));
     }
 
     [Theory]
@@ -511,10 +723,11 @@ public sealed class MedicalMovementTests
         public PendingMedicalCast? Cast => Get<PendingMedicalCast?>("PendingMedicalCast");
 
         public Fixture(uint itemId = 2423, uint? initialHitpoints = 5000, bool enableGas = true,
-            string matchStep = "InMatch")
+            string matchStep = "InMatch", uint maximumHitpoints = 10_000)
         {
             _service = new ZoneService(this, this, new GatewayTicketRegistry(), new ZoneOptions
-            { SendProximateItems = false, EnableGas = enableGas }) { Post = _timers.Enqueue };
+            { SendProximateItems = false, EnableGas = enableGas,
+              Gas = new Cranberry.Zone.Gas.GasSettings { MaxHitpoints = maximumHitpoints } }) { Post = _timers.Enqueue };
             var request = new SessionRequest(3, 123, 512, ZoneService.ProtocolName);
             _connection = new SoeConnection(new(IPAddress.Loopback, 12345), in request,
                 new(), SessionDecision.Clear, _service, this, (_, _) => { }, 0);
@@ -621,6 +834,8 @@ public sealed class MedicalMovementTests
         private void Send(byte[] packet, byte channel) => _service.OnMessage(_connection,
             [new GatewayHeader(GatewayTunnelFromClient.Opcode, channel).ToByte(), .. packet]);
         public void Set(string name, object value) => _state.GetType().GetProperty(name)!.SetValue(_state, value);
+        public void SetBleed(byte severity) => _state.GetType().GetField("PlayerMedical")!
+            .SetValue(_state, new MedicalState { Bleed = severity, Bleeding = severity > 0 });
         public T Get<T>(string name) => (T)_state.GetType().GetProperty(name)!.GetValue(_state)!;
         public bool IsEnabled(TransportLogLevel level) => false;
         public void Log(TransportLogLevel level, string message) { }

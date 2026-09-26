@@ -72,19 +72,19 @@ try
     {
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         await tunnel.Connect(edition.Settings, first.Token, deadline.Token);
-        using var response = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, BidirectionalDoors.ProtocolVersion), deadline.Token);
+        using var incompatible = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, 1), deadline.Token);
+        Check(incompatible.StatusCode == HttpStatusCode.BadRequest,
+            "Host refuses obsolete protocol-1 launchers that activate native memory helpers");
+        using var response = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort, 0), deadline.Token);
         response.EnsureSuccessStatusCode();
         var launch = (await response.Content.ReadFromJsonAsync<GameLaunch>(deadline.Token))!;
         Check(launch.BuildId == bundled.BuildId && launch.LoginAddress.StartsWith("127.0.0.1:") && launch.Ticket.Length > 0,
-            "Authenticated local game tunnel issues a launch ticket for the bundled build");
+            "Authenticated protocol-0 tunnel issues a native launch ticket without a helper readiness handshake");
         // Prepare the actual launch configuration without starting the native game.
+        Directory.CreateDirectory(edition.Settings.InstallDirectory);
         GameProcess.StartInfo(edition.Settings.InstallDirectory, launch);
-        Check(Directory.Exists(Path.Combine(edition.Settings.InstallDirectory, "Logs"))
-            && File.ReadAllText(Path.Combine(edition.Settings.InstallDirectory, "CranberryClient.ini")).Contains("LocalLogLevel=9"),
-            "Fresh client launch enables the local startup log required by the door readiness helper");
-        using var ready = await http.PostAsJsonAsync("api/client/doors-ready",
-            new DoorClientReadyRequest(launch.Ticket, BidirectionalDoors.ProtocolVersion), deadline.Token);
-        Check(ready.IsSuccessStatusCode, "Bundled host accepts readiness for the authenticated game launch");
+        Check(File.ReadAllText(Path.Combine(edition.Settings.InstallDirectory, "CranberryClient.ini")).Contains("LocalLogLevel=1"),
+            "Fresh client launch uses standard logging without a native helper dependency");
     }
     // A complete installation must not contact any origin, even when CDN discovery is configured.
     string installed = Path.Combine(evidence, "offline-fixture");

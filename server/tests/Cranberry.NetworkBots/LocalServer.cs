@@ -43,10 +43,25 @@ internal sealed class LocalServer : IDisposable, ITransportLog, IPacketRecorder
         return source.Task;
     }
 
+    // Isolated fixture policy only: preserve the 150-seat default for existing runs,
+    // explicitly expand it for the owner's 151..175-player load target.
+    internal static PublicQueueOptions? QueueOptionsFor(int matchPopulation, int simultaneousMatches = 1)
+    {
+        if (matchPopulation == 0) return null;
+        if (matchPopulation is < 2 or > 175)
+            throw new ArgumentOutOfRangeException(nameof(matchPopulation), "Fixture match population must be 2..175, or zero for no queue.");
+        return new PublicQueueOptions
+        {
+            WaitMs = 3000, MinPlayers = matchPopulation, MaxPlayers = Math.Max(150, matchPopulation),
+            MaxAllocatedMatches = Math.Max(2, simultaneousMatches),
+        };
+    }
+
     public LocalServer(int population, string output, bool individualAccounts = false,
         LocalAccountDirectory? suppliedAccounts = null, IReadOnlyList<string>? accountIds = null, int matchPopulation = 0,
         int simultaneousMatches = 1)
     {
+        PublicQueueOptions? queueOptions = QueueOptionsFor(matchPopulation, simultaneousMatches);
         _log = new StreamWriter(Path.Combine(output, "server.log")) { AutoFlush = true };
         var tickets = new GatewayTicketRegistry();
         var roster = new CharacterRosterStore();
@@ -67,9 +82,7 @@ internal sealed class LocalServer : IDisposable, ITransportLog, IPacketRecorder
         var zone = new ZoneService(this, this, tickets, new ZoneOptions
         {
             LobbyCountdownMs = 8000,
-            PublicQueue = matchPopulation > 0 ? new PublicQueueOptions
-                { WaitMs = 3000, MinPlayers = Math.Min(150, matchPopulation), MaxPlayers = 150,
-                    MaxAllocatedMatches = Math.Max(2, simultaneousMatches) } : null,
+            PublicQueue = queueOptions,
             Drop = new DropOptions { Enabled = false }, MatchDropSpawn = new Vector4(Landing, 1),
             DropAltitude = Landing.Y + 120,
             MatchSeed = 20170907,

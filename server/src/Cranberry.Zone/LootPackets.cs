@@ -84,7 +84,7 @@ public sealed record AddLightweightItem(
 /// <summary>
 /// One inventory item record, the blob parsed by <c>FUN_140a3aa60</c> and shared by
 /// <c>ClientUpdate.ItemAdd</c> and <c>ClientUpdate.ItemUpdate</c>. The machine-extracted read
-/// sequence in <c>FUN_140a3aa60</c> (13 inline reads = 61
+/// sequence (<c>out/claude-loot/selfschema-itemrecord-FUN_140a3aa60.md</c>: 13 inline reads = 61
 /// bytes, plus the one detail-block byte the extractor could not see) gives the 62-byte base:
 /// <c>u32 definitionId; u32 tint; u64 itemGuid; u32 count;</c> the detail block
 /// <c>FUN_140a496c0</c> (<c>u8 hasDetail; if set { u32 kind; if kind == 1 { FUN_140a3ad60 } }</c>);

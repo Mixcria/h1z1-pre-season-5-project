@@ -15,10 +15,10 @@ Copy-Item -LiteralPath (Join-Path $repo 'package') -Destination (Join-Path $Outp
 Copy-Item -LiteralPath (Join-Path $repo 'compatibility\dynamicAppearance.bin') -Destination (Join-Path $Output 'runtime\Data\dynamicAppearance.bin')
 Copy-Item -LiteralPath (Join-Path $repo 'PLAYER-GUIDE.txt') -Destination (Join-Path $Output 'READ-ME.txt')
 Copy-Item -LiteralPath (Join-Path $repo 'THIRD-PARTY-NOTICES.md') -Destination (Join-Path $Output 'THIRD-PARTY-NOTICES.md')
-$baseline = Get-Content -LiteralPath (Join-Path $repo 'provenance\live-baseline.json') -Raw | ConvertFrom-Json
+$baseline = Get-Content -LiteralPath (Join-Path $repo 'provenance\source-baseline.json') -Raw | ConvertFrom-Json
 $definition = [ordered]@{
     Version = 1
-    ReleaseId = $Version + '-local-' + $baseline.serverRelease
+    ReleaseId = $Version + '-local-' + $baseline.sourceId
     GameManifestSha256 = (Get-FileHash -LiteralPath (Join-Path $Output 'package\game-manifest.json') -Algorithm SHA256).Hash
     AppearanceSha256 = (Get-FileHash -LiteralPath (Join-Path $Output 'runtime\Data\dynamicAppearance.bin') -Algorithm SHA256).Hash
 }

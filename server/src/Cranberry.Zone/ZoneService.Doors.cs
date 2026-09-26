@@ -241,6 +241,7 @@ public sealed partial class ZoneService
         }
 
         state.LobbyDoorsArmed = true;
+        int generation = state.WorldGeneration;
         Vector4 staging = StagingPosition(state);
         var centre = new Vector3(staging.X, staging.Y, staging.Z);
         int delayMs = Math.Max(0, _options.LobbyDoorDelayMs);
@@ -251,6 +252,7 @@ public sealed partial class ZoneService
 
         Later(connection, delayMs, () =>
         {
+            if (generation != state.WorldGeneration || !ReferenceEquals(connection.Tag, state)) return;
             var burst = new List<Action>();
             SpawnNearbyDoors(connection, state, trigger, burst, centre);
             if (burst.Count == 0)
@@ -258,7 +260,8 @@ public sealed partial class ZoneService
                 return;
             }
 
-            DrainBurst(connection, state, burst, from: 0, trigger, republishProximateItems: false);
+            DrainBurst(connection, state, burst, from: 0, trigger,
+                republishProximateItems: false, worldGeneration: generation);
         });
     }
 

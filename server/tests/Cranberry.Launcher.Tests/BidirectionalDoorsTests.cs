@@ -51,20 +51,19 @@ public sealed class BidirectionalDoorsTests
     }
 
     [Fact]
-    public void ReadinessIsScopedToTheVerifiedActiveLaunchAndClearedOnDisconnect()
+    public void NativeCompatibilityIsScopedToTheActiveLaunchAndClearedOnDisconnect()
     {
         var clients = new DoorClientReadiness();
         Assert.False(clients.IsReady("a"));
-        Assert.Throws<InvalidOperationException>(() => clients.Begin("a", "old", 0));
-        clients.Begin("a", "first", 1);
-        Assert.False(clients.IsReady("a"));
-        Assert.False(clients.Confirm("b", "first", 1));
-        Assert.False(clients.Confirm("a", "wrong", 1));
-        Assert.True(clients.Confirm("a", "first", 1)); Assert.True(clients.IsReady("a"));
-        Assert.True(clients.Confirm("a", "first", 1));
-        clients.Begin("a", "second", 1);
-        Assert.False(clients.IsReady("a")); Assert.False(clients.Confirm("a", "first", 1));
-        Assert.True(clients.Confirm("a", "second", 1));
-        clients.Remove("a"); Assert.False(clients.IsReady("a")); Assert.False(clients.Confirm("a", "second", 1));
+        Assert.Throws<InvalidOperationException>(() => clients.Begin("a", "patched", 1));
+        clients.Begin("a", "first", 0);
+        Assert.True(clients.IsReady("a"));
+        Assert.False(clients.Confirm("b", "first", 0));
+        Assert.False(clients.Confirm("a", "wrong", 0));
+        Assert.True(clients.Confirm("a", "first", 0));
+        clients.Begin("a", "second", 0);
+        Assert.True(clients.IsReady("a")); Assert.False(clients.Confirm("a", "first", 0));
+        Assert.True(clients.Confirm("a", "second", 0));
+        clients.Remove("a"); Assert.False(clients.IsReady("a")); Assert.False(clients.Confirm("a", "second", 0));
     }
 }

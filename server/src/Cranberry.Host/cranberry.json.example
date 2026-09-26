@@ -354,6 +354,8 @@
   },
   "peers": {
     "_comment": "reserved for lane 3C's two-client switches; any name it adds keeps working through the environment even before it has a row here",
+    "lobbyVisiblePlayers": 16,
+    "lobbyVisibilityMetres": 60,
     "selfTransientId": true,
     "spawn": true,
     "relay": true,

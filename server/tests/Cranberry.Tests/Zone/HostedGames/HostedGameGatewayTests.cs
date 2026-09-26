@@ -422,8 +422,8 @@ public sealed partial class HostedGameGatewayTests
         var unavailable = Schedule(f, player);
 
         Assert.Empty(unavailable.Games);
-        Assert.Equal(StringHashValues.Entries.Count + 2, unavailable.Labels.Count);
-        Assert.Equal("0", unavailable.Labels["Cranberry.Healing"].Value);
+        Assert.Equal(StringHashValues.Entries.Count + 1, unavailable.Labels.Count);
+        Assert.DoesNotContain("Cranberry.Healing", unavailable.Labels.Keys);
         f.Admit(available, player, TimeSpan.FromHours(1));
 
         var personalized = Schedule(f, player);
@@ -432,13 +432,13 @@ public sealed partial class HostedGameGatewayTests
         Assert.Equal(available.Name, personalized.Labels[$"Cranberry.Hosted.{available.WorldId}.Name"].Value);
         Assert.Equal(modeName, personalized.Labels[$"Cranberry.Hosted.{available.WorldId}.Mode"].Value);
         Assert.DoesNotContain($"Cranberry.Hosted.{hidden.WorldId}.Name", personalized.Labels.Keys);
-        Assert.Equal(StringHashValues.Entries.Count + 4, personalized.Labels.Count);
+        Assert.Equal(StringHashValues.Entries.Count + 3, personalized.Labels.Count);
         f.Now += TimeSpan.FromHours(1);
 
         var expired = Schedule(f, player);
 
         Assert.Empty(expired.Games);
-        Assert.Equal(StringHashValues.Entries.Count + 2, expired.Labels.Count);
+        Assert.Equal(StringHashValues.Entries.Count + 1, expired.Labels.Count);
     }
 
     [Theory]

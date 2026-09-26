@@ -48,14 +48,19 @@ internal static partial class Program
             {
                 bot.Observation.ResetMatchView();
                 var tunnel = cloud.Players[bot.Id].Tunnel;
+                var retiredTimings = bot.Client.ReceiveTimings?.Snapshot();
+                RetiredMovementJournalSuppressed += bot.Client.Journal.MovementEntriesSuppressed;
                 bot.Client = new HarnessClient(new HarnessOptions
                 {
                     LoginEndPoint = new(IPAddress.Loopback, tunnel.LoginPort),
                     GatewayEndPointOverride = new(IPAddress.Loopback, tunnel.GatewayPort),
                     LoginTicket = tickets[bot.Id], CharacterIndex = 0, Seed = 9000 + round * 10 + bot.Id,
                     RetainLedger = false, ObservePacket = bot.Observation.Observe, JournalCapacity = 24,
+                    CaptureReceiveTimings = true,
+                    OmitInboundMovementJournal = OmitMovementJournal,
                     Timings = new ClientTimings { ReplayMovement = false },
                 });
+                if (retiredTimings is not null) RetiredReceiveTimings.Add(retiredTimings);
                 bot.Observation.SelfGuid = () => bot.Client.SelfGuid;
             }
             await Task.WhenAll(Bots.Select(async bot =>

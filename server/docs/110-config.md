@@ -442,6 +442,8 @@ produced it (S1 §2.3: "the env-var convention leaves no record of what a sessio
 
 | key | legacy environment name | default | rules | what it does |
 |---|---|---|---|---|
+| `lobbyVisiblePlayers` | `CRANBERRY_LOBBY_VISIBLE_PLAYERS` (or `CRANBERRY_PEERS_LOBBY_VISIBLE_PLAYERS`) | `16` | ROTK20260920 | maximum visible remote lobby players; 0 restores match visibility (default 16) |
+| `lobbyVisibilityMetres` | `CRANBERRY_LOBBY_VISIBILITY_METRES` (or `CRANBERRY_PEERS_LOBBY_VISIBILITY_METRES`) | `60` | ROTK20260920 | lobby player entry radius; known peers retain a 6 m exit margin (default 60) |
 | `selfTransientId` | `CRANBERRY_SELF_TRANSIENT_ID` (or `CRANBERRY_PEERS_SELF_TRANSIENT_ID`) | `true` | D214 | write TransientIdTable.LocalPlayer (1) into the self record's +0xe0, not 0 |
 | `spawn` | `CRANBERRY_PEER_SPAWN` (or `CRANBERRY_PEERS_SPAWN`) | `true` | D215 | the peer enter/leave burst: d5, the peer's 94 01, 82 15, 0f 01 |
 | `relay` | `CRANBERRY_PEER_RELAY` (or `CRANBERRY_PEERS_RELAY`) | `true` | D215 | re-frame each decoded channel-2 record as 0x78 for every viewer |

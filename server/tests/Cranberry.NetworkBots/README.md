@@ -23,6 +23,42 @@ uses the existing harness's reliable SOE path. Both paths are accepted by the se
 capture logs do not establish the original client's outer framing for every movement record.
 Use a new output directory for every run to preserve failures and comparisons.
 
+## Controlled movement-rate experiments
+
+`--movement-hz 60` requests synthetic 60 Hz player movement and, during descent,
+60 Hz owned-canopy movement. It uses absolute fractional deadlines, measures
+actual generated rates, and counts skipped deadlines instead of replaying a
+burst after a stall. It changes the bot input generator, not the server's tick
+rate or the native client's sender. The supported override range is 20..120 Hz.
+It currently rejects public, server-only, menu-only and multi-match modes rather
+than silently ignoring the setting. The server process needs no rate argument.
+
+Omitting the option retains the legacy nominal profile: 25 Hz ground player
+input, 1000/24 Hz airborne player input and one canopy report per seven airborne
+frames. An explicit override sends both player and canopy input at the selected
+rate; report those as separate packet streams when comparing bandwidth.
+
+```powershell
+.\tests\Cranberry.NetworkBots\Run-LocalScenario.ps1 -ServerDll <built-dll> -Output C:/Aug2017/out/fresh-60hz-run -Bots 2 -Seconds 30 -Tls -ServerGcMode Server -MovementHz 60
+```
+
+The runner records the requested rate and binary hashes. The result records
+actual per-phase generation rates, skipped frames and maximum deadline lateness
+under `movementGeneration` and each movement window's `generation`. Speed/posture
+calculations use actual elapsed time between generated frames.
+
+`MinimumFreshPairHz` counts only timestamps strictly advancing a transient's
+high-water mark. `NonAdvancingRecords` combines repeated and reordered timestamps;
+it is not a distinct-packet count. These additive fields leave the historical
+record-count rates unchanged. `FreshPeerCoverage` describes the expected peers
+at window end, not a complete visibility history; no expected peers gives null.
+
+With an explicit rate, the ground window independently requires generation and
+fresh delivery to reach at least 90% of the request, alongside existing checks.
+This tolerance is an experiment gate, not a claim of exactly 60 Hz service,
+native-client compatibility or adequate performance at larger populations.
+Inspect measured values and generator lateness even when the run passes.
+
 For capacity measurements, run the fixture server and bots in separate processes. This avoids
 sharing a .NET thread pool and garbage collector between the server and all 150 clients. They
 still share this computer's CPU and network stack; this is not a distributed capacity certificate.
@@ -65,6 +101,9 @@ Opus tones from all match participants; it never opens a microphone. Fixture acc
 provisioned directly through `SocialStore` before the timed workload, avoiding the public
 registration rate limit. Disposable fixture session tokens remain in its local endpoint
 file and are invalid when that fixture exits. Do not publish that directory as a launcher.
+The loopback fixture uses the native-compatible version/ticket HTTP handshake
+with door protocol 0. Bots do not run the native process, so successful fixture
+readiness does not verify door visuals or native transitions.
 
 ```powershell
 .\tests\Cranberry.NetworkBots\Run-LocalScenario.ps1 -ServerDll <built-dll> -Output C:/Aug2017/out/fresh-voice-run -Bots 150 -MenuBots 2000 -Seconds 300 -Tls -Voice -ReliableMovement -SlowClient
@@ -87,6 +126,28 @@ the number of older queued records, and check missing peers and the last positio
 use actual elapsed time. An end-of-window freshness check does not rule out a shorter stall
 earlier in the window; inspect the rate as well. The legacy whole-run histogram remains separate.
 Setup timestamps distinguish ammunition request time, server grant recording and bot receipt.
+Movement windows now retain UTC start/end boundaries, also written to
+`clients/phase-timeline.jsonl`, so fixture telemetry can be aligned without inferring
+phase times from rounded log messages. These are nearby sequential snapshots, not
+an atomic cut across all clients and server threads.
+
+The single-match generator enables optional harness receive timings. Each window
+reports aggregate and per-bot datagram queue wait, application inbox wait, and
+application handler work (parsing, observation and responder handling). Queue
+timing starts immediately before the corresponding local channel enqueue. Counts
+refer to dequeued datagrams or handled application messages, respectively; these
+include control traffic and movement queued in an earlier phase. Histogram p99
+values are bucket upper bounds; a null p99 with `P99Overflow=true` means it exceeded
+10 seconds. These measurements do not include time before the UDP socket read,
+isolate TLS delivery or measure reliable reassembly wait. Each stage is coherent
+individually. Recording adds some generator overhead, so compare runs made with
+the same instrumented generator. The general harness keeps recording disabled.
+Per-stage samples represent work completed between that stage's two snapshots;
+they do not describe a common set of messages and must not be added as a latency
+decomposition. Reports include captured/expected client counts. Repeated-match
+reconnections enable recording on the replacement clients and retain retired
+session totals in the whole-run aggregate.
+
 Combat setup waits for observed ammunition in every inventory, with a five-second total
 deadline and continued movement sampling, before asking the bots to reload and fire.
 Parachute setup retains a minimum 500-ms settling interval and waits up to five seconds
@@ -100,6 +161,12 @@ and item binding, independently of the remote firing-event checks. TLS fixture i
 still affects SOE datagrams at the local tunnel edge; it is not TCP packet-loss emulation.
 
 For the published server, use its distributed launcher profile and a private QA account file:
+
+The public-profile example below is historical: this bot flow still omits the
+door-version/readiness handshake required by the current launcher service and
+has not been upgraded in this campaign. It cannot currently establish a gameplay
+launch against that service. Use the loopback fixture for these rate experiments;
+its simulated readiness is not native-client verification.
 
 ```powershell
 dotnet run --project tests/Cranberry.NetworkBots -c Release -- --bots 2 --seconds 10 --public-profile C:/Aug2017/out/cloud-deploy-test/friend-public/launcher.json --accounts-file C:/Aug2017/out/network-bots-20260907/private/accounts.json --output C:/Aug2017/out/my-public-run
@@ -123,3 +190,47 @@ The follow-up [improvements report](../../docs/networking-improvements-20260907.
 canopy replication, lifecycle tests and separate-process measurements.
 The [150-player target campaign](../../docs/networking-150-target-20260907.md) records the
 bounded movement queue, reliable send-window comparison, expanded combat windows and stress runs.
+
+## Independent cadence experiments and the 175-player target
+
+The local single-match fixture accepts 2..175 players. Its explicit test queue can
+hold all 175 in one match; production public/hosted policies still cap at 150.
+This tooling range does not establish native-client support or smooth gameplay.
+See the [175-player direction](../../docs/network175-direction-20260919.md).
+
+`--canopy-hz 6 --movement-hz 60` (runner: `-CanopyHz 6 -MovementHz 60`)
+controls the airborne canopy stream independently from player input. The canopy
+range is 1..120 Hz; it requires an explicit player rate and one local match cycle.
+Without this option the existing scheduler is retained. An explicit canopy rate
+can exceed the player rate; canopy-only deadlines never emit a player record.
+Both streams skip overdue slots rather than generating a catch-up burst. Reports
+retain per-stream emission, skips and lateness plus per-bot rates and missing
+owned-canopy identities. The controlled path never guesses a canopy identity.
+
+Controlled descent requires at least 90% of both requested input rates, at most
+10% skipped slots in each stream, and fresh canopy delivery at least 90% of its
+requested rate to every observer. Every observer must retain the complete starting
+rider/canopy/transient cohort. Removed or rebound canopies cannot shrink the
+expected population to make a run pass. Existing all-pose p99 and final-freshness
+checks remain separate; the p99 histogram is not a canopy-only histogram.
+Before freezing that cohort, the controlled path holds observed spawn positions
+and gives the normal interest pass up to five seconds to expose all remote mounted
+canopies. This startup workload, duration and acceptance check are retained
+separately. Default scenarios keep their original setup and observation behavior.
+Requested rates of 1–2 Hz remain useful controls but cannot satisfy the existing
+350 ms end-freshness requirement; a low-rate control failure alone is not overload.
+
+`--omit-movement-journal` (runner: `-OmitMovementJournal`) optionally avoids
+journal naming/formatting for structurally identified inbound gateway movement.
+Normal application delivery, decoding, observations, ACKs and acceptance checks
+remain active. Default journaling is unchanged. Whole-run, per-bot and per-window
+reports disclose suppressed entries; failure tails also disclose the omission.
+Malformed prefixes and control packets remain journaled, but this classification
+is not full movement-payload validation. Reconnected clients inherit the option
+and retain retired-session suppression totals. This policy is a generator control,
+not a server optimization; compare it as a separate experimental variable.
+
+For controlled comparisons explicitly select both GC modes and keep all other
+settings fixed. A lower requested canopy rate is an experimental workload, not
+evidence that the native client has been changed to that rate. WAN TCP loss also
+requires a different impairment point from the runner's local SOE-edge proxy.

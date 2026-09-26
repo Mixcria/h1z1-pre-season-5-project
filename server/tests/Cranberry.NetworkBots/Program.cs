@@ -4,6 +4,7 @@ using System.Text.Json;
 using Cranberry.Harness;
 using Cranberry.Harness.Behaviour;
 using Cranberry.Harness.Protocol;
+using Cranberry.Harness.Runtime;
 using Cranberry.Harness.Soe;
 using Cranberry.Harness.Verification;
 
@@ -16,7 +17,18 @@ internal static partial class Program
     private static uint Tick => unchecked((uint)(Environment.TickCount64 + TickOffset));
     private static readonly List<object> Checks = [];
     private static readonly List<object> MovementWindows = [];
+    private static readonly List<MovementGenerationSample> MovementGeneration = [];
+    private static int WindowGenerationStart;
+    private static int? MovementHz;
+    private static int? CanopyHz;
+    private static bool OmitMovementJournal;
+    private static long RetiredMovementJournalSuppressed;
+    private static long WindowMovementJournalStart;
+    private static object? ControlledAirbornePreparation;
     private static TimeSpan WindowGcStart;
+    private static DateTimeOffset WindowStartedUtc;
+    private static readonly Dictionary<int, ReceiveTimingSnapshot> WindowReceiveStart = [];
+    private static readonly List<ReceiveTimingSnapshot> RetiredReceiveTimings = [];
     private static uint? AmmoRequestedTick, AmmoDeadlineTick;
     private static string Output = "";
     private static readonly List<Bot> Bots = [];
@@ -32,6 +44,12 @@ internal static partial class Program
 
     public static async Task<int> Main(string[] args)
     {
+        MovementHz = ParseMovementHz(args);
+        CanopyHz = ParseCanopyHz(args);
+        OmitMovementJournal = args.Contains("--omit-movement-journal");
+        ValidateCadenceOptions(args, MovementHz, CanopyHz, OmitMovementJournal);
+        if (MovementHz.HasValue && args.Any(a => a is "--multi-match" or "--menu-only" or "--server-only" or "--public-profile"))
+            throw new ArgumentException("--movement-hz currently requires a local single-match client scenario");
         if (args.Contains("--multi-match") && !args.Contains("--server-only")) return await MultiMatchPopulation.Run(args);
         if (args.Contains("--menu-only") && !args.Contains("--server-only")) return await MenuPopulation.Run(args);
         int count = Int(args, "--bots", 2), seconds = Int(args, "--seconds", 30);
@@ -45,7 +63,7 @@ internal static partial class Program
         int delay = Int(args, "--delay-ms", 0), jitter = Int(args, "--jitter-ms", 0);
         double loss = double.TryParse(Text(args, "--loss"), System.Globalization.CultureInfo.InvariantCulture, out var parsedLoss) ? parsedLoss : 0;
         if (delay < 0 || jitter < 0 || loss is < 0 or >= 1) throw new ArgumentException("Invalid impairment options");
-        if (count is < 2 or > 150 || seconds is < 5 or > 1800) throw new ArgumentException("bots 2..150; seconds 5..1800");
+        if (count is < 2 or > 175 || seconds is < 5 or > 1800) throw new ArgumentException("bots 2..175; seconds 5..1800");
         Output = Text(args, "--output") ?? Path.Combine(Path.GetTempPath(), "cranberry-network-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss"));
         Directory.CreateDirectory(Output);
         if (args.Contains("--wire-audit")) WireAudit.Start(Output);
@@ -117,6 +135,8 @@ internal static partial class Program
                     CreateCharacterIfEmpty = Public ? cloud!.Players[i].Name : null,
                     GatewayEndPointOverride = gateway ?? (cloud is not null ? new(System.Net.IPAddress.Loopback, cloud.Players[i].Tunnel.GatewayPort) : null),
                     RetainLedger = false, ObservePacket = observation.Observe, JournalCapacity = 24,
+                    CaptureReceiveTimings = true,
+                    OmitInboundMovementJournal = OmitMovementJournal,
                     Timings = new ClientTimings { ReplayMovement = false },
                 });
                 observation.SelfGuid = () => client.SelfGuid;
@@ -157,6 +177,7 @@ internal static partial class Program
             double descentSeconds = Math.Max(20, starts.Max(p => p.Y - landing.Y) / 6);
             double horizontal = starts.Max(p => Vector2.Distance(new(p.X, p.Z), new(landing.X, landing.Z)));
             if (horizontal / descentSeconds > 12) throw new InvalidDataException("Public drops are too far apart to gather at the modelled canopy speed.");
+            if (CanopyHz.HasValue) await PrepareControlledDescent(starts, deadline.Token);
             Log($"Descending from observed canopy positions for {descentSeconds:F1}s; maximum horizontal glide {horizontal:F1}m.");
             BeginMovementWindow("descent");
             await MoveFor(descentSeconds, (bot, t) => Vector3.Lerp(starts[bot.Id], landing,
@@ -179,7 +200,7 @@ internal static partial class Program
             Check("landed with world loot", Bots.All(b => b.Read(o => o.Loot.Count) > 0),
                 new { minimumLoot = Bots.Min(b => b.Read(o => o.Loot.Count)), maximumLoot = Bots.Max(b => b.Read(o => o.Loot.Count)) });
 
-            // Pair-wide movement, crossing paths and changes of stance at the observed 25 Hz foot cadence.
+            // Pair-wide movement, crossing paths and changes of stance at the requested synthetic cadence.
             var poseCountsBefore = Bots.Select(b => b.Read(o => new Dictionary<uint, long>(o.PeerPoses))).ToArray();
             BeginMovementWindow("ground");
             await MoveFor(seconds, (bot, t) => landing + Offset(bot.Id, t), deadline.Token);
@@ -245,6 +266,7 @@ internal static partial class Program
                 firstAmmoTick = b.Read(o => o.FirstAmmoTick),
                 inventory = b.Read(o => o.Inventory.Values.ToArray()),
                 fault = b.Client.GatewayLink?.Fault,
+                movementJournalSuppressed = b.Client.Journal.MovementEntriesSuppressed,
             }).ToArray();
             if (menu is not null) Check("menu players stay connected and receive no match replication", menu.Healthy, menu.Summary());
             if (voice is not null) Check("proximity voice supports simultaneous talkers and excludes menu players", voice.Healthy, voice.Summary());
@@ -258,6 +280,14 @@ internal static partial class Program
                 proximityVoice = voice?.Summary(),
                 combatIncluded = !Public, matchCycles, slowClientIncluded = args.Contains("--slow-client"),
                 movementTransport = UnreliableMovement ? "bare datagrams" : "reliable SOE",
+                requestedMovementHz = MovementHz, requestedCanopyHz = CanopyHz, movementGeneration = MovementGeneration,
+                controlledAirbornePreparation = ControlledAirbornePreparation,
+                movementJournal = new { omitInboundMovement = OmitMovementJournal,
+                    suppressedEntries = MovementJournalSuppressed() },
+                clientReceiveTimings = ReceiveTimingSnapshot.Merge(Bots
+                    .Where(b => b.Client.ReceiveTimings is not null)
+                    .Select(b => b.Client.ReceiveTimings!.Snapshot()).Concat(RetiredReceiveTimings)).Summarize(),
+                clientReceiveTimingSessions = Bots.Count(b => b.Client.ReceiveTimings is not null) + RetiredReceiveTimings.Count,
                 completedUtc = DateTimeOffset.UtcNow, checks = Checks, bots = summaries,
                 movementWindows = MovementWindows,
                 ammoRequestedTick = AmmoRequestedTick, ammoDeadlineTick = AmmoDeadlineTick,
@@ -269,7 +299,8 @@ internal static partial class Program
                 limits = new[] { "Protocol bots do not execute H1Z1.exe or its renderer/physics.",
                     "Local fixture uses normal live services and real UDP; roster, starter AR-15 and a common drop point are test configuration.",
                     "The public scenario covers account login, drop, movement, loot and disconnect; its combat phase is disabled.",
-                    "Pose age includes client generation, both transport legs and bot scheduling; histogram caps at 2000 ms." }
+                    "Pose age includes client generation, both transport legs and bot scheduling; whole-run histogram caps at 2000 ms, movement windows at 10000 ms.",
+                    "Client receive timings measure local datagram dequeue, application inbox wait and handler work; they do not isolate TLS arrival or reliable reassembly wait." }
             }, new JsonSerializerOptions { WriteIndented = true }));
             if (voice is not null) await voice.DisposeAsync();
             foreach (var bot in Bots)
@@ -296,23 +327,48 @@ internal static partial class Program
 
     private static void BeginMovementWindow(string name)
     {
+        WindowStartedUtc = DateTimeOffset.UtcNow;
+        WindowGenerationStart = MovementGeneration.Count;
         WindowGcStart = GC.GetTotalPauseDuration();
+        WindowMovementJournalStart = MovementJournalSuppressed();
+        WindowReceiveStart.Clear();
+        foreach (var bot in Bots.Where(b => !b.Disposed && b.Client.ReceiveTimings is not null))
+            WindowReceiveStart.Add(bot.Id, bot.Client.ReceiveTimings!.Snapshot());
         uint tick = Tick;
-        foreach (var bot in Bots) bot.Observation.BeginMovementWindow(tick);
-        File.WriteAllText(Path.Combine(Output, "phase.json"), JsonSerializer.Serialize(new { name, tick, utc = DateTimeOffset.UtcNow }));
+        foreach (var bot in Bots) bot.Observation.BeginMovementWindow(tick, airborne: name == "descent" && CanopyHz.HasValue);
+        var phase = new { name, tick, utc = WindowStartedUtc };
+        File.WriteAllText(Path.Combine(Output, "phase.json"), JsonSerializer.Serialize(phase));
+        File.AppendAllText(Path.Combine(Output, "phase-timeline.jsonl"), JsonSerializer.Serialize(new
+            { name, boundary = "begin", tick, utc = WindowStartedUtc }) + Environment.NewLine);
     }
 
     private static void EndMovementWindow(string name, bool airborne, bool clean)
     {
+        DateTimeOffset completedUtc = DateTimeOffset.UtcNow;
         uint tick = Tick;
+        var receive = Bots.Where(b => !b.Disposed && WindowReceiveStart.ContainsKey(b.Id))
+            .Select(b => new { id = b.Id, snapshot = ReceiveTimingSnapshot.Difference(
+                b.Client.ReceiveTimings!.Snapshot(), WindowReceiveStart[b.Id]) }).ToArray();
         var windows = Bots.Where(b => !b.Disposed).Select(b => b.Observation.MovementWindow(tick, airborne)).ToArray();
-        var summary = new { name, airborne, clientGcPauseMs = (GC.GetTotalPauseDuration() - WindowGcStart).TotalMilliseconds,
+        var generation = MovementGeneration.Skip(WindowGenerationStart).ToArray();
+        var summary = new { name, airborne, startedUtc = WindowStartedUtc, completedUtc,
+            movementJournal = new { omitInboundMovement = OmitMovementJournal,
+                suppressedEntries = MovementJournalSuppressed() - WindowMovementJournalStart },
+            clientReceiveTimings = new { aggregate = ReceiveTimingSnapshot.Merge(receive.Select(r => r.snapshot)).Summarize(),
+                expectedClients = Bots.Count(b => !b.Disposed), capturedClients = receive.Length,
+                bots = receive.Select(r => new { r.id, timings = r.snapshot.Summarize() }).ToArray() },
+            clientGcPauseMs = (GC.GetTotalPauseDuration() - WindowGcStart).TotalMilliseconds,
             worstP95Ms = windows.Max(w => w.P95Ms), worstP99Ms = windows.Max(w => w.P99Ms),
             worstP50Ms = windows.Max(w => w.P50Ms), maxMs = windows.Max(w => w.MaxMs),
             outOfOrderTimestamps = windows.Sum(w => w.OutOfOrderTimestamps),
             minimumPairHz = windows.Min(w => w.MinimumPairHz), missingPeers = windows.Sum(w => w.MissingPeers),
-            stalestPeerMs = windows.Max(w => w.StalestPeerMs), olderRecords = windows.Sum(w => w.OlderRecords), bots = windows };
+            minimumFreshPairHz = windows.Min(w => w.MinimumFreshPairHz),
+            freshSamples = windows.Sum(w => w.FreshSamples), nonAdvancingRecords = windows.Sum(w => w.NonAdvancingRecords),
+            stalestPeerMs = windows.Max(w => w.StalestPeerMs), olderRecords = windows.Sum(w => w.OlderRecords),
+            requestedMovementHz = MovementHz, requestedCanopyHz = CanopyHz, generation, bots = windows };
         MovementWindows.Add(summary);
+        File.AppendAllText(Path.Combine(Output, "phase-timeline.jsonl"), JsonSerializer.Serialize(new
+            { name, boundary = "end", tick, utc = completedUtc }) + Environment.NewLine);
         Log($"Movement window {name}: p99={summary.worstP99Ms} ms, minimum={summary.minimumPairHz:F2} Hz, latest peer age={summary.stalestPeerMs} ms, older records={summary.olderRecords}.");
         if (clean)
         {
@@ -321,15 +377,158 @@ internal static partial class Program
             Check($"{name} peers remain fresh at the end of the window", windows.All(w => w.MissingPeers == 0 && w.StalestPeerMs < (airborne ? 350 : 250)),
                 new { summary.missingPeers, summary.stalestPeerMs });
         }
+        if (MovementHz is { } hz && name == "ground")
+        {
+            double minimumGeneratedHz = generation.Select(g => g.MinimumPlayerHz).DefaultIfEmpty(0).Min();
+            Check("ground generator sustains at least 90% of requested input cadence", minimumGeneratedHz >= hz * .9,
+                new { requestedHz = hz, minimumGeneratedHz, requiredHz = hz * .9,
+                    skippedFrames = generation.Sum(g => g.SkippedFrames) });
+            Check("ground observers receive fresh timestamps at least 90% of requested cadence",
+                windows.All(w => w.ExpectedPeers > 0 && w.FreshPeerCoverage == 1 && w.MinimumFreshPairHz >= hz * .9),
+                new { requestedHz = hz, summary.minimumFreshPairHz, requiredHz = hz * .9,
+                    summary.freshSamples, summary.nonAdvancingRecords,
+                    minimumCoverage = windows.Select(w => w.FreshPeerCoverage).Min() });
+        }
+        if (CanopyHz is { } canopyHz && airborne)
+        {
+            int expectedPeers = Bots.Count(b => !b.Disposed) - 1;
+            Check("descent retains the complete starting airborne cohort",
+                windows.All(w => w.StartingAirborneCohortSize == expectedPeers && !w.AirborneCohortChanged
+                    && w.ExpectedPeers == expectedPeers),
+                new { expectedPeers, startingSizes = windows.Select(w => w.StartingAirborneCohortSize).ToArray(),
+                    changedObservers = windows.Count(w => w.AirborneCohortChanged) });
+            Check("descent generator sustains both requested streams",
+                generation.Length > 0 && generation.All(g => ControlledGenerationAccepted(g, MovementHz!.Value, canopyHz)),
+                new { requestedPlayerHz = MovementHz, requestedCanopyHz = canopyHz, requiredFraction = .9,
+                    maximumSkippedFraction = .1, generation });
+            Check("descent observers receive fresh canopy timestamps at least 90% of requested cadence",
+                windows.All(w => w.ExpectedPeers == expectedPeers && expectedPeers > 0
+                    && w.FreshPeerCoverage == 1 && w.MinimumFreshPairHz >= canopyHz * .9),
+                new { expectedPeers, requestedHz = canopyHz, requiredHz = canopyHz * .9,
+                    summary.minimumFreshPairHz, minimumCoverage = windows.Min(w => w.FreshPeerCoverage) });
+        }
+    }
+
+    private static long MovementJournalSuppressed() => RetiredMovementJournalSuppressed
+        + Bots.Sum(b => b.Client.Journal.MovementEntriesSuppressed);
+
+    private static async Task PrepareControlledDescent(Vector3[] starts, CancellationToken ct)
+    {
+        var expected = Bots.Where(b => !b.Disposed).Select(b => b.Client.SelfGuid).ToHashSet();
+        int[] Counts() => Bots.Where(b => !b.Disposed).Select(b => b.Read(o => o.MountedRiders.Count(r =>
+            r.Key != b.Client.SelfGuid && expected.Contains(r.Key) && o.Peers.ContainsKey(r.Key)
+            && o.Canopies.ContainsKey(r.Value)))).ToArray();
+        const double timeoutSeconds = 5;
+        int generationStart = MovementGeneration.Count;
+        DateTimeOffset startedUtc = DateTimeOffset.UtcNow;
+        var phase = new { name = "airborne-preparation", tick = Tick, utc = startedUtc };
+        File.WriteAllText(Path.Combine(Output, "phase.json"), JsonSerializer.Serialize(phase));
+        File.AppendAllText(Path.Combine(Output, "phase-timeline.jsonl"), JsonSerializer.Serialize(new
+            { phase.name, boundary = "begin", phase.tick, phase.utc }) + Environment.NewLine);
+        var timer = Stopwatch.StartNew();
+        int[] counts = Counts();
+        while (counts.Any(n => n != expected.Count - 1) && timer.Elapsed.TotalSeconds < timeoutSeconds)
+        {
+            // The normal server interest pass needs an initial player pose. Hold the
+            // observed spawn height and retain this bounded startup workload separately.
+            await MoveForControlled(.5, (bot, _) => starts[bot.Id], ct);
+            counts = Counts();
+        }
+        ControlledAirbornePreparation = new { startedUtc, completedUtc = DateTimeOffset.UtcNow,
+            durationSeconds = timer.Elapsed.TotalSeconds, timeoutSeconds, expectedPeers = expected.Count - 1,
+            observedPeers = counts, generation = MovementGeneration.Skip(generationStart).ToArray() };
+        File.AppendAllText(Path.Combine(Output, "phase-timeline.jsonl"), JsonSerializer.Serialize(new
+            { phase.name, boundary = "end", tick = Tick, utc = DateTimeOffset.UtcNow }) + Environment.NewLine);
+        Check("controlled airborne startup exposes every mounted remote canopy within five seconds",
+            counts.Length == expected.Count && counts.All(n => n == expected.Count - 1)
+                && timer.Elapsed.TotalSeconds <= timeoutSeconds + .1, ControlledAirbornePreparation);
+    }
+
+    private static bool ControlledGenerationAccepted(MovementGenerationSample sample, int playerHz, int canopyHz) =>
+        sample.MinimumPlayerHz >= playerHz * .9 && sample.MinimumCanopyHz >= canopyHz * .9
+        && sample.MissingCanopyIdentities == 0 && StreamAccepted(sample.PlayerStream) && StreamAccepted(sample.CanopyStream);
+
+    private static bool StreamAccepted(MovementStreamSample? stream) => stream is { EmittedFrames: > 0 }
+        && stream.SkippedFrames <= (stream.EmittedFrames + stream.SkippedFrames) * .1;
+
+    internal static int? ParseCanopyHz(string[] args)
+    {
+        int index = Array.IndexOf(args, "--canopy-hz");
+        if (index < 0) return null;
+        if (Array.LastIndexOf(args, "--canopy-hz") != index || index + 1 == args.Length
+            || !int.TryParse(args[index + 1], System.Globalization.NumberStyles.None,
+                System.Globalization.CultureInfo.InvariantCulture, out int hz) || hz is < 1 or > 120)
+            throw new ArgumentException("--canopy-hz requires one integer from 1 to 120");
+        return hz;
+    }
+
+    internal static void ValidateCadenceOptions(string[] args, int? movementHz, int? canopyHz, bool omitJournal)
+    {
+        if (canopyHz.HasValue && !movementHz.HasValue)
+            throw new ArgumentException("--canopy-hz requires --movement-hz");
+        if ((canopyHz.HasValue || omitJournal)
+            && (args.Any(a => a is "--multi-match" or "--menu-only" or "--server-only" or "--public-profile" or "--prepare-cloud")
+                || canopyHz.HasValue && Int(args, "--match-cycles", 1) != 1))
+            throw new ArgumentException("Cadence controls require a local gameplay client; --canopy-hz requires one match cycle");
+    }
+
+    internal static int? ParseMovementHz(string[] args)
+    {
+        int index = Array.IndexOf(args, "--movement-hz");
+        if (index < 0) return null;
+        if (Array.LastIndexOf(args, "--movement-hz") != index || index + 1 == args.Length
+            || !int.TryParse(args[index + 1], System.Globalization.NumberStyles.None,
+                System.Globalization.CultureInfo.InvariantCulture, out int hz) || hz is < 20 or > 120)
+            throw new ArgumentException("--movement-hz requires one integer from 20 to 120");
+        return hz;
+    }
+
+    private sealed record MovementGenerationSample(bool Parachuting, double RequestedPlayerHz,
+        double RequestedCanopyHz, double DurationSeconds, long Frames, long SkippedFrames,
+        double MaximumLatenessMs, long PlayerRecords, long CanopyRecords,
+        double MinimumPlayerHz, double MinimumCanopyHz)
+    {
+        public MovementStreamSample? PlayerStream { get; init; }
+        public MovementStreamSample? CanopyStream { get; init; }
+        public MovementBotSample[]? PerBot { get; init; }
+        public long MissingCanopyIdentities { get; init; }
     }
 
     private static async Task MoveFor(double seconds, Func<Bot, double, Vector3> pose, CancellationToken ct, bool parachuting = false, bool jumping = false)
     {
+        if (parachuting && CanopyHz.HasValue)
+        {
+            await MoveForControlled(seconds, pose, ct);
+            return;
+        }
         var timer = Stopwatch.StartNew();
         int frame = 0;
-        using var cadence = new PeriodicTimer(TimeSpan.FromMilliseconds(parachuting ? 24 : 40));
-        while (timer.Elapsed.TotalSeconds < seconds && await cadence.WaitForNextTickAsync(ct))
+        int numerator = MovementHz ?? 1000, denominator = MovementHz.HasValue ? 1 : parachuting ? 24 : 40;
+        var cadence = new MovementSchedule(Stopwatch.Frequency, numerator, denominator);
+        long endTicks = checked((long)Math.Ceiling(seconds * Stopwatch.Frequency));
+        long previousTicks = 0, maximumLateness = 0;
+        var generated = Bots.Where(b => !b.Disposed).ToDictionary(b => b.Id, _ => (Player: 0L, Canopy: 0L));
+        while (true)
         {
+            ct.ThrowIfCancellationRequested();
+            long now = timer.ElapsedTicks;
+            if (now >= endTicks) break;
+            long next = Math.Min(endTicks, cadence.NextDeadlineTicks);
+            if (now < next)
+            {
+                // Absolute deadlines prevent work time or millisecond rounding accumulating
+                // into cadence drift. Overdue slots are counted, never replayed in a burst.
+                await Task.Delay(TimeSpan.FromMilliseconds(Math.Max(1,
+                    Math.Ceiling((next - now) * 1000d / Stopwatch.Frequency))), ct);
+                continue;
+            }
+            long lateness = now - cadence.NextDeadlineTicks;
+            if (!cadence.TryTake(now, out var due)) continue;
+            maximumLateness = Math.Max(maximumLateness, lateness);
+            double elapsedSeconds = due.ElapsedTicks / (double)Stopwatch.Frequency;
+            double deltaSeconds = (due.ElapsedTicks - previousTicks) / (double)Stopwatch.Frequency;
+            previousTicks = due.ElapsedTicks;
+            uint frameTick = Tick;
             var lost = Bots.FirstOrDefault(b => !b.Disposed && !b.ExpectingDisconnect
                 && b.Client.GatewayLink?.CloseCause is not (null or LinkCloseCause.None));
             if (lost is not null)
@@ -337,22 +536,36 @@ internal static partial class Program
             foreach (var bot in Bots.Where(b => !b.Disposed))
             {
                 Vector3 previous = bot.Position;
-                bot.Position = pose(bot, timer.Elapsed.TotalSeconds);
-                double jumpPhase = Tick % 1500 / 1000d;
+                bot.Position = pose(bot, elapsedSeconds);
+                double jumpPhase = frameTick % 1500 / 1000d;
                 bool inJump = jumping && jumpPhase < .6;
                 if (inJump) bot.Position.Y += (float)(4 * jumpPhase / .6 * (1 - jumpPhase / .6));
                 Vector3 travel = bot.Position - previous;
-                float speed = new Vector2(travel.X, travel.Z).Length() / (parachuting ? .024f : .04f);
+                float speed = new Vector2(travel.X, travel.Z).Length() / (float)deltaSeconds;
                 uint posture = parachuting ? 0x21u : speed < .05f ? 0x441u : speed > 5.5f ? 0x405u :
                     speed < 2.8f && bot.Id % 3 == 0 ? 0x403u : 0x401u;
                 if (inJump) posture = (posture & ~0x440u) | 0x20;
                 if (travel.LengthSquared() > .0001f) bot.Yaw = MathF.Atan2(travel.X, travel.Z);
-                SendMovement(bot, BotWire.Movement(bot.Position, Tick, posture: posture, yaw: bot.Yaw), "bot movement");
-                if (parachuting && frame % 7 == 0)
-                    SendMovement(bot, BotWire.Movement(bot.Position, Tick, managed: bot.Read(o => o.ChuteTransient) ?? 2), "bot canopy movement");
+                SendMovement(bot, BotWire.Movement(bot.Position, frameTick, posture: posture, yaw: bot.Yaw), "bot movement");
+                var counts = generated[bot.Id];
+                counts.Player++;
+                if (parachuting && (MovementHz.HasValue || frame % 7 == 0))
+                {
+                    SendMovement(bot, BotWire.Movement(bot.Position, frameTick, managed: bot.Read(o => o.ChuteTransient) ?? 2), "bot canopy movement");
+                    counts.Canopy++;
+                }
+                generated[bot.Id] = counts;
             }
             frame++;
         }
+        double actualSeconds = timer.Elapsed.TotalSeconds;
+        double playerHz = numerator / (double)denominator;
+        MovementGeneration.Add(new(parachuting, playerHz, parachuting ? playerHz / (MovementHz.HasValue ? 1 : 7) : 0,
+            actualSeconds, cadence.EmittedFrames, cadence.SkippedFrames,
+            maximumLateness * 1000d / Stopwatch.Frequency,
+            generated.Values.Sum(v => v.Player), generated.Values.Sum(v => v.Canopy),
+            generated.Values.Select(v => v.Player / actualSeconds).DefaultIfEmpty(0).Min(),
+            parachuting ? generated.Values.Select(v => v.Canopy / actualSeconds).DefaultIfEmpty(0).Min() : 0));
     }
 
     private static void SendMovement(Bot bot, byte[] packet, string description)
