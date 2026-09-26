@@ -112,6 +112,8 @@ rebuilt signed package passed all 22 startup/account/persistence checks. Native
 waiting-to-`/startmatch` confirmation remains pending; the earlier launch/death/menu
 result does not validate this revision. Evidence is retained locally under
 `C:\Aug2017\out\restoration-20260926\community-lobby-ready`.
+The owner approved publishing this prerelease on 26 September without another
+native playtest; that approval does not change the pending in-game status.
 
 The first GitHub run exposed an existing gateway test with a five-second wait
 budget for roughly four seconds of chained timers. Only that wait now permits
