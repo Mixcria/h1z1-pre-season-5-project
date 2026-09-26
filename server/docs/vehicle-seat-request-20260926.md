@@ -88,7 +88,8 @@ for driver responses, where both final values are `1`. A passenger response
 `[seat,0,1]` was ignored. The corrected form is `[seat,1,0]`; both the requesting
 player and observers use the same writer. No ownership or packet-order change
 is required for this correction. Other status values and failure UI remain
-unmapped. Sound and camera results still require native playtest confirmation.
+unmapped. The final parked-seat check is user-confirmed below; sound and observer
+presentation remain separate observations.
 
 Seat occupancy and cooldown checks remain. Native mode 0 checks squared
 movement-vector magnitude against 1.0; mode 1 bypasses that particular client
@@ -218,9 +219,11 @@ and lifecycle cases. Results are
 The earlier 624-test run predates this increment. The final full Release solution
 passed 7,923 tests, with 36 skipped and zero failures. The resulting package passed
 all 22 startup/persistence checks and is installed on the existing main local
-profile, with verified loopback endpoints and unchanged saved state. Repeat native
-confirmation is pending; this validation does not claim successful in-game seat
-changes. The [publication record](compatibility-publication-20260926.md) and
+profile, with verified loopback endpoints and unchanged saved state. The owner
+then confirmed the requested parked driver/passenger/driver camera and steering
+check worked perfectly, and approved GitHub publication. That is user-confirmed
+local behavior; broader vehicles, moving seats and observer sound remain open.
+The [publication record](compatibility-publication-20260926.md) and
 [main local workflow](main-local-workflow-20260926.md) retain the operational details.
 
 Private evidence remains in the same `vehicle-seats` folder. Job 13 reproduces

@@ -88,8 +88,10 @@ cooldown. The [seat note](vehicle-seat-request-20260926.md) records the mismatch
 between server arrival-time displacement speed and the native speed check.
 The native-speed correction is now implemented, passed the final full Release
 suite (7,923 passed, 36 skipped, zero failed), and is installed on the main local
-profile. The final parked-seat camera/steering check remains pending; the earlier
-response-field fix alone did not close the complete seat action.
+profile. The owner then confirmed the requested parked-seat camera/steering check
+worked perfectly and explicitly approved GitHub publication. This closes the
+reported parked-seat failure on the tested local build; moving/alternate-mode
+behavior, a second occupant and sound remain separate observations.
 The owner authorized this completed source scope for GitHub. The
 [publication record](compatibility-publication-20260926.md) distinguishes source
 publication from a signed updater release or live deployment.

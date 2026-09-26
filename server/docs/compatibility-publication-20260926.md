@@ -17,6 +17,7 @@ No client executable, DLL, game asset or original-balance value is changed.
 | Package startup and persistence | All 22 checks passed, including owner/account persistence, normal shutdown, port conflicts and complete installation with downloads forbidden |
 | Source review | No additional blocking defect found; outgoing files reviewed against `454f73d` |
 | Protocol discovery index | Refreshed against current source; 1,743 registration rows and 251 lexical references, with unmapped metadata retained |
+| Native parked-seat check | Owner confirmed the updated main-local seat changes worked perfectly, then explicitly approved GitHub publication |
 
 Private evidence is under
 `C:/Aug2017/out/compatibility-20260926/seat-speed-01`: `vehicle-results`,
@@ -33,7 +34,9 @@ Developer version: `0.2.0-compat.20260926.2`. Zone assembly SHA256:
 `5a5b5934e06273a50563729e9d15e2387b3fb878cda7a904104591c91e9140fb`.
 The [main local workflow](main-local-workflow-20260926.md) identifies the existing
 Community state and `C:/Aug2017/Client` installation used for interactive checks.
-Native confirmation of the new seat-speed guard remains a separate observation.
+The owner confirmed the requested parked driver/passenger/driver check worked
+perfectly on this build. This is user-confirmed local behavior; it does not prove
+original server policy, moving-seat behavior, observer sound or every vehicle.
 Installation completed at 16:04 UTC on the existing main profile. The owned host
 passed the pinned health check and loopback listener inspection; all eight saved
 state/data files matched their pre-install hashes. Prior binaries and a fresh

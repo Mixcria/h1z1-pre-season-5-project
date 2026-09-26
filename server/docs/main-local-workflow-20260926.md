@@ -23,8 +23,9 @@ The final Release suite passed 7,923 tests, with 36 skipped and zero failures;
 the built package passed all 22 startup/persistence checks. `Cranberry.Zone.dll`
 SHA256: `5a5b5934e06273a50563729e9d15e2387b3fb878cda7a904104591c91e9140fb`.
 The earlier runtime refused 44 of 58 seat requests as TooFast. The new guard uses
-accepted native speed instead of arrival-time displacement. Repeat native
-confirmation is pending; automated checks do not establish camera or sound.
+accepted native speed instead of arrival-time displacement. The owner confirmed
+the requested parked-seat check worked perfectly on this build. Broader vehicle
+behavior, observer presentation and sound remain separate observations.
 
 ## Verification and continuity
 
