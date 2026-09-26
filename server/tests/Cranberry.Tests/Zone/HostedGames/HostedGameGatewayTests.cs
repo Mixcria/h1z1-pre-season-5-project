@@ -245,7 +245,7 @@ public sealed partial class HostedGameGatewayTests
     [Theory]
     [InlineData(GameWorldCatalog.DuosGameModeId, MatchMode.Duos)]
     [InlineData(GameWorldCatalog.FivesGameModeId, MatchMode.Fives)]
-    public void PlayerRedemptionQueuesAndTransfersUsingTheHostsChosenGameMode(uint gameMode, MatchMode mode)
+    public async Task PlayerRedemptionQueuesAndTransfersUsingTheHostsChosenGameMode(uint gameMode, MatchMode mode)
     {
         using var f = new Fixture();
         var game = f.Host("host", gameMode);
@@ -259,10 +259,18 @@ public sealed partial class HostedGameGatewayTests
         Assert.Equal(mode, Admission(player).Mode);
         Assert.Equal(game.Id, Get<string>(player.Tag!, "HostedGameId"));
         Assert.Equal(gameMode, (uint)Call(f.Service, "AdmittedGameMode", player.Tag)!);
-        Assert.True(SpinWait.SpinUntil(() => !f.Pending.IsEmpty, 2000));
-        while (f.Pending.TryDequeue(out var callback)) callback();
-        var updates = f.Sent.Where(sent => sent.Connection == player && sent.Packet.Length > 3
-            && sent.Packet[1] == 0xa6 && sent.Packet[2] == 8).ToArray();
+        bool IsQueueUpdate((SoeConnection Connection, byte[] Packet) sent) =>
+            sent.Connection == player && sent.Packet.Length > 3
+            && sent.Packet[1] == 0xa6 && sent.Packet[2] == 8;
+        // Yield to the real timer continuations on a busy runner. An unrelated hosted-access
+        // callback can arrive first, so wait for the queue packet rather than any pending work.
+        long deadline = Environment.TickCount64 + 10_000;
+        while (!f.Sent.Any(IsQueueUpdate) && Environment.TickCount64 < deadline)
+        {
+            while (f.Pending.TryDequeue(out var callback)) callback();
+            if (!f.Sent.Any(IsQueueUpdate)) await Task.Delay(10);
+        }
+        var updates = f.Sent.Where(IsQueueUpdate).ToArray();
         Assert.NotEmpty(updates);
         Assert.All(updates, update => Assert.Equal(gameMode, BitConverter.ToUInt32(update.Packet, 7)));
 

@@ -13,7 +13,7 @@ namespace Cranberry.Tests.Zone.Loot;
 public sealed partial class BodyBagGatewayTests
 {
     [Fact]
-    public void SwappingWeaponSlotsThroughTheGatewayPreservesTheCurrentReloadAndBothClientItems()
+    public void SwappingWeaponSlotsThroughTheGatewayStopsReconstructedReloadAndRetainsBothItems()
     {
         using var world = new World();
         var player = world.AddPlayer();
@@ -27,15 +27,19 @@ public sealed partial class BodyBagGatewayTests
         WeaponFireArm.Handle(combat, ShootingPacketBuilder.ReloadRequest(shotgun!.Guid),
             CombatOptions.Default, 1374, shotgun.Guid, Vector3.Zero, 0, results, ammo);
         var pending = Assert.IsType<PendingWeaponReload>(Assert.Single(results).ReloadWork);
+        ulong reloadCount = combat.Shooter.ReloadCountOf(shotgun.Guid);
         player.Sent.Clear();
         player.Send(Move(player.Guid, rifle!.Guid, player.Guid, 1, PlayerInventory.EquippedContainerGuid, 1));
         Assert.Same(rifle, player.Inventory.LoadoutSlots[1]);
         Assert.Same(shotgun, player.Inventory.LoadoutSlots[2]);
-        Assert.Same(pending, combat.Reload);
+        // August 140c35400 reconstructs every ItemAdd, even for the same GUID/definition.
+        Assert.Null(combat.Reload);
+        Assert.Equal(reloadCount + 1, combat.Shooter.ReloadCountOf(shotgun.Guid));
         Assert.Same(shotgun, player.Inventory.EquipmentSlots[BodySlots.RightHand]);
         Assert.DoesNotContain(player.Sent, p => Is(p, 0x11, 4));
-        Assert.NotNull(WeaponFireArm.AdvanceReload(combat, pending, pending.DueAtMs, shotgun.Guid, player.Inventory));
-        Assert.Equal(1, combat.Shooter.AmmoOf(shotgun.Guid));
+        Assert.Null(WeaponFireArm.AdvanceReload(combat, pending, pending.DueAtMs, shotgun.Guid, player.Inventory));
+        Assert.Equal(0, combat.Shooter.AmmoOf(shotgun.Guid));
+        Assert.Equal(6, ammo.Count(1511));
     }
 
     [Theory]
@@ -202,7 +206,7 @@ public sealed partial class BodyBagGatewayTests
         using var writer = new PacketWriter();
         writer.WriteByte(0xac); writer.WriteByte(0x2c);
         writer.WriteUInt32(1); writer.WriteUInt32(0); writer.WriteUInt32(option);
-        writer.WriteUInt64(player.Guid); writer.WriteUInt64(guid); writer.WriteUInt64(player.Guid);
+        writer.WriteUInt64(player.Guid); writer.WriteUInt64(player.Guid); writer.WriteUInt64(guid);
         writer.WriteUInt64(guid); writer.WriteBool(true);
         return writer.Written.ToArray();
     }

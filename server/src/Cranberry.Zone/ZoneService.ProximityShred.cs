@@ -41,12 +41,7 @@ public sealed partial class ZoneService
             return true;
         }
         if (RefuseInteractionDuringLogout(connection, state)) return true;
-        DiscardStaleInventoryCasts(state);
-        if (state.PendingShred is not null || state.ShredBusyUntil > Environment.TickCount64 || state.PendingMedicalCast is not null)
-        {
-            Refuse(ContainerErrorCode.ContainerInUse);
-            return true;
-        }
+        if (RefuseOverlappingInventoryCast(connection, state)) return true;
         var placement = inventory.Plan(yield.ItemDefinitionId, yield.Quantity);
         if (placement.Kind == InventoryPlacementKind.Refused) { Refuse(placement.Error); return true; }
 

@@ -162,6 +162,9 @@ public sealed partial class ZoneService
         if (vehicle.SirenOn)
             SendTunnel(connection, new AddEffectTagCompositeEffect(vehicle.Guid,
                 VehicleDriverControls.SirenEffect).WriteTo);
+        if (vehicle.BoostingCharacterGuid != 0)
+            SendTunnel(connection, new AddEffectTagCompositeEffect(vehicle.Guid,
+                AugustVehicleBoostFacts.TurboCompositeEffect(vehicle.Definition.VehicleId)).WriteTo);
     }
 
     private void StopVehicleEngineForViewers(SoeConnection connection, GatewaySessionState state, MatchVehicle vehicle)

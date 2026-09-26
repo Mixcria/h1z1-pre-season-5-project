@@ -228,7 +228,8 @@ public sealed record AddLightweightVehicle(
 public sealed record LightweightToFullVehicle(uint TransientId, ulong VehicleGuid,
     IReadOnlyList<CharacterResource>? Resources = null,
     IReadOnlyList<Cranberry.Zone.Vehicles.VehicleOccupantSlot>? Occupants = null,
-    bool EngineOn = false)
+    bool EngineOn = false,
+    Cranberry.Zone.Vehicles.VehicleAnimationSnapshot? Animation = null)
 {
     public const byte Opcode = ZoneOpcodes.LightweightToFullVehicle;
     public const int MinimalLength = 271;
@@ -278,9 +279,8 @@ public sealed record LightweightToFullVehicle(uint TransientId, ulong VehicleGui
 
         // --- FUN_140a2f2f0 tail -----------------------------------------------------------------
         w.WriteBool(EngineOn);                      // +0x250 engine state
-        w.WriteUInt32(0);                           // +0x258
-        w.WriteInt32(0);                            // FUN_140a511c0 list
-        w.WriteInt32(0);                            // FUN_140a4cd00 list
+        (Animation ?? Cranberry.Zone.Vehicles.VehicleAnimationSnapshot.Empty)
+            .ToPacket(VehicleGuid).WriteBodyTo(w);   // +0x258 and both native animation lists
         WriteZeroUInt32s(w, 4);                     // f32×4
         WriteZeroUInt32s(w, 4);                     // f32×4
         w.WriteByte(0);                             // +0x3d0

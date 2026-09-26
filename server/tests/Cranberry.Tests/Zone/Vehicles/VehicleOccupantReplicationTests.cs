@@ -15,7 +15,7 @@ namespace Cranberry.Tests.Zone.Vehicles;
 // Real gateway admission, channel-2/channel-3 parsing, mount/seat/dismiss dispatch and
 // production interest/streaming. Only match admission, timer deadlines and fleet placement
 // are shortcuts. The recorder proves offers and ordering, not native visibility.
-public sealed class VehicleOccupantReplicationTests
+public sealed partial class VehicleOccupantReplicationTests
 {
     [Fact]
     public void DriverPassengerAndObserverReceiveAttachmentsButOnlyRidersReceivePossession()
@@ -148,7 +148,8 @@ public sealed class VehicleOccupantReplicationTests
         {
             var p = Assert.Single(f.Sent(observer), p => Is(p, 0x70, 0x0b) && U64(p, 2) == GuidOf(c));
             Assert.Equal(c == driver ? 2u : 0u, BinaryPrimitives.ReadUInt32LittleEndian(p.AsSpan(54)));
-            Assert.Equal(c == driver ? 0u : 1u, BinaryPrimitives.ReadUInt32LittleEndian(p.AsSpan(58)));
+            Assert.Equal(1u, BinaryPrimitives.ReadUInt32LittleEndian(p.AsSpan(58)));
+            Assert.Equal(c == driver ? 0u : 1u, BinaryPrimitives.ReadUInt32LittleEndian(p.AsSpan(62)));
         }
         AssertNoPossession(f.Sent(observer));
         f.Clear();
@@ -411,7 +412,7 @@ public sealed class VehicleOccupantReplicationTests
         public void Seat(SoeConnection c, uint seat)
         {
             Car.LastSeatChangeMs = long.MinValue;
-            Deliver(c, Bytes(w => { w.WriteByte(0x70); w.WriteByte(0x0a); w.WriteUInt64(Car.Guid); w.WriteUInt32(seat); }));
+            Deliver(c, Bytes(w => { w.WriteByte(0x70); w.WriteByte(0x0a); w.WriteUInt32(seat); w.WriteByte(0); }));
         }
         public void Exit(SoeConnection c) { Car.LastInteractionMs = long.MinValue; Deliver(c, [0x70, 3, 0]); }
         public void Full(SoeConnection c, ulong guid) => Deliver(c, Bytes(w => { w.WriteByte(0x0f); w.WriteByte(0x45); w.WriteUInt64(guid); }));

@@ -345,8 +345,10 @@ public sealed class VehicleControlPacketTests
         Assert.Equal(66, response.Length);
         Assert.Equal(ZoneOpcodes.MountBase, response[0]);
         Assert.Equal(0x0b, response[1]);
-        // rider, mount, then the 36-byte empty identity, then seat / isDriver / status.
+        // rider, mount, then the 36-byte empty identity, then seat / status / isDriver.
         Assert.Equal(2u, BitConverter.ToUInt32(response, 2 + 8 + 8 + MountIdentityCodecProbe.EmptyLength));
+        Assert.Equal(1u, BitConverter.ToUInt32(response, 58)); // Native dispatcher success gate.
+        Assert.Equal(0u, BitConverter.ToUInt32(response, 62)); // Native consumer driver flag.
 
         byte[] swap = Write(w => new SeatSwapRequest(Rider, Seat: 1).WriteTo(w));
         Assert.Equal(SeatSwapRequest.Length, swap.Length);

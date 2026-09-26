@@ -209,8 +209,8 @@ public sealed partial class BodyBagGatewayTests
     {
         using var writer = new PacketWriter();
         writer.WriteByte(0xac); writer.WriteByte(0x2c); writer.WriteUInt64(1); writer.WriteUInt32(option);
-        writer.WriteUInt64(player.Guid); writer.WriteUInt64(source == 0 ? player.Guid : source);
-        writer.WriteUInt64(player.Guid); writer.WriteUInt64(item); writer.WriteByte(1);
+        writer.WriteUInt64(player.Guid); writer.WriteUInt64(player.Guid);
+        writer.WriteUInt64(source == 0 ? player.Guid : source); writer.WriteUInt64(item); writer.WriteByte(1);
         return writer.Written.ToArray();
     }
 

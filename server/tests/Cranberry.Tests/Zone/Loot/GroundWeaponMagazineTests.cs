@@ -75,8 +75,8 @@ public sealed partial class InteractionFeedbackTests
         using var writer = new PacketWriter();
         writer.WriteByte(ItemUseOpcodes.ItemsBase); writer.WriteByte(ItemUseOpcodes.RequestUseItemSub);
         writer.WriteUInt32(1); writer.WriteUInt32(0);
-        writer.WriteUInt32(option); writer.WriteUInt64(0x1001); writer.WriteUInt64(source);
-        writer.WriteUInt64(0x1001); writer.WriteUInt64(item); writer.WriteByte(1);
+        writer.WriteUInt32(option); writer.WriteUInt64(0x1001); writer.WriteUInt64(0x1001);
+        writer.WriteUInt64(source); writer.WriteUInt64(item); writer.WriteByte(1);
         return writer.Written.ToArray();
     }
 

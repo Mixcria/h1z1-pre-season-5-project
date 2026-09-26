@@ -41,7 +41,7 @@ public sealed partial class ZoneService
             RunConsume(connection, state, player, new ItemActionResult(ItemActionKind.Consume,
                 option.Kind, "refuel from vehicle cargo by 25 percent", ItemGuid: fuel.ItemGuid,
                 DefinitionId: fuel.DefinitionId, Count: 1, BusyMilliseconds: option.BusyMsec,
-                InteractionAnimationId: option.InteractionAnimationId, TargetCharacterGuid: vehicle.Guid));
+                InteractionAnimationId: option.InteractionAnimationId, TargetCharacterGuid: request.TargetCharacterGuid));
             return true;
         }
         if (vehicle.Inventory.TryGet(request.ItemGuid, out var item) && item is not null

@@ -201,15 +201,40 @@ public sealed class MatchVehicle
         }
     }
 
+    private ulong _ownerGuid;
+    private ulong _coastingOwnerGuid;
+    private ulong SimulatorGuid => _ownerGuid != 0 ? _ownerGuid : _coastingOwnerGuid;
+
     /// <summary>
     /// Current driver authority. When the driver gets out this is zero; the native simulation
     /// lease remains with <see cref="CoastingOwnerGuid"/> until a confirmed rest handoff.
     /// </summary>
-    public ulong OwnerGuid { get; internal set; }
+    public ulong OwnerGuid
+    {
+        get => _ownerGuid;
+        internal set
+        {
+            ulong before = SimulatorGuid;
+            _ownerGuid = value;
+            if (before != SimulatorGuid) SeatMotion.Reset();
+        }
+    }
 
     /// <summary>The previous driver simulates this unoccupied car until its explicit rest
     /// report, stream-out or a new driver. Silence alone never freezes a moving car.</summary>
-    public ulong CoastingOwnerGuid { get; internal set; }
+    public ulong CoastingOwnerGuid
+    {
+        get => _coastingOwnerGuid;
+        internal set
+        {
+            ulong before = SimulatorGuid;
+            _coastingOwnerGuid = value;
+            if (before != SimulatorGuid) SeatMotion.Reset();
+        }
+    }
+
+    /// <summary>Accepted native speed for seat changes; lifetime follows the effective simulator.</summary>
+    public VehicleSeatMotion SeatMotion { get; } = new();
     public ulong LastRightingPlayer { get; internal set; }
     public long LastRightingMs { get; internal set; } = long.MinValue;
     public long CoastStartedMs { get; internal set; } = long.MinValue;
@@ -230,6 +255,10 @@ public sealed class MatchVehicle
     public bool HornOn { get; internal set; }
     public bool HeadlightsOn { get; internal set; }
     public bool SirenOn { get; internal set; }
+    /// <summary>The accepted turbo effect's owner, retained for observer stream-in and stale-release rejection.</summary>
+    public ulong BoostingCharacterGuid { get; internal set; }
+    /// <summary>Latest accepted native animation deltas for current and later observers.</summary>
+    public VehicleAnimationSnapshot Animation { get; internal set; } = VehicleAnimationSnapshot.Empty;
     public uint? SkinShaderGroup { get; set; }
 
     public uint Health { get; internal set; }
@@ -647,8 +676,9 @@ public sealed partial class VehicleFleet
             // travel allowance when a different physics controller takes over.
             if (vehicle.CoastingOwnerGuid != characterGuid && vehicle.LastPoseMs != long.MinValue)
                 vehicle.LastPoseMs = nowMs;
-            vehicle.EndCoast();
+            // Assign before ending the coast so the same simulator retains its sparse motion.
             vehicle.OwnerGuid = characterGuid;
+            vehicle.EndCoast();
         }
 
         seat = target;
@@ -702,16 +732,10 @@ public sealed partial class VehicleFleet
     }
 
     /// <summary>
-    /// Moves an occupant to another seat of the same vehicle. The client refuses this while the
-    /// vehicle is moving ("You cannot switch seats while the vehicle is moving.") and inside
-    /// <c>VehicleSeatSwapCooldownMs</c> (250), so the server applies both.
-    ///
-    /// <para><b>Note the c2s trigger is blocked</b>: <c>70 0a Mount.SeatChangeRequest</c>'s body is
-    /// not recoverable from the binary — the Command/Mount send path has no per-packet serializer,
-    /// the same reason docs/36 gives for <c>09 07 InteractRequest</c> — so this is reachable today
-    /// only from a dev command, and the s2c half (<see cref="SeatChangeResponse"/>) is what it
-    /// answers with. One live capture of a passenger pressing the seat key unblocks it
-    /// (docs/43 §5.3, blocker 2).</para>
+    /// Moves an occupant to another seat of the same vehicle, using the native speed magnitude
+    /// and normal client threshold when available. Before an initial native speed, the finite-zero
+    /// fallback remains conservative. Cooldown/occupancy are unchanged; alternate-mode original
+    /// server policy remains unknown. See docs/vehicle-seat-request-20260926.md.
     /// </summary>
     public VehicleActionResult TryChangeSeat(
         ulong characterGuid,
@@ -730,7 +754,7 @@ public sealed partial class VehicleFleet
             return VehicleActionResult.Cooldown;
         }
 
-        if (speed > 0f)
+        if (!vehicle.SeatMotion.AllowsSeatChange(speed))
         {
             return VehicleActionResult.TooFast;
         }
@@ -757,8 +781,8 @@ public sealed partial class VehicleFleet
             // just like TryEnter. That idle time is not a legitimate movement allowance.
             if (vehicle.CoastingOwnerGuid != characterGuid && vehicle.LastPoseMs != long.MinValue)
                 vehicle.LastPoseMs = nowMs;
-            vehicle.EndCoast();
             vehicle.OwnerGuid = characterGuid;
+            vehicle.EndCoast();
         }
         else if (vehicle.OwnerGuid == characterGuid)
         {
@@ -964,6 +988,7 @@ public sealed partial class VehicleFleet
         }
 
         vehicle.ClearSeats();
+        vehicle.SeatMotion.Reset();
         vehicle.OwnerGuid = 0;
         vehicle.EngineOn = false;
         vehicle.UpsideDown = false;

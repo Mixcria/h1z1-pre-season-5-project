@@ -12,7 +12,7 @@ using Cranberry.Zone.Vehicles;
 
 namespace Cranberry.Tests.Zone.Combat;
 
-public sealed class MedicalMovementTests
+public sealed partial class MedicalMovementTests
 {
     [Theory]
     [InlineData(2423u, 10_000, 0.1f)]
@@ -763,6 +763,11 @@ public sealed class MedicalMovementTests
                 .Invoke(_service, [_connection, _state, Inventory, plan]);
         }
 
+        public void Wound() => typeof(ZoneService)
+            .GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+            .Single(method => method.Name == "WoundPlayer" && method.GetParameters().Length == 6)
+            .Invoke(_service, [_connection, _state, 0x2002ul, "lifecycle test", 10000u, 10u]);
+
         public void ApplyFire(Vector3 position)
         {
             Assert.True(Cranberry.Zone.Weapons.AugustThrowables.TryGet(14, out var fact));
@@ -776,7 +781,7 @@ public sealed class MedicalMovementTests
             using var writer = new PacketWriter();
             writer.WriteByte(0xac); writer.WriteByte(0x2c);
             writer.WriteUInt32(1); writer.WriteUInt32(0); writer.WriteUInt32(17);
-            writer.WriteUInt64(0x1001); writer.WriteUInt64(source); writer.WriteUInt64(target);
+            writer.WriteUInt64(0x1001); writer.WriteUInt64(target); writer.WriteUInt64(source);
             writer.WriteUInt64(fuelGuid); writer.WriteByte(1);
             Send(writer.Written.ToArray(), 0);
         }

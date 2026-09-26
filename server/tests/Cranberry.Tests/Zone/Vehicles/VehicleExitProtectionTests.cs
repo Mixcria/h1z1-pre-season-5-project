@@ -73,7 +73,7 @@ public sealed partial class VehicleDamageIntegrationTests
         Assert.True(session.Exit()); // Request handled, but fleet refuses its cooldown.
         Assert.Equal(0L, session.ExitProtectedUntilMs);
         car.LastInteractionMs = long.MinValue;
-        session.Deliver(SeatChange(car.Guid, 1));
+        session.Deliver(SeatChange(1));
         Assert.Equal(0L, session.ExitProtectedUntilMs);
         car.LastInteractionMs = long.MinValue;
         Assert.True(session.Exit());

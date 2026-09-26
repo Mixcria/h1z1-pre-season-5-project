@@ -21,6 +21,10 @@ public sealed partial class ZoneService
         KeyValuePair<GatewaySessionState, SoeConnection>[] members = match is null
             ? [new(state, connection)] : match.Members.ToArray();
         uint effect = VehicleCombatBalance.ExplosionEffect(vehicle.Definition.VehicleId);
+        bool wasBoosting = vehicle.BoostingCharacterGuid != 0;
+        vehicle.BoostingCharacterGuid = 0;
+        // The wreck's model/effect path owns its presentation; do not replay stale driving input.
+        vehicle.Animation = VehicleAnimationSnapshot.Empty;
         uint attackerHealth = attacker?.Hitpoints ?? 0;
         if (match is not null) match.DamageBatchDepth++;
         try
@@ -38,7 +42,11 @@ public sealed partial class ZoneService
                     SendTunnel(link, VehicleEngine.ServerIssued(vehicle.Guid, false).WriteTo);
                 if (effect != 0 && (occupant || distance <= _options.VehicleRenderDistance || ReferenceEquals(victim, state)))
                     SendTunnel(link, new PlayWorldCompositeEffect(vehicle.Guid, effect, vehicle.Position).WriteTo);
-                victim.Boost.Clear(vehicle.Guid);
+                if (wasBoosting && (occupant || victim.StreamedVehicles.IsSpawned(vehicle.Guid) || ReferenceEquals(victim, state)))
+                    SendTunnel(link, new RemoveEffectTagCompositeEffect(vehicle.Guid,
+                        AugustVehicleBoostFacts.TurboCompositeEffect(vehicle.Definition.VehicleId)).WriteTo);
+                if (victim.Boost.Clear(vehicle.Guid))
+                    SendTunnel(link, new CharacterTurbo(victim.Guid, _options.VehicleBoost.TurboOffValue).WriteTo);
                 if (occupant)
                 {
                     ResetVehicleRiderPose(victim, vehicle);

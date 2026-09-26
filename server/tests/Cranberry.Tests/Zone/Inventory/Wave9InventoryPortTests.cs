@@ -606,6 +606,10 @@ public sealed class Wave9InventoryPortTests
         w.WriteUInt32(999);                     // a parameter this server has never seen
         w.WriteUInt32(RequestUseItem.StackSizeParameterId);
         w.WriteUInt32(42);
+        w.WriteUInt32(0);                       // remaining four property lists
+        w.WriteUInt32(0);
+        w.WriteUInt32(0);
+        w.WriteUInt32(0);
 
         RequestUseItem parsed = RequestUseItem.Parse(w.Written.ToArray());
 

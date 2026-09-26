@@ -6,13 +6,13 @@ namespace Cranberry.Login;
 /// <summary>
 /// Thread-safe roster shared by login connections. Optionally persisted as one JSON file
 /// (<see cref="Load"/>): every create/delete rewrites it, so characters survive host restarts.
-/// Account persistence is a later boundary; this store owns only ids, snapshots, and validation
+/// Account membership is stored separately; this store owns ids, snapshots, and validation
 /// of what Cranberry has actually advertised.
 /// </summary>
 public sealed class CharacterRosterStore
 {
     private readonly object _gate = new();
-    private readonly List<CharacterEntry> _characters = [];
+    private List<CharacterEntry> _characters = [];
     private readonly string? _path;
     private long _nextEntityKey = 0x1000;
 
@@ -29,8 +29,8 @@ public sealed class CharacterRosterStore
     public string? Path => _path;
 
     /// <summary>
-    /// Opens (or creates on first save) the roster file at <paramref name="path"/>. A missing or
-    /// unreadable file yields an empty roster; the caller decides whether to seed it.
+    /// Opens (or creates on first save) the roster file at <paramref name="path"/>. A missing
+    /// file yields an empty roster. Read or parse failures propagate without replacing the file.
     /// </summary>
     public static CharacterRosterStore Load(string path)
     {
@@ -119,13 +119,11 @@ public sealed class CharacterRosterStore
     {
         lock (_gate)
         {
-            bool removed = _characters.RemoveAll(character => character.EntityKey == entityKey) > 0;
-            if (removed)
-            {
-                SaveLocked();
-            }
-
-            return removed;
+            List<CharacterEntry> remaining = _characters.Where(character => character.EntityKey != entityKey).ToList();
+            if (remaining.Count == _characters.Count) return false;
+            SaveLocked(_nextEntityKey, remaining);
+            _characters = remaining;
+            return true;
         }
     }
 
@@ -174,7 +172,7 @@ public sealed class CharacterRosterStore
         }
     }
 
-    private void SaveLocked()
+    private void SaveLocked(long nextEntityKey, List<CharacterEntry> characters)
     {
         if (_path is null)
         {
@@ -182,8 +180,8 @@ public sealed class CharacterRosterStore
         }
 
         var file = new RosterFile(
-            Interlocked.Read(ref _nextEntityKey),
-            _characters.Select(c => new RosterCharacter(c.EntityKey, c.ServerId, c.Field3, c.Status, Convert.ToBase64String(c.Payload), c.Name, c.Gender)).ToList());
+            nextEntityKey,
+            characters.Select(c => new RosterCharacter(c.EntityKey, c.ServerId, c.Field3, c.Status, Convert.ToBase64String(c.Payload), c.Name, c.Gender)).ToList());
         string? directory = System.IO.Path.GetDirectoryName(_path);
         if (!string.IsNullOrEmpty(directory))
         {
@@ -234,9 +232,12 @@ public sealed class CharacterRosterStore
             Payload: CharacterSelectionPayload.FromCreate(payload).ToArray(),
             Name: payload.Name,
             Gender: payload.Gender);
+        List<CharacterEntry> updated = [.. _characters, character];
+        // Publish neither the row nor its high-water mark until the durable rename succeeds.
+        // A failed write must leave uniqueness checks, deletes, and retries on the saved state.
+        SaveLocked(nextEntityKey, updated);
         _nextEntityKey = nextEntityKey;
-        _characters.Add(character);
-        SaveLocked();
+        _characters = updated;
         return character;
     }
 

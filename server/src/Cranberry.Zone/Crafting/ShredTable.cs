@@ -230,6 +230,7 @@ public static class ShredTable
         // guid, and there is no second container to move them to.
         uint clearedLoadoutSlot = 0;
         uint wornBodySlot = 0;
+        bool restoreRaisedHood = false;
         if (item.ContainerGuid == 0)
         {
             if (item.LoadoutSlotId == 0)
@@ -265,10 +266,10 @@ public static class ShredTable
 
             clearedLoadoutSlot = item.LoadoutSlotId;
             wornBodySlot = item.EquipmentSlotId;
+            restoreRaisedHood = wornBodySlot == BodySlots.Chest && inventory.HoodUp;
 
-            // Into the bag first, so the code below is the single bagged path and the rollback it
-            // already has covers a worn item too. A shred yields less bulk than it consumes on every
-            // row of Yields, so this can never overflow.
+            // Use the common bagged path, restoring worn state if the yield cannot fit.
+            // Taking off a garment can also reduce the bag's capacity.
             _ = inventory.TryStow(item);
         }
 
@@ -320,6 +321,9 @@ public static class ShredTable
                 // would take a garment off the character and give nothing back - and the bag it
                 // landed in is precisely the one that just proved it had no room.
                 inventory.BindLoadout(item, clearedLoadoutSlot, wornBodySlot);
+                // Stowing the chest clears its hood posture. Refusal must restore that
+                // state too, so a later appearance refresh does not lower the retained hood.
+                if (restoreRaisedHood) inventory.TrySetHood(true);
             }
 
             return new CraftOutcome

@@ -6,6 +6,18 @@ namespace Cranberry.Zone;
 
 public sealed partial class ZoneService
 {
+    private void StopReloadForItemRefresh(SoeConnection connection, GatewaySessionState state,
+        ulong itemGuid, string reason)
+    {
+        if (WeaponFireArm.CancelReload(state.Combat, itemGuid, reason,
+            stopClientReload: true) is not { } stopped)
+            return;
+
+        state.WeaponArmResults.Clear();
+        state.WeaponArmResults.Add(stopped);
+        DrainCombatArm(connection, state);
+    }
+
     private void SyncDrawnWeaponReloadCounter(SoeConnection connection, GatewaySessionState state,
         InventoryItemInstance instance)
     {

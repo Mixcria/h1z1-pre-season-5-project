@@ -3,168 +3,112 @@ using Cranberry.Zone.Crafting;
 
 namespace Cranberry.Tests.Zone.Crafting;
 
-/// <summary>
-/// The tolerant <c>09 1a Command.RecipeStart</c> reader (docs/62 §6).
-/// <para>
-/// The field widths are the one thing about crafting the binary will not say - the Command family
-/// has no per-packet serializer to decompile. These tests pin the tolerance itself: that all four
-/// candidate framings decode, that the leading candidate is preferred, that an id the session never
-/// delivered is a parse failure rather than a wrong craft, and that a failure hands the caller the
-/// packet to log.
-/// </para>
-/// </summary>
+// Exact August serializer 0x1411b41e0; synthetic inputs, not an original-server capture.
 public sealed class RecipeStartRequestTests
 {
     private static readonly Func<uint, bool> Known = CraftingCatalog.IsKnown;
 
-    private static byte[] Payload(bool u16Sub, uint recipeId, uint? count, int trailing = 0)
-    {
-        var bytes = new List<byte> { 0x09, 0x1a };
-        if (u16Sub)
-        {
-            bytes.Add(0x00);
-        }
-
-        bytes.AddRange(BitConverter.GetBytes(recipeId));
-        if (count is uint c)
-        {
-            bytes.AddRange(BitConverter.GetBytes(c));
-        }
-
-        bytes.AddRange(new byte[trailing]);
-        return [.. bytes];
-    }
-
-    /// <summary>
-    /// The leading candidate: a u16 sub, as every live Command capture shows
-    /// (<c>09 07 00 InteractRequest</c>, <c>09 15 00 PlayerSelect</c>), followed by the two 32-bit
-    /// integers <c>FUN_14143a3e0</c> puts in the packet.
-    /// </summary>
     [Fact]
-    public void TheExpectedFramingDecodes()
+    public void TheNativeElevenByteFramingDecodes()
     {
-        Assert.True(RecipeStartRequest.TryParse(
-            Payload(u16Sub: true, CraftingCatalog.MakeshiftArmor, 3), Known, out RecipeStartRequest request));
-
-        Assert.Equal(CraftingCatalog.MakeshiftArmor, request.RecipeId);
+        byte[] packet = Convert.FromHexString("091A007709000003000000");
+        Assert.True(RecipeStartRequest.Matches(packet));
+        Assert.True(RecipeStartRequest.TryParse(packet, Known, out var request));
+        Assert.Equal(CraftingCatalog.FieldBandage, request.RecipeId);
         Assert.Equal(3u, request.Count);
         Assert.Equal(RecipeStartShape.U16SubWithCount, request.Shape);
         Assert.Equal(0, request.TrailingBytes);
     }
 
+    [Fact]
+    public void EveryTruncatedPrefixIsRejectedWithoutConsultingTheCatalogue()
+    {
+        byte[] complete = Payload(CraftingCatalog.FieldBandage, 1);
+        for (int length = 0; length < complete.Length; length++)
+        {
+            byte[] packet = complete[..length];
+            Assert.False(RecipeStartRequest.Matches(packet));
+            Assert.False(RecipeStartRequest.TryParse(packet,
+                _ => throw new InvalidOperationException("Malformed framing reached the catalogue."), out var request));
+            Assert.Equal(default, request);
+        }
+    }
+
     [Theory]
-    [InlineData(true, true, RecipeStartShape.U16SubWithCount)]
-    [InlineData(false, true, RecipeStartShape.U8SubWithCount)]
-    [InlineData(true, false, RecipeStartShape.U16SubNoCount)]
-    [InlineData(false, false, RecipeStartShape.U8SubNoCount)]
-    public void AllFourCandidateFramingsDecodeAndReportThemselves(bool u16Sub, bool withCount, RecipeStartShape expected)
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(false, false)]
+    public void FormerGuessedFramingsAreRejected(bool u16Subtype, bool includeCount)
     {
-        byte[] payload = Payload(u16Sub, CraftingCatalog.FieldBandage, withCount ? 2u : null);
-
-        Assert.True(RecipeStartRequest.TryParse(payload, Known, out RecipeStartRequest request));
-
-        Assert.Equal(expected, request.Shape);
-        Assert.Equal(CraftingCatalog.FieldBandage, request.RecipeId);
-        Assert.Equal(withCount ? 2u : 1u, request.Count);
-    }
-
-    /// <summary>
-    /// <c>FUN_14143a3e0</c>'s default when the crafting view passes no second argument is <b>1</b>,
-    /// not 0 - "Craft 1" and "Craft Max" differ only in that argument. A zero count therefore means
-    /// one craft, never none.
-    /// </summary>
-    [Fact]
-    public void AZeroOrAbsentCountMeansOne()
-    {
-        Assert.True(RecipeStartRequest.TryParse(
-            Payload(u16Sub: true, CraftingCatalog.FieldBandage, 0), Known, out RecipeStartRequest zero));
-        Assert.Equal(1u, zero.Count);
-
-        Assert.True(RecipeStartRequest.TryParse(
-            Payload(u16Sub: true, CraftingCatalog.FieldBandage, null), Known, out RecipeStartRequest absent));
-        Assert.Equal(1u, absent.Count);
-    }
-
-    /// <summary>
-    /// A recipe id this session never delivered is a parse <em>failure</em>, not a craft of an
-    /// unknown recipe. The distinction matters because failure is what makes the caller log the raw
-    /// hex, and that log line is the whole of docs/59 §1.7 needle 2's answer.
-    /// </summary>
-    [Fact]
-    public void AnUnknownIdFailsSoTheCallerLogsTheHex()
-    {
-        Assert.False(RecipeStartRequest.TryParse(
-            Payload(u16Sub: true, 424242, 1), Known, out RecipeStartRequest request));
+        var packet = new List<byte> { 0x09, 0x1a };
+        if (u16Subtype) packet.Add(0);
+        packet.AddRange(BitConverter.GetBytes(CraftingCatalog.FieldBandage));
+        if (includeCount) packet.AddRange(BitConverter.GetBytes(2u));
+        Assert.False(RecipeStartRequest.TryParse(packet.ToArray(), Known, out var request));
         Assert.Equal(default, request);
     }
 
-    /// <summary>
-    /// <c>FUN_14143a3e0</c> refuses to send recipe id 0 at all, so a zero decoded from any framing
-    /// is proof that framing is wrong rather than evidence of a zero-id recipe.
-    /// </summary>
-    [Fact]
-    public void RecipeIdZeroIsNeverAccepted()
+    [Theory]
+    [InlineData(0u)]
+    [InlineData(1u)]
+    [InlineData(0xffffffffu)]
+    public void TheMandatoryCountIsPreservedWithoutCodecInventedDefaults(uint count)
     {
-        Assert.False(RecipeStartRequest.TryParse(Payload(u16Sub: true, 0, 1), _ => true, out _));
+        Assert.True(RecipeStartRequest.TryParse(Payload(CraftingCatalog.FieldBandage, count), Known, out var request));
+        Assert.Equal(count, request.Count);
     }
 
-    /// <summary>
-    /// The disambiguation rule in one test. The same nine bytes cannot decode as both framings,
-    /// because the u16 framing requires a zero third byte and no Cranberry recipe id is a multiple
-    /// of 256 (pinned separately in <see cref="CraftingCatalogTests"/>).
-    /// </summary>
-    [Fact]
-    public void TheTwoSubFramingsCannotBothMatchTheSameBytes()
+    [Theory]
+    [InlineData(0, 0x0a)]
+    [InlineData(1, 0x1b)]
+    [InlineData(2, 0x01)]
+    public void BothSubtypeBytesAndTheFamilyMustMatch(int offset, int value)
     {
-        byte[] u8 = Payload(u16Sub: false, CraftingCatalog.Procoagulant, 1);
-
-        Assert.True(RecipeStartRequest.TryParse(u8, Known, out RecipeStartRequest request));
-        Assert.Equal(RecipeStartShape.U8SubWithCount, request.Shape);
-
-        // The third byte is the id's low byte, which is non-zero, so the u16 framing is ruled out
-        // before its id is even read.
-        Assert.NotEqual((byte)0, u8[2]);
+        byte[] packet = Payload(CraftingCatalog.FieldBandage, 1);
+        packet[offset] = (byte)value;
+        Assert.False(RecipeStartRequest.Matches(packet));
+        Assert.False(RecipeStartRequest.TryParse(packet, Known, out _));
     }
 
-    /// <summary>Trailing bytes are counted, not rejected: an unexpected tail is exactly the thing
-    /// the log line must carry.</summary>
     [Fact]
-    public void TrailingBytesAreReportedRatherThanFatal()
+    public void UnknownAndZeroIdsAreNotAcceptedAsCrafts()
     {
-        Assert.True(RecipeStartRequest.TryParse(
-            Payload(u16Sub: true, CraftingCatalog.Satchel, 1, trailing: 4),
-            Known,
-            out RecipeStartRequest request));
+        Assert.True(RecipeStartRequest.Matches(Payload(424242, 1)));
+        Assert.False(RecipeStartRequest.TryParse(Payload(424242, 1), Known, out var unknown));
+        Assert.Equal(default, unknown);
+        Assert.False(RecipeStartRequest.TryParse(Payload(0, 1), _ => true, out var zero));
+        Assert.Equal(default, zero);
+    }
 
+    [Fact]
+    public void OnlyTheSuppliedCatalogueDecidesWhetherANonzeroIdIsKnown()
+    {
+        // A recipe whose low byte is zero no longer needs heuristic framing disambiguation.
+        var seen = new List<uint>();
+        Assert.True(RecipeStartRequest.TryParse(Payload(0x1200, 2), id =>
+        {
+            seen.Add(id);
+            return id == 0x1200;
+        }, out var request));
+        Assert.Equal(new uint[] { 0x1200 }, seen);
+        Assert.Equal(0x1200u, request.RecipeId);
+        Assert.False(RecipeStartRequest.TryParse(Payload(CraftingCatalog.FieldBandage, 1), _ => false, out _));
+    }
+
+    [Fact]
+    public void TrailingBytesAreReportedAfterTheCompleteNativeBody()
+    {
+        byte[] packet = [.. Payload(CraftingCatalog.FieldBandage, 3), 0xa5, 0xff, 0, 0x7f];
+        Assert.True(RecipeStartRequest.TryParse(packet, Known, out var request));
+        Assert.Equal(3u, request.Count);
         Assert.Equal(4, request.TrailingBytes);
-        Assert.Equal(CraftingCatalog.Satchel, request.RecipeId);
     }
 
-    /// <summary>
-    /// <see cref="RecipeStartRequest.Matches"/> is the dispatcher guard and must never consume a
-    /// packet it cannot decode - a payload that matches here and fails <c>TryParse</c> is precisely
-    /// the one whose hex has to reach the log.
-    /// </summary>
-    [Fact]
-    public void MatchesAcceptsWhatTryParseMayStillReject()
+    private static byte[] Payload(uint recipeId, uint count)
     {
-        byte[] payload = Payload(u16Sub: true, 424242, 1);
-
-        Assert.True(RecipeStartRequest.Matches(payload));
-        Assert.False(RecipeStartRequest.TryParse(payload, Known, out _));
-
-        Assert.False(RecipeStartRequest.Matches([0x09, 0x07, 0x00, 1, 2, 3]));
-        Assert.False(RecipeStartRequest.Matches([0x09, 0x1a]));
-    }
-
-    /// <summary>The recipe id the client sends is the one Cranberry chose, which is the output
-    /// item's definition id - so a craft request is readable in the host log without a lookup.</summary>
-    [Fact]
-    public void TheEchoedIdIsTheOutputItemId()
-    {
-        byte[] payload = Payload(u16Sub: true, CraftingCatalog.Procoagulant, 1);
-        uint id = BinaryPrimitives.ReadUInt32LittleEndian(payload.AsSpan(3));
-
-        Assert.Equal(CraftingCatalog.ById[id].OutputItemDefinitionId, id);
+        byte[] packet = [0x09, 0x1a, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        BinaryPrimitives.WriteUInt32LittleEndian(packet.AsSpan(3), recipeId);
+        BinaryPrimitives.WriteUInt32LittleEndian(packet.AsSpan(7), count);
+        return packet;
     }
 }

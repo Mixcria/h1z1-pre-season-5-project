@@ -1146,14 +1146,21 @@ public sealed partial class VehicleDamageIntegrationTests
 
     private static byte[] Add(ulong player, ulong vehicle, uint clientEffect, uint serverEffect)
     {
+        // Synthetic complete August 140ce9e70 body; ancillary values are neutral fixture values.
         using var writer = new PacketWriter();
         writer.WriteByte(ZoneOpcodes.EffectsBase);
         writer.WriteByte(EffectRequest.AddSub);
         writer.WriteUInt32(1);
         writer.WriteUInt32(clientEffect);
         writer.WriteUInt32(serverEffect);
+        writer.WriteUInt32(0);
         writer.WriteUInt64(player);
+        writer.WriteUInt32(0);
+        writer.WriteUInt64(0);
         writer.WriteUInt64(vehicle);
+        writer.WriteUInt64(0);
+        writer.WriteSingle(0); writer.WriteSingle(0); writer.WriteSingle(0); writer.WriteSingle(1);
+        writer.WriteByte(1); // Nonzero: no property lists.
         return writer.Written.ToArray();
     }
 
@@ -1187,7 +1194,7 @@ public sealed partial class VehicleDamageIntegrationTests
         var car = session.EnterMatchWithCar(family);
         session.RefreshInventory(car);
         int mark = recorder.Sent.Count;
-        session.Deliver(SeatChange(car.Guid, seat: 1));
+        session.Deliver(SeatChange(seat: 1));
         Assert.False(car.EngineOn);
         Assert.Equal(session.Guid, car.CoastingOwnerGuid);
         var sent = From(recorder, mark).ToList();
@@ -1199,9 +1206,8 @@ public sealed partial class VehicleDamageIntegrationTests
     }
 
     /// <summary>
-    /// <c>70 0a</c> was unhandled before this lane. The body is a candidate, so a request whose seat
-    /// resolves on the car the player is in is answered with <c>70 0b SeatChangeResponse</c> and the
-    /// two occupancy rows, and one whose seat does not resolve is refused rather than acted on.
+    /// The native seven-byte request moves this authenticated occupant and returns the existing
+    /// seat response and occupancy rows. No vehicle GUID is supplied in the request.
     /// </summary>
     [Fact]
     public void ASeatChangeMovesTheRiderAndAnswersWithSeventyZeroB()
@@ -1211,7 +1217,7 @@ public sealed partial class VehicleDamageIntegrationTests
         MatchVehicle car = session.EnterMatchWithCar();
         int mark = recorder.Sent.Count;
 
-        session.Deliver(SeatChange(car.Guid, seat: 2));
+        session.Deliver(SeatChange(seat: 2));
 
         Assert.Equal(2, car.SeatOf(session.Guid));
         Assert.Equal(0ul, car.OwnerGuid);
@@ -1226,7 +1232,7 @@ public sealed partial class VehicleDamageIntegrationTests
         Assert.NotEmpty(Sub8(sent, ZoneOpcodes.VehicleBase, VehicleOccupantState.SubOpcode));
     }
 
-    /// <summary>A seat the car does not have is evidence the candidate body is wrong, not an instruction.</summary>
+    /// <summary>A decoded seat must still exist on the authenticated occupant's vehicle.</summary>
     [Fact]
     public void AnImpossibleSeatIsRefusedRatherThanActedOn()
     {
@@ -1235,19 +1241,19 @@ public sealed partial class VehicleDamageIntegrationTests
         MatchVehicle car = session.EnterMatchWithCar();
         int mark = recorder.Sent.Count;
 
-        session.Deliver(SeatChange(car.Guid, seat: 1_633_772_861));
+        session.Deliver(SeatChange(seat: 1_633_772_861));
 
         Assert.Equal(0, car.SeatOf(session.Guid));
         Assert.Empty(Sub8(From(recorder, mark).ToList(), ZoneOpcodes.MountBase, SeatChangeResponse.SubOpcode));
     }
 
-    private static byte[] SeatChange(ulong guid, uint seat)
+    private static byte[] SeatChange(uint seat, byte mode = 0)
     {
         using var writer = new PacketWriter();
         writer.WriteByte(ZoneOpcodes.MountBase);
         writer.WriteByte(SeatChangeRequest.SubOpcode);
-        writer.WriteUInt64(guid);
         writer.WriteUInt32(seat);
+        writer.WriteByte(mode);
         return writer.Written.ToArray();
     }
 }

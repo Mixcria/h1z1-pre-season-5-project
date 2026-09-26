@@ -350,6 +350,7 @@ public sealed partial class ZoneService
         }
 
         if (!_options.VehicleBoost.Enabled) return;
+        if (request.SourceCharacterId != state.Guid) return;
 
         if (state.Fleet is not VehicleFleet fleet
             || !fleet.TryGet(request.TargetCharacterId, out MatchVehicle? vehicle))
@@ -383,7 +384,7 @@ public sealed partial class ZoneService
 
         // Validate the installed components and driver before granting the effect.
         string? refusal =
-            vehicle.DriverGuid != state.Guid ? "passengers do not drive"
+            vehicle.DriverGuid != state.Guid || vehicle.OwnerGuid != state.Guid ? "sender does not control the driver seat"
             : vehicle.Health == 0 ? "the car is a wreck"
             : !vehicle.Inventory.HasTurbo ? "turbo is missing"
             : !vehicle.Inventory.HasEngineParts ? "engine components are missing"
@@ -427,11 +428,25 @@ public sealed partial class ZoneService
         ulong guid = vehicle.Guid;
         if (on)
         {
-            SendTunnel(connection, writer => new AddEffectTagCompositeEffect(guid, tag).WriteTo(writer));
+            if (vehicle.BoostingCharacterGuid == state.Guid) return;
+            vehicle.BoostingCharacterGuid = state.Guid;
+            SendVehicleControlToViewers(connection, state, vehicle,
+                new AddEffectTagCompositeEffect(guid, tag).WriteTo);
             return;
         }
 
-        SendTunnel(connection, writer => new RemoveEffectTagCompositeEffect(guid, tag).WriteTo(writer));
+        if (vehicle.BoostingCharacterGuid == state.Guid)
+        {
+            vehicle.BoostingCharacterGuid = 0;
+            SendVehicleControlToViewers(connection, state, vehicle,
+                new RemoveEffectTagCompositeEffect(guid, tag).WriteTo);
+        }
+        else if (vehicle.BoostingCharacterGuid == 0)
+        {
+            // Preserve local cleanup for an untracked release, but never remove a later driver's tag.
+            SendTunnel(connection, new RemoveEffectTagCompositeEffect(guid, tag).WriteTo);
+        }
+        // Native 140af9ca0 changes the receiving client's local player, regardless of this GUID.
         SendTunnel(connection, writer => new CharacterTurbo(
             state.Guid, _options.VehicleBoost.TurboOffValue).WriteTo(writer));
     }
@@ -486,35 +501,22 @@ public sealed partial class ZoneService
     // ------------------------------------------------------------------------ the seat change
 
     /// <summary>
-    /// <c>70 0a Mount.SeatChangeRequest</c> (AUDIT-vehicles gap 14). Unhandled until this lane.
-    ///
-    /// <para>
-    /// The body is a candidate rather than a derivation — see <see cref="SeatChangeRequest"/> — so
-    /// <b>every request is logged with its full hex whether it is acted on or not</b>, and the
-    /// plausibility gate is what makes acting on a guess safe: a seat index that does not resolve on
-    /// the car the player is actually in is refused, so a wrong reading costs a log line rather than
-    /// a teleport into a seat that does not exist.
-    /// </para>
-    /// <para>
-    /// The client refuses a seat change while the vehicle is moving ("You cannot switch seats while
-    /// the vehicle is moving.") and inside its own <c>VehicleSeatSwapCooldownMs</c> of 250, and
-    /// <see cref="VehicleFleet.TryChangeSeat"/> applies both, so the two stay in step.
-    /// </para>
+    /// Handles the native seven-byte <c>70 0a Mount.SeatChangeRequest</c> using this authenticated
+    /// player's occupied vehicle. Fleet cooldown, occupancy and motion policy remain authoritative;
+    /// the request contains no vehicle GUID. See docs/vehicle-seat-request-20260926.md.
     /// </summary>
     private void HandleSeatChangeRequest(
         SoeConnection connection, GatewaySessionState state, ReadOnlySpan<byte> payload, string hex)
     {
         if (!SeatChangeRequest.TryParse(payload, out SeatChangeRequest? parsed) || parsed is null)
         {
-            _log.Info($"{connection} zone Mount.SeatChangeRequest ({payload.Length} bytes, under the "
-                + $"{SeatChangeRequest.MinimumLength}-byte candidate form): {hex} — unanswered, and "
-                + "this line IS the derivation (docs/43 §5.3 blocker 2)");
+            _log.Info($"{connection} zone Mount.SeatChangeRequest malformed ({payload.Length} bytes): {hex}");
             return;
         }
 
         SeatChangeRequest request = parsed;
-        string seen = $"{connection} zone Mount.SeatChangeRequest guid=0x{request.Guid:x16} "
-            + $"seat={request.Seat} ({payload.Length} bytes) hex={hex}";
+        string seen = $"{connection} zone Mount.SeatChangeRequest seat={request.Seat} "
+            + $"mode={request.Mode} ({payload.Length} bytes) hex={hex}";
 
         if (state.Fleet is not VehicleFleet fleet
             || !fleet.TryGetForOccupant(state.Guid, out MatchVehicle? seated))
@@ -523,14 +525,15 @@ public sealed partial class ZoneService
             return;
         }
 
-        // The plausibility gate. A candidate field that reads as a seat this car does not have is
-        // evidence the candidate is wrong, not an instruction.
+        seen += $" nativeSpeed={seated.SeatMotion.Speed?.ToString("G9") ?? "unknown"}"
+            + $" invalidSpeed={seated.SeatMotion.InvalidSpeed} poseSpeed={seated.LastSpeed:G9}";
+
+        // Validate against the authenticated occupant's current vehicle, never another client object.
         if (request.Seat > int.MaxValue
             || !seated.Definition.TryGetSeat((int)request.Seat, out _))
         {
             _log.Warn($"{seen} — {request.Seat} is not a seat of {seated} "
-                + $"(it has {seated.Definition.SeatCount}); the candidate body is probably WRONG, "
-                + "nothing sent");
+                + $"(it has {seated.Definition.SeatCount}); nothing sent");
             return;
         }
 
@@ -622,6 +625,9 @@ public sealed partial class ZoneService
         // assigns that position directly to the body origin and visibly lifts the car.
         SendTunnel(connection, new ManagedObjectResponseControl(false, vehicle.Guid).WriteTo);
         SendTunnel(connection, CharacterManagedObject.Release(vehicle.Guid).WriteTo);
+        // Received animation is suppressed while locally controlled; restore the retained
+        // presentation after revocation so the former simulator becomes an ordinary observer.
+        SendRetainedVehicleAnimation(connection, vehicle);
         var parked = VehiclePoseRelay.Parked(vehicle);
         if (broadcastParked)
             SendVehicleControlToViewers(connection, state, vehicle, parked.WriteTo);
