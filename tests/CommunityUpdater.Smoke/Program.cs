@@ -18,7 +18,14 @@ if (args.FirstOrDefault() == "--child")
         if (args[3] == "hang") await Task.Delay(Timeout.Infinite);
         else await session.WaitForOwnerExit();
     }
-    catch (Exception error) { session.Failed(error); Environment.ExitCode = 1; }
+    catch (Exception error)
+    {
+        // The player-facing receipt is intentionally brief. Preserve the original
+        // failing operation and stack in test output when CI cannot start a child.
+        Console.Error.WriteLine(error);
+        session.Failed(error);
+        Environment.ExitCode = 1;
+    }
     return;
 }
 
