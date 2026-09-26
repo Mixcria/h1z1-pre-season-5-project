@@ -28,6 +28,24 @@ internal sealed class BotObservation
     private readonly Dictionary<uint, long> _windowPoses = [];
     private readonly Dictionary<uint, uint> _windowLatest = [];
     private readonly Dictionary<uint, uint> _latestPeerTick = [];
+    // Separate high-water state: the legacy last-arrival metrics above deliberately
+    // retain their semantics. Equal/reordered timestamps cannot inflate fresh Hz.
+    private readonly Dictionary<uint, uint> _freshPeerTick = [];
+    private readonly Dictionary<uint, ulong> _freshPeerOwners = [];
+    private readonly Dictionary<uint, long> _windowFreshPoses = [];
+    private long _windowFreshSamples, _windowNonAdvancing;
+    private Dictionary<ulong, (ulong Canopy, uint Transient)>? _airborneCohort;
+    private bool _airborneCohortChanged;
+    private Dictionary<ulong, (ulong Canopy, uint Transient)> CurrentAirborneCohort() =>
+        MountedRiders.Where(r => r.Key != SelfGuid() && Canopies.ContainsKey(r.Value))
+            .ToDictionary(r => r.Key, r => (r.Value, Canopies[r.Value].TransientId));
+    private void CheckAirborneCohort()
+    {
+        if (_airborneCohort is null) return;
+        var current = CurrentAirborneCohort();
+        if (current.Count != _airborneCohort.Count || _airborneCohort.Any(p => !current.TryGetValue(p.Key, out var value) || value != p.Value))
+            _airborneCohortChanged = true;
+    }
     public readonly HashSet<uint> WindowJumpPeers = [];
     private uint _windowStart;
     private long _windowOlder;
@@ -45,6 +63,31 @@ internal sealed class BotObservation
     public uint LastResultTick, LastLobbyTick, LastLogoutTick;
     public string? ReturnTicket;
     public Func<uint> Tick = () => 0;
+
+    private void ForgetFreshTransient(uint transient)
+    {
+        if (_airborneCohort?.Values.Any(v => v.Transient == transient) == true) _airborneCohortChanged = true;
+        _freshPeerTick.Remove(transient);
+        _freshPeerOwners.Remove(transient);
+        _windowFreshPoses.Remove(transient);
+    }
+
+    private void ForgetFreshIdentity(ulong guid)
+    {
+        foreach (uint transient in _freshPeerOwners.Where(p => p.Value == guid).Select(p => p.Key).ToArray())
+            ForgetFreshTransient(transient);
+    }
+
+    private void BindFreshIdentity(ulong guid, uint transient)
+    {
+        // Repeated spawn of the same identity is not a new stream. A changed
+        // identity or changed transient is; do not inherit its predecessor's clock.
+        foreach (uint old in _freshPeerOwners.Where(p => p.Value == guid && p.Key != transient).Select(p => p.Key).ToArray())
+            ForgetFreshTransient(old);
+        if (_freshPeerOwners.TryGetValue(transient, out ulong previous) && previous != guid)
+            ForgetFreshTransient(transient);
+        _freshPeerOwners[transient] = guid;
+    }
 
     private void ObserveOwnedItem(ItemGrant item)
     {
@@ -89,13 +132,23 @@ internal sealed class BotObservation
                 && System.Text.Encoding.UTF8.GetString(p).Contains("Weapon_", StringComparison.Ordinal))
                 RemoteHandItems[BinaryPrimitives.ReadUInt64LittleEndian(p[6..])] = BinaryPrimitives.ReadUInt64LittleEndian(p[22..]);
             if (p[0] == 0xD5 && p.Length > 12)
-                Peers[BinaryPrimitives.ReadUInt64LittleEndian(p[1..])] = BotWire.VarInt(p[9..], out _);
+            {
+                ulong guid = BinaryPrimitives.ReadUInt64LittleEndian(p[1..]);
+                uint transient = BotWire.VarInt(p[9..], out _);
+                BindFreshIdentity(guid, transient);
+                Peers[guid] = transient;
+            }
             if (p[0] is 0xD6 or 0xD7 && ServerPackets.TryReadLightweightEntity(p) is { } entity)
             {
                 // Doors share the NPC spawn opcode. The native door-id field,
                 // already decoded by the harness, distinguishes them from pickups.
                 if (p[0] == 0xD6 && VerificationPackets.DoorIdOf(p) == 0) Loot[entity.Guid] = entity;
-                else if (entity.ModelId == 9374) Canopies[entity.Guid] = entity;
+                else if (entity.ModelId == 9374)
+                {
+                    BindFreshIdentity(entity.Guid, entity.TransientId);
+                    Canopies[entity.Guid] = entity;
+                    CheckAirborneCohort();
+                }
             }
             if (p[0] == 0x88 && p.Length >= 10 && p[1] == 0x19)
             {
@@ -109,11 +162,14 @@ internal sealed class BotObservation
                 if (p[1] == 2) MountedRiders[rider] = BinaryPrimitives.ReadUInt64LittleEndian(p[10..]);
                 if (p[1] == 4) MountedRiders.Remove(rider);
                 if (rider == SelfGuid()) Mounts++;
+                CheckAirborneCohort();
             }
             if (p[0] == 0x0F && p.Length >= 10 && p[1] == 1)
             {
                 ulong guid = BinaryPrimitives.ReadUInt64LittleEndian(p[2..]);
+                ForgetFreshIdentity(guid);
                 Removed.Add(guid); Loot.Remove(guid); Peers.Remove(guid); Canopies.Remove(guid);
+                CheckAirborneCohort();
             }
             if (p[0] == 0x0F && p.Length >= 10 && p[1] == 0x4F)
                 Deaths.Add(BinaryPrimitives.ReadUInt64LittleEndian(p[2..]));
@@ -127,6 +183,9 @@ internal sealed class BotObservation
                     long age = unchecked((int)(Tick() - tick));
                     if (age is >= 0 and <= 120000)
                     {
+                        bool fresh = !_freshPeerTick.TryGetValue(id, out uint highWater)
+                            || unchecked((int)(tick - highWater)) > 0;
+                        if (fresh) _freshPeerTick[id] = tick;
                         PoseAgeMs[Math.Min(2000, age)]++;
                         PeerPoses[id] = PeerPoses.GetValueOrDefault(id) + 1; Poses++;
                         if (_latestPeerTick.TryGetValue(id, out uint preceding) && unchecked((int)(tick - preceding)) < 0)
@@ -134,6 +193,12 @@ internal sealed class BotObservation
                         _latestPeerTick[id] = tick;
                         if (unchecked((int)(tick - _windowStart)) >= 0)
                         {
+                            if (fresh)
+                            {
+                                _windowFreshSamples++;
+                                _windowFreshPoses[id] = _windowFreshPoses.GetValueOrDefault(id) + 1;
+                            }
+                            else _windowNonAdvancing++;
                             _windowAge[Math.Min(10000, age)]++;
                             _windowMax = Math.Max(_windowMax, (int)age);
                             _windowPoses[id] = _windowPoses.GetValueOrDefault(id) + 1;
@@ -190,14 +255,17 @@ internal sealed class BotObservation
     {
         lock (Gate)
         {
+            var departedCohort = _airborneCohort;
             Peers.Clear(); Loot.Clear(); Canopies.Clear(); MountedRiders.Clear();
             Inventory.Clear(); RemoteHandItems.Clear(); WorldItemDefinitions.Clear();
             PeerPoses.Clear(); PeerFireStarts.Clear(); Removed.Clear(); Deaths.Clear();
             _latestPeerTick.Clear(); _windowPoses.Clear(); _windowLatest.Clear(); WindowJumpPeers.Clear();
+            _freshPeerTick.Clear(); _freshPeerOwners.Clear();
             OwnChuteGuid = 0; ChuteTransient = null; ChuteSpawn = null;
             Health = 0; HealthChanges = 0; FirstAmmoTick = null;
             if (!preserveReturnTicket) ReturnTicket = null;
             BeginMovementWindow(Tick());
+            if (departedCohort is not null) { _airborneCohort = departedCohort; _airborneCohortChanged = true; }
         }
     }
 
@@ -213,12 +281,15 @@ internal sealed class BotObservation
         }
     }
 
-    public void BeginMovementWindow(uint start)
+    public void BeginMovementWindow(uint start, bool airborne = false)
     {
         lock (Gate)
         {
             _windowStart = start; _windowOlder = 0;
+            _airborneCohort = airborne ? CurrentAirborneCohort() : null;
+            _airborneCohortChanged = false;
             _windowMax = 0; _windowOutOfOrder = 0;
+            _windowFreshSamples = 0; _windowNonAdvancing = 0; _windowFreshPoses.Clear();
             Array.Clear(_windowAge); _windowPoses.Clear(); _windowLatest.Clear();
             WindowJumpPeers.Clear();
         }
@@ -228,7 +299,10 @@ internal sealed class BotObservation
     {
         lock (Gate)
         {
-            uint[] expected = airborne
+            CheckAirborneCohort();
+            uint[] expected = airborne && _airborneCohort is not null
+                ? _airborneCohort.Values.Select(v => v.Transient).ToArray()
+                : airborne
                 ? MountedRiders.Where(r => r.Key != SelfGuid() && Canopies.ContainsKey(r.Value))
                     .Select(r => Canopies[r.Value].TransientId).ToArray()
                 : Peers.Values.ToArray();
@@ -246,7 +320,16 @@ internal sealed class BotObservation
                 expected.Count(id => !_windowLatest.ContainsKey(id)),
                 expected.Select(id => _latestPeerTick.TryGetValue(id, out uint tick)
                     ? Math.Max(0, unchecked((int)(end - tick))) : 120000).DefaultIfEmpty(120000).Max())
-            { P50Ms = Quantile(.50), MaxMs = _windowMax, OutOfOrderTimestamps = _windowOutOfOrder };
+            {
+                P50Ms = Quantile(.50), MaxMs = _windowMax, OutOfOrderTimestamps = _windowOutOfOrder,
+                FreshSamples = _windowFreshSamples, NonAdvancingRecords = _windowNonAdvancing,
+                MinimumFreshPairHz = expected.Select(id => _windowFreshPoses.GetValueOrDefault(id) / seconds)
+                    .DefaultIfEmpty(0).Min(),
+                ExpectedPeers = expected.Length,
+                PeersWithFreshSamples = expected.Count(id => _windowFreshPoses.ContainsKey(id)),
+                StartingAirborneCohortSize = _airborneCohort?.Count,
+                AirborneCohortChanged = _airborneCohortChanged,
+            };
         }
     }
 }
@@ -254,7 +337,19 @@ internal sealed class BotObservation
 internal sealed record MovementWindowResult(double Seconds, long Samples, long OlderRecords, int P95Ms,
     int P99Ms, double MinimumPairHz, int MissingPeers, int StalestPeerMs)
 {
+    public int? StartingAirborneCohortSize { get; init; }
+    public bool AirborneCohortChanged { get; init; }
     public int P50Ms { get; init; }
     public int MaxMs { get; init; }
     public long OutOfOrderTimestamps { get; init; }
+    /// <summary>Age-valid in-window records strictly advancing that transient's high-water timestamp.</summary>
+    public long FreshSamples { get; init; }
+    /// <summary>Equal or older in-window timestamps combined; not a distinct-packet count.</summary>
+    public long NonAdvancingRecords { get; init; }
+    public double MinimumFreshPairHz { get; init; }
+    /// <summary>Expected set at window end, not a whole-window visibility history.</summary>
+    public int ExpectedPeers { get; init; }
+    public int PeersWithFreshSamples { get; init; }
+    /// <summary>Null means no expected recipients; absence is not full coverage.</summary>
+    public double? FreshPeerCoverage => ExpectedPeers == 0 ? null : (double)PeersWithFreshSamples / ExpectedPeers;
 }

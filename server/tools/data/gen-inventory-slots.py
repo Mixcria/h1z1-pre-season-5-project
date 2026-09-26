@@ -44,6 +44,7 @@ from pathlib import Path
 # the only implementation, and tools/data/sheet.py re-exports it for the derive_*.py documents.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pipeline"))
 from readers.sheet import read_rows  # noqa: E402
+from survivor_loadout import apply_layout  # noqa: E402
 
 DATA = Path(sys.argv[1] if len(sys.argv) > 1 else r"C:\Aug2017\out\data_aug")
 OUT = Path(sys.argv[2] if len(sys.argv) > 2 else
@@ -96,8 +97,8 @@ def gen_slots():
     slots = read_sheet("EquipmentSlotDefinitions.txt")
     stow = read_sheet("EquipSlotItemClasses.txt")
     loadouts = read_sheet("Loadouts.txt")
-    loadout_slots = read_sheet("LoadoutSlots.txt")
-    slot_classes = read_sheet("LoadoutSlotItemClasses.txt")
+    loadout_slots = apply_layout("LoadoutSlots.txt", read_sheet("LoadoutSlots.txt"))
+    slot_classes = apply_layout("LoadoutSlotItemClasses.txt", read_sheet("LoadoutSlotItemClasses.txt"))
     containers = read_sheet("ContainerDefinitions.txt")
 
     equipment = {}

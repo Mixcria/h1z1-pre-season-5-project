@@ -1,0 +1,12 @@
+{
+  "sourceId": "20260926-native-medical-baseline",
+  "target": "H1Z1 August 5 2017 / ClientProtocol_1148",
+  "steamApp": 433850,
+  "depot": 433851,
+  "manifest": "6373368576374184611",
+  "clientExeSha256": "d949d39f45074f2b223257477803a8858b4970242c6963df9a213a169d8929dd",
+  "communityBaseCommit": "81e00a28e258a057e29b395a15a5c670126e1404",
+  "scope": "Current working server baseline with native medical presentation, native-compatible launch and preserved community local-account/startup adaptations",
+  "historicalProvenance": "live-baseline.json remains the September 13 import record; it is not a claim about the current production server",
+  "validationRecord": "../docs/RESTORATION.md"
+}

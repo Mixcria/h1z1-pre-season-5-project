@@ -418,7 +418,8 @@ public sealed partial class ZoneService
         // The listener retires links immediately. Do not scan thousands of idle menu links
         // on each moving player's interest pass; Sweep itself rejects closed candidates.
         long sweepStarted = _productionDiagnostics is null ? 0 : System.Diagnostics.Stopwatch.GetTimestamp();
-        _peers.Sweep(peer, _peerEnters, _peerLeaves);
+        _peers.Sweep(peer, _peerEnters, _peerLeaves,
+            state.Match == MatchStep.Lobby ? _options.Peers.LobbyInterest : null);
         _productionDiagnostics?.InterestSweepWork.RecordTicks(System.Diagnostics.Stopwatch.GetTimestamp() - sweepStarted);
 
         if (!_options.Peers.Spawn)
@@ -439,7 +440,7 @@ public sealed partial class ZoneService
             peer.Sink.ForgetPose(leave.CharacterGuid);
             peer.Sink.Send(PeerBurst.Leave(leave.CharacterGuid));
             _log.Info($"{connection} peers: 0f 01 RemovePlayer guid={leave.CharacterGuid} "
-                + $"(transient {leave.TransientId}) — left the {ObserverView.PlayerLeaveMetres:F0} m band");
+                + $"(transient {leave.TransientId}) — left the active peer visibility set");
         }
 
         foreach (PeerEnter enter in _peerEnters)

@@ -94,6 +94,37 @@ public sealed class LauncherUpdateTests : IDisposable
         Assert.Equal("saved settings", await File.ReadAllTextAsync(profile));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ContentOriginPreservesSignedLauncherVerificationAndResumeWithoutAccountCredentials(bool corrupt)
+    {
+        byte[] data = RandomNumberGenerator.GetBytes(8192);
+        var release = Sign(data);
+        string stage = Path.Combine(_root, ".cranberry-updates"); Directory.CreateDirectory(stage);
+        await File.WriteAllBytesAsync(Path.Combine(stage, release.Sha256 + ".part"), data[..333]);
+        using var api = Http(_ => throw new Exception("Launcher payload must come from configured storage."));
+        api.DefaultRequestHeaders.Authorization = new("Bearer", "game-session");
+        api.DefaultRequestHeaders.Add("Cookie", "game-cookie");
+        var handler = new Handler(request =>
+        {
+            Assert.Equal("https://downloads.invalid/content/" + release.Sha256, request.RequestUri!.AbsoluteUri);
+            Assert.Equal(HttpVersion.Version20, request.Version);
+            Assert.Null(request.Headers.Authorization);
+            Assert.False(request.Headers.Contains("Cookie"));
+            Assert.Equal(333, request.Headers.Range!.Ranges.Single().From);
+            var response = new HttpResponseMessage(HttpStatusCode.PartialContent)
+            { Content = new ByteArrayContent(corrupt ? new byte[data.Length - 333] : data[333..]) };
+            response.Content.Headers.ContentRange = new(333, data.Length - 1, data.Length);
+            return response;
+        });
+        var updater = new LauncherUpdater(api, Path.Combine(_root, "Launcher.exe"), 1, Verify, "https://downloads.invalid/content/", handler);
+        if (corrupt)
+            await Assert.ThrowsAsync<InvalidDataException>(() => updater.Download(release, null, default));
+        else
+            Assert.Equal(data, await File.ReadAllBytesAsync(await updater.Download(release, null, default)));
+    }
+
     [Fact]
     public async Task WrongRangeAndOversizedBodyAreRejected()
     {

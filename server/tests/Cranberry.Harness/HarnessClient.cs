@@ -10,6 +10,9 @@ namespace Cranberry.Harness;
 
 public sealed record HarnessOptions
 {
+    public bool CaptureReceiveTimings { get; init; }
+    /// <summary>Skip inbound gateway movement journal entries; delivery and observation are unchanged.</summary>
+    public bool OmitInboundMovementJournal { get; init; }
     /// <summary>The login listener. The gateway address comes from the CharacterLoginReply.</summary>
     public IPEndPoint LoginEndPoint { get; init; } = new(IPAddress.Loopback, 20042);
 
@@ -115,6 +118,7 @@ public sealed class HarnessClient : IAsyncDisposable
     public SoeClientSession? LoginLink => _login;
 
     public SoeClientSession? GatewayLink => _gateway;
+    public ReceiveTimings? ReceiveTimings => _gateway?.ReceiveTimings;
 
     /// <summary>The character guid the server admitted, once the handoff has happened.</summary>
     public ulong SelfGuid => _selfGuid;
@@ -242,6 +246,8 @@ public sealed class HarnessClient : IAsyncDisposable
             new SoeClientOptions
             {
                 ProtocolName = AugustClient.GatewayProtocolName,
+                CaptureReceiveTimings = _options.CaptureReceiveTimings,
+                OmitInboundMovementJournal = _options.OmitInboundMovementJournal,
                 LinkName = "ExternalGatewayApi_3",
                 IdleTickIntervalMs = _options.LowFrequencyIdlePolling ? 100 : 10,
             },
@@ -408,7 +414,17 @@ public sealed class HarnessClient : IAsyncDisposable
                 int handled = 0;
                 while (handled < 256 && reader.TryRead(out InboundMessage? inbound))
                 {
-                    HandleServerMessage(gateway, responder, inbound);
+                    var timings = gateway.ReceiveTimings;
+                    if (timings is null) HandleServerMessage(gateway, responder, inbound);
+                    else
+                    {
+                        TimeSpan started = Clock.Now;
+                        timings.ApplicationQueue.Record(started - inbound.EnqueuedAt);
+                        started = Clock.Now;
+                        started = Clock.Now;
+                        try { HandleServerMessage(gateway, responder, inbound); }
+                        finally { timings.ApplicationHandler.Record(Clock.Now - started); }
+                    }
                     handled++;
                 }
 

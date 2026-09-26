@@ -14,7 +14,8 @@ namespace Cranberry.Zone.Inventory;
 // incomplete list of live families rather than an authority (docs/41 §3a, a standing correction
 // for every lane):
 //
-//   FUN_140af3950 (the zone dispatcher, docs/06), line 1938 of the lightweight-dispatch decompile:
+//   FUN_140af3950 (the zone dispatcher, docs/06), line 1938 of
+//   out/claude-loot/ghidra/lightweight-dispatch/_140af3950/FUN_140af3950_140af3950.c:
 //       case 200:
 //         thunk_FUN_140d7f450(DAT_143f69f60 + 0x10320, param_3, param_4);
 //

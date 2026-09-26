@@ -86,14 +86,14 @@ public static class SurvivorLoadout
 {
     /// <summary>
     /// The August pack ships survivor-like loadouts 3 and 17. Cranberry uses the KOTK loadout 17:
-    /// fists on Slot4, binoculars on Slot5, and Q/E consumables in slots 40/41.
+    /// grenades on Slot4, binoculars on Slot5, fists on Slot6, and Q/E consumables in slots 40/41.
     /// Loadout 3 is retained as <see cref="LegacyId"/> for old capture diagnostics only.
     /// </summary>
     public const uint FriendLoadoutId = 17;
 
     /// <summary>
-    /// Loadout 17: keys 1-3 in slots 1/2/4, fists on key 4 (slot 7), binoculars on key 5
-    /// (slot 5), and Q/E consumables in slots 40/41.
+    /// Loadout 17: keys 1-3 in slots 1/2/4, grenades on key 4 (slot 9), binoculars on key 5
+    /// (slot 5), fists on key 6 (slot 7), and Q/E consumables in slots 40/41.
     /// </summary>
     public const uint Id = FriendLoadoutId;
 
@@ -111,11 +111,14 @@ public static class SurvivorLoadout
     /// <summary>Weapon hotbar <c>Slot3</c>.</summary>
     public const uint Wheel3 = 4;
 
+    /// <summary>Key 4, the dedicated throwable slot (class 25078).</summary>
+    public const uint Grenades = 9;
+
     /// <summary>Key 5, the auto-equipped binoculars/utility slot (mapped class 25081).</summary>
     public const uint Binoculars = 5;
 
     /// <summary>
-    /// Hotbar <c>Slot4</c> - <c>FLAG_REQUIRED = 1</c>, <c>FLAG_AUTO_EQUIP = 1</c>,
+    /// Hotbar <c>Slot6</c> - <c>FLAG_REQUIRED = 1</c>, <c>FLAG_AUTO_EQUIP = 1</c>,
     /// <c>ITEM_ID = 85</c>. This is why "Fists" exists: the survivor loadout requires a filled hand
     /// slot and the sheet names item 85 as its default. The client's own config agrees -
     /// <c>Inventory.SpecialEmptyHandsItemId = 85</c> in <c>StringHashValues.g.cs</c>. Auto-assign
@@ -193,8 +196,8 @@ public static class SurvivorLoadout
 
     /// <summary>
     /// Every assignable hotbar destination in the order the server considers it: the three weapon
-    /// slots, binoculars on key 5, then Q and E. Required fists are deliberately excluded.
+    /// slots, grenades on key 4, binoculars on key 5, then Q and E. Required fists are excluded.
     /// </summary>
     public static ReadOnlySpan<uint> WheelOrder =>
-        [Wheel1, Wheel2, Wheel3, Binoculars, QuickUse1, QuickUse2];
+        [Wheel1, Wheel2, Wheel3, Grenades, Binoculars, QuickUse1, QuickUse2];
 }

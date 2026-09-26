@@ -43,25 +43,24 @@ public sealed class BidirectionalDoorTests
         => Assert.Equal(expected, DoorSwing.AwayFrom(Vector3.Zero, yaw, "Camper", new(x, 0, z)));
 
     [Fact]
-    public void SecondPlayerClosesFirstPlayersDoorAndReopeningCanUseTheOtherSide()
+    public void SecondPlayerClosesFirstPlayersDoorAndReopeningKeepsOriginalSwing()
     {
         var (shared, a, b, da, db) = Pair();
         Assert.Equal(DoorToggleOutcome.Toggled, a.TryToggle(da.WorldGuid, 1000, out _, Side(da, 2)));
-        Assert.True(db.IsOpen); Assert.Equal(-1, db.SwingDirection);
+        Assert.True(db.IsOpen); Assert.Equal(0, db.SwingDirection);
         byte[] open = Packet(db);
-        Assert.Equal(DoorStateDelta.Length, open.Length); Assert.Equal(0x3f, open[1]);
-        Assert.Equal(DoorSwing.NegativeSource, BinaryPrimitives.ReadUInt64LittleEndian(open.AsSpan(10)));
-        Assert.Equal(DoorStateBits.Open, BinaryPrimitives.ReadUInt64LittleEndian(open.AsSpan(18)));
-        Assert.Equal(0UL, BinaryPrimitives.ReadUInt64LittleEndian(open.AsSpan(26)));
+        Assert.Equal(DoorStateUpdate.Length, open.Length); Assert.Equal(0x0a, open[1]);
+        Assert.Equal(DoorStateBits.Open, BinaryPrimitives.ReadUInt64LittleEndian(open.AsSpan(10)));
+        Assert.Equal(0U, BinaryPrimitives.ReadUInt32LittleEndian(open.AsSpan(18)));
         Assert.Equal(DoorToggleOutcome.Toggled, b.TryToggle(db.WorldGuid, 2000, out _, Side(db, -2)));
-        Assert.False(da.IsOpen); Assert.False(shared.IsOpen(da.InstanceId)); Assert.Equal(-1, da.SwingDirection);
+        Assert.False(da.IsOpen); Assert.False(shared.IsOpen(da.InstanceId)); Assert.Equal(0, da.SwingDirection);
         byte[] closed = Packet(da);
         Assert.Equal(0UL, BinaryPrimitives.ReadUInt64LittleEndian(closed.AsSpan(10)));
-        Assert.Equal(0UL, BinaryPrimitives.ReadUInt64LittleEndian(closed.AsSpan(18)));
-        Assert.Equal(DoorStateBits.Open, BinaryPrimitives.ReadUInt64LittleEndian(closed.AsSpan(26)));
+        Assert.Equal(DoorStateUpdate.Length, closed.Length);
+        Assert.Equal(0U, BinaryPrimitives.ReadUInt32LittleEndian(closed.AsSpan(18)));
         Assert.Equal(DoorToggleOutcome.Toggled, a.TryToggle(da.WorldGuid, 3000, out _, Side(da, -2)));
-        Assert.True(db.IsOpen); Assert.Equal(1, db.SwingDirection);
-        Assert.Equal(DoorSwing.PositiveSource, BinaryPrimitives.ReadUInt64LittleEndian(Packet(db).AsSpan(10)));
+        Assert.True(db.IsOpen); Assert.Equal(0, db.SwingDirection);
+        Assert.Equal(DoorStateBits.Open, BinaryPrimitives.ReadUInt64LittleEndian(Packet(db).AsSpan(10)));
     }
 
     [Fact]
@@ -72,7 +71,7 @@ public sealed class BidirectionalDoorTests
         Assert.Equal(DoorToggleOutcome.Absorbed, b.TryToggle(db.WorldGuid, 1002, out _, Side(db, -2)));
         Assert.Equal(DoorToggleOutcome.Absorbed, a.TryToggle(da.WorldGuid, 1003, out _, Side(da, -2)));
         b.Unregister(db.WorldGuid); db = b.Register(db.DoorIndex);
-        Assert.True(db.IsOpen); Assert.Equal(-1, db.SwingDirection); Assert.Equal(1000, db.LastToggleMs);
+        Assert.True(db.IsOpen); Assert.Equal(0, db.SwingDirection); Assert.Equal(1000, db.LastToggleMs);
         Assert.Equal(DoorToggleOutcome.Absorbed, b.TryToggle(db.WorldGuid, 1799, out _, Side(db, -2)));
         Assert.Equal(DoorToggleOutcome.Toggled, b.TryToggle(db.WorldGuid, 1800, out _, Side(db, -2)));
         Assert.False(da.IsOpen); Assert.Equal(0, shared.OpenCount);
@@ -85,7 +84,7 @@ public sealed class BidirectionalDoorTests
         a.TryToggle(da.WorldGuid, 1000, out _, Side(da, 2));
         var c = new MatchDoors(Data.Value, shared: shared); shared.Join(c, new Sink());
         DoorInstance dc = c.Register(da.DoorIndex);
-        Assert.True(dc.IsOpen); Assert.Equal(-1, dc.SwingDirection); Assert.Equal(Packet(da), Packet(dc));
+        Assert.True(dc.IsOpen); Assert.Equal(0, dc.SwingDirection); Assert.Equal(Packet(da), Packet(dc));
         Assert.Equal(DoorToggleOutcome.Absorbed, c.TryToggle(dc.WorldGuid, 1100, out _, Side(dc, -2)));
         shared.Leave(a); shared.Leave(b); shared.Leave(c);
         var next = new MatchDoors(Data.Value, shared: shared); shared.Join(next, new Sink());

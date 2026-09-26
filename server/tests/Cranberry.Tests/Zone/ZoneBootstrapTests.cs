@@ -278,7 +278,7 @@ public class ZoneBootstrapTests
             System.Text.Encoding.ASCII.GetString(sent[3], lightingLengthOffset + sizeof(uint), lightingLength));
         int listCountOffset = lightingLengthOffset + sizeof(uint) + lightingLength + 2;
         var values = new PacketReader(sent[3].AsSpan(listCountOffset));
-        Assert.Equal(StringHashValues.Entries.Count + 2, values.ReadInt32());
+        Assert.Equal(StringHashValues.Entries.Count + 1, values.ReadInt32());
         foreach (StringHashValue entry in StringHashValues.Entries)
         {
             Assert.Equal(entry.Hash, values.ReadUInt32());
@@ -286,11 +286,7 @@ public class ZoneBootstrapTests
             Assert.False(values.ReadBool());
             Assert.Equal(entry.Name, values.ReadString());
         }
-        // Returning to the menu clears the prior healing icon and world label.
-        Assert.Equal(StringHashValue.HashName("Cranberry.Healing"), values.ReadUInt32());
-        Assert.Equal("0", values.ReadString());
-        Assert.False(values.ReadBool());
-        Assert.Equal("Cranberry.Healing", values.ReadString());
+        // Returning to the menu clears the world label. Medical state uses native effects.
         Assert.Equal(StringHashValue.HashName(WorldDisplayLabel.Key), values.ReadUInt32());
         Assert.Equal(string.Empty, values.ReadString());
         Assert.False(values.ReadBool());

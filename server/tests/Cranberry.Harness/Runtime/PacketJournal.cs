@@ -48,6 +48,10 @@ public sealed class PacketJournal(int capacity = 60)
     public int Capacity { get; } = Math.Max(4, capacity);
 
     public long TotalRecorded { get; private set; }
+    private long _movementEntriesSuppressed;
+    /// <summary>Inbound movement deliberately omitted by opt-in sessions sharing this journal.</summary>
+    public long MovementEntriesSuppressed => Interlocked.Read(ref _movementEntriesSuppressed);
+    internal void RecordMovementSuppressed() => Interlocked.Increment(ref _movementEntriesSuppressed);
 
     public void Record(JournalEntry entry)
     {
@@ -81,6 +85,9 @@ public sealed class PacketJournal(int capacity = 60)
             $"last {all.Count - skip} of {TotalRecorded} application message(s):",
             "     time | link                 | dir |  length | packet",
         };
+        long suppressed = MovementEntriesSuppressed;
+        if (suppressed != 0)
+            lines.Add($"journal coverage: {suppressed} inbound movement entries omitted by opt-in policy; application delivery unchanged");
         lines.AddRange(tail.Select(e => e.ToLine(hexBytes)));
         return string.Join(Environment.NewLine, lines);
     }

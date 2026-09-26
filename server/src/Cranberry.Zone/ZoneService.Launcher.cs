@@ -10,7 +10,7 @@ public sealed partial class ZoneService
     /// <summary>When configured, a loopback relay never grants owner powers to another account.</summary>
     public string? LocalOwnerAccountId { get; set; }
     public Func<string, string>? CharacterSelectTicketFactory { get; set; }
-    /// <summary>Production only: the launcher's verified native door helper gates match admission.</summary>
+    /// <summary>Production only: an authenticated native-compatible launcher session gates match admission.</summary>
     public Func<string, bool>? DoorSwingClientReady { get; set; }
 
     // These entry points are called only by the authenticated launcher service on the listener thread.

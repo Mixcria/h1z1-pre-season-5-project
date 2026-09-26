@@ -261,7 +261,7 @@ public readonly record struct PeerViewer(PeerSession Viewer, uint TransientId);
 /// <para>Not thread-safe: every caller is the single listener thread, as the sessions themselves
 /// already are.</para>
 /// </summary>
-public sealed class SessionRegistry
+public sealed partial class SessionRegistry
 {
     private readonly Dictionary<ulong, PeerSession> _byGuid = [];
     private readonly List<PeerSession> _order = [];
@@ -417,7 +417,8 @@ public sealed class SessionRegistry
     /// <para><b>Leaves are computed before enters</b> so an id freed this pass is available to a
     /// character entering on the same pass; nothing depends on it, but it keeps the ids dense.</para>
     /// </summary>
-    public void Sweep(PeerSession viewer, List<PeerEnter> enters, List<PeerLeave> leaves)
+    public void Sweep(PeerSession viewer, List<PeerEnter> enters, List<PeerLeave> leaves,
+        LobbyInterestSettings? lobby = null)
     {
         ArgumentNullException.ThrowIfNull(viewer);
         ArgumentNullException.ThrowIfNull(enters);
@@ -425,6 +426,12 @@ public sealed class SessionRegistry
 
         enters.Clear();
         leaves.Clear();
+
+        if (lobby is { MaxPlayers: > 0 } && viewer.IsReplicable)
+        {
+            SweepLobby(viewer, enters, leaves, lobby);
+            return;
+        }
 
         UpdateLeaves(viewer, leaves);
 

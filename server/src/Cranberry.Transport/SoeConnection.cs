@@ -277,6 +277,12 @@ public sealed partial class SoeConnection
 
             case SoeOpcode.Disconnect:
                 var disconnect = DisconnectPacket.Parse(body);
+                // An endpoint can be reused by a new session before an old disconnect
+                // arrives. Only the session named by this control packet may be closed.
+                if (disconnect.SessionId != SessionId)
+                {
+                    break;
+                }
                 _log.Info($"{RemoteEndPoint} session {SessionId:x8} disconnect, reason {disconnect.Reason}");
                 Close(DisconnectCause.PeerRequested);
                 break;

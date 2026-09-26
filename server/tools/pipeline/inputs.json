@@ -15,9 +15,9 @@
     "Z1": 3,
     "CAPTURED": 4,
     "CLIENT": 3934,
-    "RULING": 11
+    "RULING": 12
   },
-  "totalBytes": 341691484,
+  "totalBytes": 341693714,
   "note": "Every input asset the server's generated data comes from. `packAsset: true` means the file can be re-extracted from the client's own packs by `pipeline.py extract`; the rest are this repository's own parses, the client binary's registration table, or a declared capture.",
   "inputs": [
     {
@@ -51529,6 +51529,15 @@
       "packAsset": false,
       "source": "the 134 float/byte columns of the client's own FireModes datasheet-row loader (H1Z1.exe 0.0.118.208059 0x142226260..0x14222a800), name -> rec+ offset. Extracted mechanically from out/w14-adsfov/disasm-firemodes-loader.txt; docs/99 CORRECTION 3 and docs/107 section 9.3. Read by Cranberry.Tests' WeaponListColumnTableTests, which pins WeaponListLayouts.FireModeColumns against it - no generator reads it",
       "usedBy": []
+    },
+    {
+      "path": "tools/data/survivor_loadout.py",
+      "sha256": "9370cf4539f7b18fab777197060f16d5ca03f8e205cc08fef52069e3e5b65657",
+      "crc32": "fc59f2f4",
+      "size": 2230,
+      "grade": "RULING",
+      "thirdParty": false,
+      "note": "Owner 2026-09-20: newer grenade hotbar layout in the August schema."
     },
     {
       "path": "tools/world/data/august-vehicle-mesh-bounds.json",

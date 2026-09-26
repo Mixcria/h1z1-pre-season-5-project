@@ -16,14 +16,19 @@ public sealed class LauncherUpdater
     private readonly string _executable, _directory;
     private readonly long _sequence;
     private readonly Action<LauncherRelease> _verify;
+    private readonly Uri? _contentBase;
+    private readonly HttpMessageHandler? _contentHandler;
 
-    public LauncherUpdater(HttpClient http, string executable, long sequence)
-        : this(http, executable, sequence, r => r.Verify()) { }
+    public LauncherUpdater(HttpClient http, string executable, long sequence, string contentBaseUrl = "")
+        : this(http, executable, sequence, r => r.Verify(), contentBaseUrl) { }
 
-    internal LauncherUpdater(HttpClient http, string executable, long sequence, Action<LauncherRelease> verify)
+    internal LauncherUpdater(HttpClient http, string executable, long sequence, Action<LauncherRelease> verify,
+        string contentBaseUrl = "", HttpMessageHandler? contentHandler = null)
     {
         _http = http; _executable = Path.GetFullPath(executable); _sequence = sequence; _verify = verify;
         _directory = GameInstaller.SafePath(Path.GetDirectoryName(_executable)!, ".cranberry-updates");
+        _contentBase = LauncherSettings.ValidateContentBase(contentBaseUrl);
+        _contentHandler = contentHandler;
     }
 
     private string PathFor(string name) => GameInstaller.SafePath(_directory, name);
@@ -53,6 +58,7 @@ public sealed class LauncherUpdater
         Directory.CreateDirectory(_directory);
         string target = PathFor(release.Sha256 + ".exe"), partial = PathFor(release.Sha256 + ".part");
         if (await release.Matches(target, ct)) return target;
+        using var contentHttp = _contentBase is null ? null : GameInstaller.CreateContentHttp(_contentBase, _contentHandler);
         for (int attempt = 0; attempt < 3; attempt++)
         {
             try
@@ -61,9 +67,9 @@ public sealed class LauncherUpdater
                 if (offset > release.Size) { File.Delete(partial); offset = 0; }
                 if (offset < release.Size)
                 {
-                    using var request = new HttpRequestMessage(HttpMethod.Get, "api/launcher/content/" + release.Sha256);
-                    if (offset > 0) request.Headers.Range = new RangeHeaderValue(offset, null);
-                    using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+                    string route = contentHttp is null ? "api/launcher/content/" + release.Sha256 : release.Sha256;
+                    using var response = await GameInstaller.RequestContent(contentHttp ?? _http, route, offset,
+                        contentHttp is not null, ct);
                     response.EnsureSuccessStatusCode();
                     if (response.StatusCode == HttpStatusCode.OK) offset = 0;
                     else if (response.StatusCode != HttpStatusCode.PartialContent

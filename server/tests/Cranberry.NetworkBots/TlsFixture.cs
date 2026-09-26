@@ -42,6 +42,14 @@ internal sealed class TlsFixture : IAsyncDisposable
     }
     public async Task<TlsFixtureAddress> Start(LocalServer server, CancellationToken ct)
     {
+        File.WriteAllText(Path.Combine(_root, "protocol-adapter.json"), JsonSerializer.Serialize(new
+        {
+            scope = "loopback-disposable-protocol-fixture",
+            doorSwingProtocol = 0,
+            readiness = "native-protocol-no-patch-handshake",
+            nativeDoorPatchVerified = false,
+            nativeDoorBehaviourTested = false
+        }));
         _host = new LauncherHost(_root, Accounts, server.Zone, server.LoginEndPoint.Port, server.GatewayEndPoint.Port, _social,
             server.LoginListener, server.GatewayListener, enableDiagnostics: true);
         if (WireAudit.Enabled)
@@ -73,10 +81,25 @@ internal sealed class TlsFixture : IAsyncDisposable
         {
             http.DefaultRequestHeaders.Authorization = new("Bearer", fixture.Tokens[index]);
             await tunnel.Connect(fixture.Settings, fixture.Tokens[index], ct);
-            using var response = await http.PostAsJsonAsync("api/launch", new LaunchRequest(tunnel.GatewayPort), ct);
-            response.EnsureSuccessStatusCode();
-            return (http, tunnel, (await response.Content.ReadFromJsonAsync<GameLaunch>(ct))!);
+            var launch = await LaunchProtocolFixture(http, tunnel.GatewayPort, ct);
+            return (http, tunnel, launch);
         }
         catch { await tunnel.DisposeAsync(); http.Dispose(); throw; }
+    }
+
+    // This protocol-only bot declares the original native door protocol in the disposable
+    // loopback fixture and exercises actual launch-ticket admission without a patch handshake.
+    // Public CloudAccess must not reuse this adapter as evidence of native gameplay acceptance.
+    internal static async Task<GameLaunch> LaunchProtocolFixture(HttpClient http, int gatewayPort, CancellationToken ct)
+    {
+        if (http.BaseAddress is not { Scheme: "https", IsLoopback: true })
+            throw new InvalidOperationException("Protocol fixture launch is restricted to a loopback TLS fixture.");
+        using var response = await http.PostAsJsonAsync("api/launch",
+            new LaunchRequest(gatewayPort, 0), ct);
+        response.EnsureSuccessStatusCode();
+        var launch = await response.Content.ReadFromJsonAsync<GameLaunch>(ct)
+            ?? throw new InvalidDataException("Fixture launch response was empty.");
+        if (string.IsNullOrWhiteSpace(launch.Ticket)) throw new InvalidDataException("Fixture launch ticket was empty.");
+        return launch;
     }
 }

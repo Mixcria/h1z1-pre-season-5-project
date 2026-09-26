@@ -16,6 +16,6 @@ public static class WorldDisplayLabel
     public static IReadOnlyList<StringHashValue> Values(string displayName)
     {
         ArgumentNullException.ThrowIfNull(displayName);
-        return [.. StringHashValues.Entries, new StringHashValue("Cranberry.Healing", "0"), new StringHashValue(Key, displayName)];
+        return [.. StringHashValues.Entries, new StringHashValue(Key, displayName)];
     }
 }

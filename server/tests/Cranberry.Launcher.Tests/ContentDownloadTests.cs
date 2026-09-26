@@ -113,6 +113,8 @@ public sealed class ContentDownloadTests : IDisposable
         var contentHandler = new Handler(request =>
         {
             Assert.Equal(ContentBase + "/" + Entry.Sha256.ToUpperInvariant(), request.RequestUri!.AbsoluteUri);
+            Assert.Equal(HttpVersion.Version20, request.Version);
+            Assert.Equal(HttpVersionPolicy.RequestVersionOrLower, request.VersionPolicy);
             Assert.Null(request.Headers.Authorization);
             Assert.False(request.Headers.Contains("Cookie"));
             Assert.False(request.Headers.Contains("X-Api-Only"));

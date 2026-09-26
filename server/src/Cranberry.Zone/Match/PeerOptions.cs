@@ -1,3 +1,4 @@
+using System.Globalization;
 using Cranberry.Zone.World;
 
 namespace Cranberry.Zone.Match;
@@ -30,6 +31,9 @@ namespace Cranberry.Zone.Match;
 /// </summary>
 public sealed record PeerOptions
 {
+    public const string LobbyMaxPlayersVariable = "CRANBERRY_LOBBY_VISIBLE_PLAYERS";
+    public const string LobbyRadiusVariable = "CRANBERRY_LOBBY_VISIBILITY_METRES";
+    public LobbyInterestSettings LobbyInterest { get; init; } = LobbyInterestSettings.Default;
     /// <summary>
     /// Environment switch for <see cref="SelfTransientId"/> — docs/100 §7.
     /// <c>CRANBERRY_SELF_TRANSIENT_ID=0</c> puts the self record's <c>+0xe0</c> varint back to 0.
@@ -185,6 +189,11 @@ public sealed record PeerOptions
         read ??= System.Environment.GetEnvironmentVariable;
         return new PeerOptions
         {
+            LobbyInterest = new(
+                int.TryParse(read(LobbyMaxPlayersVariable), NumberStyles.Integer, CultureInfo.InvariantCulture,
+                    out int limit) && limit is >= 0 and <= 256 ? limit : 16,
+                float.TryParse(read(LobbyRadiusVariable), NumberStyles.Float, CultureInfo.InvariantCulture,
+                    out float radius) && float.IsFinite(radius) && radius is >= 1 and <= 2000 ? radius : 60f),
             SelfTransientId = Switch(read, SelfTransientIdVariable, @default: true),
             Spawn = Switch(read, SpawnVariable, @default: true),
             Relay = Switch(read, RelayVariable, @default: true),
@@ -205,6 +214,7 @@ public sealed record PeerOptions
         + $"fireRelay 82 15 04 01={On(Relay && FireRelay)} "
         + $"projectileLaunch 82 15 04 0b={On(Relay && ProjectileLaunch)} "
         + $"sharedGasSeed={On(SharedGasSeed)}; "
+        + $"lobby limit={LobbyInterest.MaxPlayers} radius={LobbyInterest.RadiusMetres:F0} m; "
         + $"interest {ObserverView.PlayerEnterMetres:F0} m enter / "
         + $"{ObserverView.PlayerLeaveMetres:F0} m leave (D156); "
         + "d9 LightweightToFullPc is REFUSED (docs/100 §3)";

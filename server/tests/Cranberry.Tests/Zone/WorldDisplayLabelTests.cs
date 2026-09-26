@@ -14,9 +14,9 @@ public sealed class WorldDisplayLabelTests
     public void LabelUpdatePreservesEveryGameplayDefaultAndWritesExactName(string name)
     {
         IReadOnlyList<StringHashValue> values = WorldDisplayLabel.Values(name);
-        Assert.Equal(StringHashValues.Entries.Count + 2, values.Count);
-        Assert.Equal(StringHashValues.Entries, values.Take(values.Count - 2));
-        Assert.Equal(new StringHashValue("Cranberry.Healing", "0"), values[^2]);
+        Assert.Equal(StringHashValues.Entries.Count + 1, values.Count);
+        Assert.Equal(StringHashValues.Entries, values.Take(values.Count - 1));
+        Assert.DoesNotContain(values, value => value.Name == "Cranberry.Healing");
         Assert.Equal(values.Count, values.Select(value => value.Hash).Distinct().Count());
         Assert.Equal(new StringHashValue(WorldDisplayLabel.Key, name), values[^1]);
 

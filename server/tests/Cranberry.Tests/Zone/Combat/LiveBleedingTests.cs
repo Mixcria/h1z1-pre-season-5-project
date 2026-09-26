@@ -40,10 +40,12 @@ public sealed partial class LivePlayerCombatTests
         Assert.Equal(5106u, Get<uint>(victim.Tag!, "BleedEffect"));
         PumpWound(pending, () => f.Health(victim) < afterShot);
         Assert.Equal(afterShot - 50, f.Health(victim));
+        uint beforeCompletion = f.Health(victim);
         Call(f.Service, "BeginHeal", victim, victim.Tag, MedicalModel.Items[24]);
+        Assert.Equal(Math.Min(10000u, beforeCompletion + 300), f.Health(victim));
         Assert.Equal(0u, Get<uint>(victim.Tag!, "BleedEffect"));
         uint beforeHeal = f.Health(victim);
-        PumpWound(pending, () => f.Health(victim) > beforeHeal);
+        if (beforeHeal < 10000) PumpWound(pending, () => f.Health(victim) > beforeHeal);
         Assert.Equal(Math.Min(10000u, beforeHeal + 100), f.Health(victim));
     }
 

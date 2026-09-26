@@ -911,6 +911,12 @@ public static class ConfigKeys
             c => c.LoginNaming.Regions.Naming == Login.RegionNaming.LocaleKeys);
 
         // peers (lane 3C) ----------------------------------------------------------------------
+        Add("peers", "lobbyVisiblePlayers", "CRANBERRY_LOBBY_VISIBLE_PLAYERS", ConfigKind.Int, "ROTK20260920",
+            "maximum visible remote lobby players; 0 restores match visibility (default 16)",
+            c => c.Peers.Options.LobbyInterest.MaxPlayers, "8");
+        Add("peers", "lobbyVisibilityMetres", "CRANBERRY_LOBBY_VISIBILITY_METRES", ConfigKind.Float, "ROTK20260920",
+            "lobby player entry radius; known peers retain a 6 m exit margin (default 60)",
+            c => c.Peers.Options.LobbyInterest.RadiusMetres, "40");
         Add("peers", "selfTransientId", "CRANBERRY_SELF_TRANSIENT_ID", ConfigKind.Bool, "D214",
             "write TransientIdTable.LocalPlayer (1) into the self record's +0xe0, not 0",
             c => c.Peers.Options.SelfTransientId);

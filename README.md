@@ -10,7 +10,7 @@ https://www.youtube.com/watch?v=W2wlguQvdXQ&t
 
 A community project for H1Z1's August 2017 client. Its Cranberry Local Windows package includes the server and launcher. The launcher starts the bundled server, installs the matching game files from Cloudflare, and connects the game to your own PC. Accounts and saves belong to your local installation.
 
-This is a community preview prepared from the running `20260913-landing-fall-grace` server and launcher `2026.9.13.3`. Preview.2 corrects the startup logging, owner inventory and local queue problems found during preview.1 playtesting. Automated checks cover menu inventory and match entry; the corrected package still needs a native game playtest.
+The source now tracks the 26 September working restoration baseline, including native healing/bleeding presentation and launch compatibility without the retired client-memory helpers. Community local accounts and startup are preserved. See [restoration status and validation](docs/RESTORATION.md). Published player ZIPs have their own versions; updating source does not update an installed package.
 
 ## Play
 
@@ -48,13 +48,13 @@ A third argument can name an existing client on the same drive. The checker crea
 
 | Directory | Purpose |
 | --- | --- |
-| `server/src` | Server source recovered from its verified live-release build snapshot |
-| `server/tests` | Server, launcher-service and protocol tests from that snapshot |
+| `server/src` | Current restoration server source with community local-hosting adaptations |
+| `server/tests` | Server, launcher-service and protocol regression tests |
 | `launcher/src` | Independently released Windows launcher and its matching core library |
 | `tests` | Local-package startup, persistence and client-download checks |
 | `package` | Pinned client manifest, public download address and safe gameplay defaults |
 | `compatibility` | Static appearance input matching the live server |
-| `provenance` | Baseline file hashes and a record of the local adaptations |
+| `provenance` | Historical import hashes, current source identity and local adaptations |
 | `server/tools`, `server/rulings` | Existing generators, client tooling and design decisions |
 
 The server and launcher were released from different source snapshots. Their copies of `Cranberry.Launcher.Core` remain separate to preserve those exact versions. Build them through `Build-Local.ps1`. When changing shared wire contracts, update and test both copies together. The server solution intentionally omits its older GUI source; the standalone launcher lives under `launcher/`.

@@ -180,7 +180,8 @@ public sealed class InventoryCapabilityAuditTests
     {
         Assert.Equal(
             [SurvivorLoadout.Wheel1, SurvivorLoadout.Wheel2, SurvivorLoadout.Wheel3,
-                SurvivorLoadout.Binoculars, SurvivorLoadout.QuickUse1, SurvivorLoadout.QuickUse2],
+                SurvivorLoadout.Grenades, SurvivorLoadout.Binoculars,
+                SurvivorLoadout.QuickUse1, SurvivorLoadout.QuickUse2],
             SurvivorLoadout.WheelOrder.ToArray());
 
         Assert.Equal("Slot1", LoadoutSlotTable.Slots(SurvivorLoadout.Id)
@@ -190,9 +191,11 @@ public sealed class InventoryCapabilityAuditTests
         Assert.Equal("Slot3", LoadoutSlotTable.Slots(SurvivorLoadout.Id)
             .Single(slot => slot.SlotId == SurvivorLoadout.Wheel3).SlotInputAction);
         Assert.Equal("Slot4", LoadoutSlotTable.Slots(SurvivorLoadout.Id)
-            .Single(slot => slot.SlotId == SurvivorLoadout.Fists).SlotInputAction);
+            .Single(slot => slot.SlotId == SurvivorLoadout.Grenades).SlotInputAction);
         Assert.Equal("Slot5", LoadoutSlotTable.Slots(SurvivorLoadout.Id)
             .Single(slot => slot.SlotId == SurvivorLoadout.Binoculars).SlotInputAction);
+        Assert.Equal("Slot6", LoadoutSlotTable.Slots(SurvivorLoadout.Id)
+            .Single(slot => slot.SlotId == SurvivorLoadout.Fists).SlotInputAction);
     }
 
     [Fact]

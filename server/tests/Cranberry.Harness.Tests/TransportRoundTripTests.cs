@@ -17,6 +17,34 @@ public sealed class TransportRoundTripTests
 {
     private static readonly byte[] Key = Convert.FromBase64String("F70IaxuU8C/w7FPXY1ibXw==");
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Receive_timing_preserves_encrypted_fragmented_message_order(bool enabled)
+    {
+        var service = new EchoService(Key, encryptFromStart: true);
+        using var listener = new SoeListener(new IPEndPoint(IPAddress.Loopback, 0), service, NullLog.Instance);
+        listener.Start();
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        await using var client = await SoeClientSession.OpenAsync(
+            new IPEndPoint(IPAddress.Loopback, listener.LocalEndPoint.Port),
+            new SoeClientOptions { ProtocolName = "LoginUdp_14", LinkName = "timing", Key = Key,
+                CaptureReceiveTimings = enabled },
+            new HarnessClock(), new PacketJournal(24), _ => "test", deadline.Token);
+        byte[][] messages = [ [0x42, 1], Enumerable.Range(0, 20000).Select(i => (byte)(i % 251)).ToArray(), [0x42, 2] ];
+        foreach (var message in messages) client.Send(message);
+        foreach (var expected in messages)
+            Assert.Equal(expected, (await client.Messages.ReadAsync(deadline.Token)).Bytes);
+        Assert.Equal(enabled, client.ReceiveTimings is not null);
+        if (client.ReceiveTimings is { } timings)
+        {
+            Assert.True(timings.Snapshot().DatagramQueue.Count > 0);
+            // A transport-only consumer does not run the HarnessClient application handler.
+            Assert.Equal(0, timings.Snapshot().ApplicationQueue.Count);
+            Assert.Equal(0, timings.Snapshot().ApplicationHandler.Count);
+        }
+    }
+
     private static async Task<SoeClientSession> ConnectAsync(
         SoeListener listener, string protocol, byte[]? key, CancellationToken token) =>
         await SoeClientSession.OpenAsync(

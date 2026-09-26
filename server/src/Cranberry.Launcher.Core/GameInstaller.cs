@@ -9,11 +9,13 @@ namespace Cranberry.Launcher.Core;
 public sealed class GameInstaller(HttpClient http) : IDisposable
 {
     private readonly bool _usesContentOrigin;
+    private readonly int _concurrentDownloads = 1;
     private bool _disposed;
 
-    private GameInstaller(HttpClient http, bool usesContentOrigin) : this(http)
+    private GameInstaller(HttpClient http, bool usesContentOrigin, int concurrentDownloads) : this(http)
     {
         _usesContentOrigin = usesContentOrigin;
+        _concurrentDownloads = concurrentDownloads;
     }
 
     /// <summary>
@@ -26,21 +28,28 @@ public sealed class GameInstaller(HttpClient http) : IDisposable
     {
         ArgumentNullException.ThrowIfNull(apiHttp);
         ArgumentNullException.ThrowIfNull(settings);
+        if (settings.ConcurrentDownloads is < 1 or > 8)
+            throw new InvalidDataException("ConcurrentDownloads must be between 1 and 8.");
         Uri? contentBase = LauncherSettings.ValidateContentBase(settings.ContentBaseUrl);
         if (contentBase is null) return new GameInstaller(apiHttp);
-        var contentHttp = new HttpClient(contentHandler ?? CreateContentHandler())
-        {
-            BaseAddress = contentBase,
-            Timeout = TimeSpan.FromMinutes(20)
-        };
-        return new GameInstaller(contentHttp, usesContentOrigin: true);
+        return new GameInstaller(CreateContentHttp(contentBase, contentHandler),
+            usesContentOrigin: true, settings.ConcurrentDownloads);
     }
+
+    internal static HttpClient CreateContentHttp(Uri contentBase, HttpMessageHandler? handler = null) => new(handler ?? CreateContentHandler())
+    {
+        BaseAddress = contentBase,
+        Timeout = TimeSpan.FromMinutes(20),
+        DefaultRequestVersion = HttpVersion.Version20,
+        DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower
+    };
 
     internal static HttpClientHandler CreateContentHandler() => new()
     {
         AllowAutoRedirect = false,
         UseCookies = false,
         UseDefaultCredentials = false,
+        MaxConnectionsPerServer = 8,
         Credentials = null
         // Normal platform TLS verification: no game certificate callback or pin.
     };
@@ -109,26 +118,56 @@ public sealed class GameInstaller(HttpClient http) : IDisposable
         await using var lease = new FileStream(SafePath(directory, ".cranberry.lock"), FileMode.OpenOrCreate,
             FileAccess.ReadWrite, FileShare.None);
         long total = manifest.Files.Sum(f => f.Size), done = 0;
-        foreach (GameFile file in manifest.Files)
+        long[] completed = new long[manifest.Files.Count];
+        var progressGate = new object();
+        void Report(int index, string message, long bytes)
         {
-            cancellation.ThrowIfCancellationRequested();
-            string target = SafePath(directory, file.Path);
-            progress?.Report(new($"Checking {file.Path}", done, total));
-            if (!await Matches(target, file, cancellation))
+            lock (progressGate)
             {
-                if (verifyOnly) throw new InvalidDataException($"Install / repair is needed: {file.Path}");
-                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                string part = SafePath(directory, $".cranberry-downloads/{file.Sha256}.part");
-                Directory.CreateDirectory(Path.GetDirectoryName(part)!);
-                await DownloadVerified(file, part, done, total, progress, cancellation);
-                SafePath(directory, file.Path);
-                File.Move(part, target, overwrite: true);
+                long current = Math.Clamp(bytes, 0, manifest.Files[index].Size);
+                done += current - completed[index];
+                completed[index] = current;
+                progress?.Report(new(message, done, total));
             }
-            done += file.Size;
-            progress?.Report(new($"Verified {file.Path}", done, total));
         }
+        // A hash names the resume file. Keep entries with identical content in the same
+        // worker so duplicate assets can never race over that shared partial file.
+        var groups = Enumerable.Range(0, manifest.Files.Count)
+            .GroupBy(i => manifest.Files[i].Sha256, StringComparer.OrdinalIgnoreCase);
+        await Parallel.ForEachAsync(groups, new ParallelOptions
+        {
+            MaxDegreeOfParallelism = verifyOnly ? 1 : _concurrentDownloads,
+            CancellationToken = cancellation
+        }, async (indices, ct) =>
+        {
+            foreach (int index in indices)
+            {
+                ct.ThrowIfCancellationRequested();
+                GameFile file = manifest.Files[index];
+                string target = SafePath(directory, file.Path);
+                Report(index, $"Checking {file.Path}", 0);
+                if (!await Matches(target, file, ct).ConfigureAwait(false))
+                {
+                    if (verifyOnly) throw new InvalidDataException($"Install / repair is needed: {file.Path}");
+                    Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+                    string part = SafePath(directory, $".cranberry-downloads/{file.Sha256}.part");
+                    Directory.CreateDirectory(Path.GetDirectoryName(part)!);
+                    await DownloadVerified(file, part, 0, file.Size,
+                        new FileProgress(p => Report(index, p.Message, p.Complete)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                    SafePath(directory, file.Path);
+                    File.Move(part, target, overwrite: true);
+                }
+                Report(index, $"Verified {file.Path}", file.Size);
+            }
+        }).ConfigureAwait(false);
         string receipt = SafePath(directory, ".cranberry-install.json");
         await File.WriteAllTextAsync(receipt, JsonSerializer.Serialize(new { manifest.BuildId, VerifiedUtc = DateTimeOffset.UtcNow }), cancellation);
+    }
+
+    private sealed class FileProgress(Action<InstallProgress> report) : IProgress<InstallProgress>
+    {
+        public void Report(InstallProgress value) => report(value);
     }
 
     private async Task DownloadVerified(GameFile file, string part, long done, long total,
@@ -157,15 +196,20 @@ public sealed class GameInstaller(HttpClient http) : IDisposable
         }
     }
 
-    private async Task<HttpResponseMessage> RequestContent(string route, long offset, CancellationToken ct)
+    internal static async Task<HttpResponseMessage> RequestContent(HttpClient http, string route, long offset,
+        bool usesContentOrigin, CancellationToken ct)
     {
         Uri uri = new(http.BaseAddress!, route);
         for (int redirects = 0; ; redirects++)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            using var request = new HttpRequestMessage(HttpMethod.Get, uri)
+            {
+                Version = http.DefaultRequestVersion,
+                VersionPolicy = http.DefaultVersionPolicy
+            };
             if (offset > 0) request.Headers.Range = new RangeHeaderValue(offset, null);
             var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
-            if (!_usesContentOrigin || response.StatusCode is not (HttpStatusCode.MovedPermanently
+            if (!usesContentOrigin || response.StatusCode is not (HttpStatusCode.MovedPermanently
                 or HttpStatusCode.Redirect or HttpStatusCode.SeeOther or HttpStatusCode.TemporaryRedirect
                 or HttpStatusCode.PermanentRedirect)) return response;
             Uri? location = response.Headers.Location;
@@ -189,7 +233,7 @@ public sealed class GameInstaller(HttpClient http) : IDisposable
         if (offset >= file.Size) offset = 0;
         // Publish-Game uses uppercase SHA-256 object names. Object stores have case-sensitive keys.
         string route = _usesContentOrigin ? file.Sha256.ToUpperInvariant() : "api/content/" + file.Sha256;
-        using var response = await RequestContent(route, offset, ct);
+        using var response = await RequestContent(http, route, offset, _usesContentOrigin, ct);
         response.EnsureSuccessStatusCode();
         if (response.StatusCode == HttpStatusCode.PartialContent)
         {

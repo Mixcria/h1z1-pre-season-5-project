@@ -53,7 +53,7 @@ public static class LoadoutOpcodes
 /// +0x10 (u64), +0x18 (u8), +0x20</c> and keys the hash on <c>+0x04</c>, which corroborates every
 /// field width above.
 /// <para>
-/// <b>Correction to docs/10.</b> Rows 1642-1644 of the original self-record layout reference record
+/// <b>Correction to docs/10.</b> Rows 1642-1644 of <c>10-codex-self-record-layout.md</c> record
 /// <c>FUN_140a3bbb0</c> as three <c>u32</c>s (12 bytes). That is the extractor's known "no dump for
 /// the callee" failure mode - <c>FUN_140a3bda0</c> had no decompile - and it misses 13 bytes per
 /// element. Populating <c>SelfRecord.cs:509</c> with the 12-byte shape would abort the self-record
