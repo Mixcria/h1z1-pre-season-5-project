@@ -90,9 +90,12 @@ restart of 2. Four GUI processes and three server processes closed, with the
 data lease and all three local ports released after each phase. The game-active
 shutdown guard was tested with an injected game-state signal; H1Z1 was not run.
 The enabled self-contained 0.2.0-preview.1 package and signed update archive were
-built locally. GitHub CI for this change and native PLAY remain unconfirmed.
+built locally. The owner subsequently confirmed successful native launch, death
+and return to the main menu. This is one reported sequence; repeated transition
+cycles and reopening/preferences retention were not separately confirmed in that
+report. GitHub CI for this change remains pending publication.
 
 The 0.2.0-preview.1 source change adds the updater, offline publisher, package
 inventory and build/test integration. It changes no client binaries/assets or
-gameplay rules. Publication and native game confirmation are separate review
-steps; build success alone is not a playtest.
+gameplay rules. Publication remains a separate approval step; build success alone
+is not a playtest.
