@@ -24,8 +24,12 @@ Accounts, saves, settings and the default Game folder are kept in:
 This is separate from the normal Cranberry online launcher's settings.
 Back up this folder before experimenting with community changes.
 
-Updates are manual. Close the launcher, extract a newer release into a new
-folder and open it. It reuses your local accounts, settings and installed game.
+Signed player releases check for launcher and bundled server updates when you
+open Cranberry.Launcher.exe. Keep using that original shortcut. Close the game
+before updating. Your accounts, settings and installed game are kept; an update
+that fails to start falls back to the previous version. Without Internet access,
+the installed version remains available. Developer packages do not auto-update.
+Older manual-only launchers need this updater-enabled package installed once.
 Install / repair fetches files that changed for the selected release.
 Do not share the private data folder, its registration codes or certificate.
 
@@ -39,7 +43,7 @@ If startup fails, read the message and the logs beneath the local data folder.
 Only one local edition may use a data folder at a time. Another running
 server is never stopped to claim its ports. No SDK is needed to play.
 
-Preview.2 corrects the missing startup log, local owner inventory grants and
-multiplayer queue minimum found during preview.1 playtesting. Automated checks
-cover local startup, persistence, menu inventory and match entry. A native
-game playtest of this corrected package remains necessary.
+This preview adds automatic launcher/server updates and startup rollback.
+Automated checks cover package verification, local startup and preservation of
+accounts and settings. Confirm PLAY and returning to the menu on your PC before
+treating a new release as stable.

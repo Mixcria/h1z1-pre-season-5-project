@@ -20,7 +20,7 @@ The package includes the launcher, server and their .NET runtimes. The game down
 
 Solo, Duos and Fives accept one local player and start five seconds after the pre-game world finishes loading. Every local account, including the administrator, receives all catalogue skins, 200,000 starter Crowns and 500 locked crates in each of 31 families. Existing accounts receive missing local entitlements on upgrade; spent starter currency and crates are not refilled.
 
-Local data is stored in `%LOCALAPPDATA%\CranberryCommunity`, outside the release folder. Close the launcher before switching releases. Extract a newer ZIP into a new folder and launch it to reuse your existing accounts, preferences and game installation. Back up the data folder before testing changes to persistent data formats. This preview uses loopback only; it is intended for local development and does not provide LAN hosting.
+Local data is stored in `%LOCALAPPDATA%\CranberryCommunity`, outside the release folder. Signed community releases can update the launcher and bundled server together while retaining your accounts, preferences and game installation. An older manual-only launcher needs one manual installation of an updater-enabled release first. Close the game before switching releases. Back up the data folder before testing changes to persistent data formats. This preview uses loopback only; it is intended for local development and does not provide LAN hosting.
 
 ## Build and test
 
@@ -63,11 +63,11 @@ The shipped generated data and static runtime files are sufficient for an ordina
 
 ## Community updates
 
-Keep normal development on `main`, use branches and pull requests for changes, and publish a numbered release when a build is ready for players. There is no requirement to update on a schedule. A commit on GitHub does not change someone's installed server.
+Keep normal development on `main`, use branches and pull requests for changes, and publish a numbered release when a build is ready for players. There is no requirement to update on a schedule. A commit on GitHub does not change someone's installed server. Automatic updates require a reviewed release with a community-signed manifest and matching launcher/server ZIP; ordinary developer builds have update checks disabled.
 
 GitHub holds source, issues, pull requests and the launcher/server ZIP. Cloudflare R2 holds game content at the public download origin in `package/download-host.json`. Each client file is addressed by its SHA-256, so old releases can continue requesting their matching content. Retain objects referenced by releases that remain supported. See [RELEASING.md](RELEASING.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The included GitHub Actions workflow builds and tests pull requests and produces a preview artifact. It does not deploy a live server or publish a Release. No production credentials are required.
+The included GitHub Actions workflow builds and tests pull requests and produces an unsigned preview artifact. It does not deploy a live server, hold a release signing key, or publish a Release. No production credentials are required. Player releases use a dedicated offline community key; see [the signing and recovery procedure](RELEASING.md).
 
 ## Attribution
 

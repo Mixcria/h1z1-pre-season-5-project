@@ -23,6 +23,7 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         bool render = args.Length >= 2 && args[0] is "--render" or "--render-setup";
         bool preview = args.Length > 0 && args[0] == "--preview";
+        CommunityChildSession? updateSession = null;
         try
         {
             bool localMode = !render && !preview && (args.Length == 0 || args.FirstOrDefault() == "--local-data")
@@ -30,6 +31,17 @@ internal static class Program
             if (localMode)
             {
                 if (args.Length != 0 && args.Length != 2) throw new ArgumentException("Use --local-data followed by a private data folder.");
+                string? data = args.Length == 2 ? args[1] : null;
+                updateSession = CommunityChildSession.Open(AppContext.BaseDirectory, data);
+                if (updateSession is null && File.Exists(Path.Combine(AppContext.BaseDirectory, CommunityUpdateSettings.FileName)))
+                {
+                    var updates = CommunityUpdateSettings.Load(AppContext.BaseDirectory);
+                    if (updates.Sequence > 0)
+                    {
+                        Application.Run(new CommunityUpdateWindow(AppContext.BaseDirectory, data));
+                        return;
+                    }
+                }
                 Local = LocalEdition.Prepare(AppContext.BaseDirectory, args.Length == 2 ? args[1] : null);
                 SettingsPath = Local.ProfilePath;
                 PackagePath = Local.PackageProfilePath;
@@ -57,7 +69,7 @@ internal static class Program
             if (form is MainForm launcher && (render || preview))
                 launcher.RenderPreview(args.Length > 2 ? args[2] : "game");
             if (form is MainForm community && Local is not null)
-                community.EnableLocalEdition(Local);
+                community.EnableLocalEdition(Local, updateSession);
             if (form is MainForm updatable && Local is null && !render && !preview && args.FirstOrDefault() != "--local-host")
                 updatable.EnableLauncherUpdates(args);
             if (render)
@@ -81,7 +93,8 @@ internal static class Program
         }
         catch (Exception ex)
         {
-            if (render) { Console.Error.WriteLine(ex); Environment.ExitCode = 1; }
+            if (updateSession is not null) { updateSession.Failed(ex); Environment.ExitCode = 1; }
+            else if (render) { Console.Error.WriteLine(ex); Environment.ExitCode = 1; }
             else MessageBox.Show(ex.Message, "Cranberry Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         finally { Local?.Dispose(); }

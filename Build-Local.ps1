@@ -1,8 +1,26 @@
-param([string]$Output, [string]$Version, [switch]$Zip)
+param(
+    [string]$Output,
+    [string]$Version,
+    [switch]$Zip,
+    [long]$UpdateSequence = 0,
+    [string]$UpdatePublicKeyFile,
+    [switch]$StableUpdates
+)
 $ErrorActionPreference = 'Stop'
 $repo = $PSScriptRoot
 if (-not $Version) { $Version = (Get-Content -LiteralPath (Join-Path $repo 'VERSION') -Raw).Trim() }
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?$') { throw 'Use a version such as 0.1.0-preview.1.' }
+if ($UpdateSequence -lt 0 -or $UpdateSequence -gt 999999999999) { throw 'UpdateSequence must be zero (developer build) or a positive release sequence below one trillion.' }
+if ($UpdateSequence -gt 0 -and -not $UpdatePublicKeyFile) { throw 'Player updates require an explicit dedicated community public key file.' }
+$updatePublicKey = ''
+if ($UpdatePublicKeyFile) {
+    $publicPem = Get-Content -LiteralPath $UpdatePublicKeyFile -Raw
+    if ($publicPem -notmatch '\A-----BEGIN PUBLIC KEY-----\s+([A-Za-z0-9+/=\r\n]+)\s+-----END PUBLIC KEY-----\s*\z') {
+        throw 'UpdatePublicKeyFile must contain only a public SPKI PEM created by CommunityRelease keygen.'
+    }
+    $updatePublicKey = $Matches[1] -replace '\s', ''
+    [void][Convert]::FromBase64String($updatePublicKey)
+}
 if (-not $Output) { $Output = Join-Path $repo 'artifacts\Cranberry-Local' }
 $Output = [IO.Path]::GetFullPath($Output)
 if (Test-Path -LiteralPath $Output) { throw 'Choose a new output directory to keep existing releases intact.' }
@@ -23,6 +41,17 @@ $definition = [ordered]@{
     AppearanceSha256 = (Get-FileHash -LiteralPath (Join-Path $Output 'runtime\Data\dynamicAppearance.bin') -Algorithm SHA256).Hash
 }
 [IO.File]::WriteAllText((Join-Path $Output 'local-edition.json'), ($definition | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
+$update = [ordered]@{
+    schema = 1
+    repository = 'Mixcria/h1z1-pre-season-5-project'
+    publicKey = $updatePublicKey
+    includePrereleases = -not $StableUpdates
+    sequence = $UpdateSequence
+    version = $Version
+}
+[IO.File]::WriteAllText((Join-Path $Output 'community-update.json'), ($update | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
+dotnet run --project (Join-Path $repo 'tools\CommunityRelease\CommunityRelease.csproj') -c Release --artifacts-path (Join-Path $artifacts 'publisher') -- inventory --package $Output
+if ($LASTEXITCODE -ne 0) { throw 'Package inventory and community update configuration validation failed.' }
 if ($Zip) {
     $zipPath = $Output + '.zip'
     if (Test-Path -LiteralPath $zipPath) { throw 'Release ZIP already exists.' }

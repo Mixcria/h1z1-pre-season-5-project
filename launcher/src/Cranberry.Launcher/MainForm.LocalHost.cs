@@ -7,7 +7,7 @@ internal sealed partial class MainForm
     private bool _startingLocalHost;
     private readonly CancellationTokenSource _localHostStop = new();
 
-    internal void EnableLocalEdition(LocalEdition edition)
+    internal void EnableLocalEdition(LocalEdition edition, CommunityChildSession? updateSession = null)
     {
         _startingLocalHost = true;
         Text = "Cranberry Local";
@@ -20,18 +20,33 @@ internal sealed partial class MainForm
         {
             try
             {
-                await Task.Run(() => edition.Start(_localHostStop.Token));
+                await Task.Run(() => edition.Start(_localHostStop.Token,
+                    updateSession is null ? null : updateSession.HostStarted));
                 if (!IsDisposed && !Disposing)
                 {
                     _startingLocalHost = false;
                     _status.Text = "Local server ready. Create a local account or sign in to play.";
                     UpdateSessionView();
+                    updateSession?.Ready();
+                    if (!string.IsNullOrEmpty(updateSession?.Notice)) _status.Text = updateSession.Notice;
                 }
             }
             catch (OperationCanceledException) when (_localHostStop.IsCancellationRequested) { }
             catch (Exception ex)
-            { if (!IsDisposed && !Disposing) _status.Text = Friendly(ex); }
+            {
+                if (updateSession is not null)
+                {
+                    updateSession.Failed(ex);
+                    if (!IsDisposed && !Disposing) Close();
+                }
+                else if (!IsDisposed && !Disposing) _status.Text = Friendly(ex);
+            }
         });
+        if (updateSession is not null) Shown += async (_, _) =>
+        {
+            await updateSession.WaitForOwnerExit();
+            if (!IsDisposed && !Disposing) Close();
+        };
         FormClosed += (_, _) => _localHostStop.Cancel();
     }
 

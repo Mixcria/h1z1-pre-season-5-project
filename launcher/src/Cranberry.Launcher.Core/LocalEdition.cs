@@ -118,7 +118,7 @@ public sealed class LocalEdition : IDisposable
         catch { lease.Dispose(); throw; }
     }
 
-    public async Task Start(CancellationToken stop = default)
+    public async Task Start(CancellationToken stop = default, Action<int, long>? hostStarted = null)
     {
         stop.ThrowIfCancellationRequested();
         Process process;
@@ -150,6 +150,8 @@ public sealed class LocalEdition : IDisposable
             start.ArgumentList.Add(_ports.Login.ToString());
             start.ArgumentList.Add(_ports.Gateway.ToString());
             _process = process = Process.Start(start) ?? throw new IOException("Could not start the bundled server.");
+            // The updater records exactly the process this edition owns before waiting for health.
+            hostStarted?.Invoke(process.Id, process.StartTime.ToUniversalTime().Ticks);
             string stamp = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff");
             _ = Pump(process.StandardOutput, Path.Combine(Root, "logs", $"local-{stamp}.log"));
             _ = Pump(process.StandardError, Path.Combine(Root, "logs", $"local-{stamp}.error.log"));
@@ -210,36 +212,62 @@ public sealed class LocalEdition : IDisposable
         catch (Exception ex) when (ex is IOException or ObjectDisposedException or UnauthorizedAccessException) { }
     }
 
+    /// <summary>
+    /// Stops only this edition's host and confirms that it exited. The data-directory lease
+    /// stays held until Dispose succeeds, so a replacement cannot take over a running host.
+    /// </summary>
+    public void StopHost()
+    {
+        lock (_gate)
+        {
+            if (_disposed || _process is null) return;
+            try
+            {
+                if (!_process.HasExited)
+                {
+                    try
+                    {
+                        _process.StandardInput.WriteLine("stop");
+                        _process.StandardInput.Flush();
+                    }
+                    catch (Exception ex) when (ex is IOException or InvalidOperationException) { }
+                    finally
+                    {
+                        try { _process.StandardInput.Close(); }
+                        catch (Exception ex) when (ex is IOException or InvalidOperationException) { }
+                    }
+                    if (!_process.WaitForExit(8_000))
+                    {
+                        try { _process.Kill(entireProcessTree: false); }
+                        catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
+                        {
+                            // It can exit between the wait and Kill. Only a confirmed exit
+                            // permits us to ignore that race; permission failures still fail.
+                            if (!_process.HasExited) throw;
+                        }
+                        if (!_process.WaitForExit(3_000))
+                            throw new IOException("The owned local server did not exit after shutdown.");
+                    }
+                }
+                if (!_process.HasExited)
+                    throw new IOException("The owned local server is still running.");
+            }
+            catch (Exception ex) when (ex is IOException or InvalidOperationException or System.ComponentModel.Win32Exception)
+            {
+                throw new IOException("Could not confirm local server shutdown. This edition still owns its data folder; no replacement was started.", ex);
+            }
+        }
+    }
+
     public void Dispose()
     {
         lock (_gate)
         {
             if (_disposed) return;
-            _disposed = true;
-            if (_process is not null)
-            {
-                try
-                {
-                    if (!_process.HasExited)
-                    {
-                        try
-                        {
-                            _process.StandardInput.WriteLine("stop");
-                            _process.StandardInput.Flush();
-                        }
-                        catch (IOException) { }
-                        finally { _process.StandardInput.Close(); }
-                        if (!_process.WaitForExit(8_000))
-                        {
-                            _process.Kill(entireProcessTree: false);
-                            _process.WaitForExit(3_000);
-                        }
-                    }
-                }
-                catch (Exception ex) when (ex is IOException or InvalidOperationException or System.ComponentModel.Win32Exception) { }
-                finally { _process.Dispose(); _process = null; }
-            }
+            StopHost(); // Failure preserves both the process and lease for a safe retry.
+            _process?.Dispose(); _process = null;
             _lease.Dispose();
+            _disposed = true;
         }
     }
 
