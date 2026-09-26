@@ -122,6 +122,10 @@ The next run exposed an identity test's callback-order assumption and contention
 in real-timer gateway tests. The identity test now waits for zoning, and gateway
 timer tests run separately from concurrent classes. Their behavior assertions
 remain in place.
+After those passed on GitHub, all 89 publisher checks passed but the shell retained
+the last expected rejection's exit code. The smoke script now clears that code
+only after every assertion succeeds. Local wrapper checks confirm success exits
+zero and an actual assertion failure still exits nonzero. Package bytes are unchanged.
 
 The 0.2.0-preview.1 source change adds the updater, offline publisher, package
 inventory, build/test integration and the local lobby policy above. Client

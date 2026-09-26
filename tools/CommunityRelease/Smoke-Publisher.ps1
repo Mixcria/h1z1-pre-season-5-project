@@ -143,3 +143,6 @@ WriteJson (Join-Path $Evidence 'results.json') ([ordered]@{
     keyNote = 'Disposable fixture keys only, stored outside packages. No release authority generated.'
 })
 Write-Host "All $($checks.Count) publisher checks passed. Nothing was published."
+# GitHub's PowerShell wrapper propagates LASTEXITCODE. The final publisher call
+# intentionally fails; all expected exit codes were asserted before reaching here.
+$global:LASTEXITCODE = 0
