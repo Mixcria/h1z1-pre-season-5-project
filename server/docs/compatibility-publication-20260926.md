@@ -18,6 +18,7 @@ No client executable, DLL, game asset or original-balance value is changed.
 | Source review | No additional blocking defect found; outgoing files reviewed against `454f73d` |
 | Protocol discovery index | Refreshed against current source; 1,743 registration rows and 251 lexical references, with unmapped metadata retained |
 | Native parked-seat check | Owner confirmed the updated main-local seat changes worked perfectly, then explicitly approved GitHub publication |
+| CI test follow-up | 191 hosted-game and mode-routing checks passed with .NET processor count limited to two; no runtime changes |
 
 Private evidence is under
 `C:/Aug2017/out/compatibility-20260926/seat-speed-01`: `vehicle-results`,
@@ -27,6 +28,16 @@ repository's ignored `server/out` directory. Optional capture/reference fixtures
 and live-harness scenarios remain skipped; no live service was tested.
 Existing unrelated analyzer warnings remain. These results establish local
 implementation behavior, not original retail server rules or native rendering.
+
+The first [PR #4 CI run](https://github.com/Mixcria/h1z1-pre-season-5-project/actions/runs/36254387820)
+failed the existing hosted Duos queue test at its two-second blocking wait for
+any scheduled callback. Admission/mode assertions had passed; the same test and
+scheduling path predate this batch. The test now yields asynchronously and drains
+callbacks until the player's actual queue update arrives, with a bounded deadline.
+It retains the mode and successful-transfer assertions and avoids mistaking an
+unrelated hosted-access callback for the queue update. The 191 focused Release
+checks passed; logs and TRX are in private `publish-01/hosted-after`. GitHub checks
+on the updated head are required before merge. The installed runtime is unchanged.
 
 ## Local build and source publication
 
