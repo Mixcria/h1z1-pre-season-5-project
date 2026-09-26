@@ -93,7 +93,11 @@ The enabled self-contained 0.2.0-preview.1 package and signed update archive wer
 built locally. The owner subsequently confirmed successful native launch, death
 and return to the main menu. This is one reported sequence; repeated transition
 cycles and reopening/preferences retention were not separately confirmed in that
-report. GitHub CI for this change remains pending publication.
+report. GitHub check results are recorded on the updater pull request.
+
+The first GitHub run exposed an existing gateway test with a five-second wait
+budget for roughly four seconds of chained timers. Only that wait now permits
+ten seconds of CI scheduling margin; gameplay timers and assertions are unchanged.
 
 The 0.2.0-preview.1 source change adds the updater, offline publisher, package
 inventory and build/test integration. It changes no client binaries/assets or

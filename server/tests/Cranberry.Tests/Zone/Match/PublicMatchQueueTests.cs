@@ -139,7 +139,9 @@ public sealed partial class BountyGatewayTests
         Assert.Empty(f.Service.PublicMatches);
         Assert.Equal("Menu", f.Service.ForTest(player).Step);
         initialized = true;
-        f.Pump(() => f.Sent(player).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning));
+        // Readiness/queue polls, the 3-second prompt and zoning delay already need
+        // about 4 seconds. Allow CI scheduling margin without changing those timers.
+        f.Pump(() => f.Sent(player).Any(p => p.Length > 1 && p[1] == ZoneOpcodes.ClientBeginZoning), timeoutMs: 10_000);
         f.Send(player, w => w.WriteByte(ZoneOpcodes.ClientIsReady));
         Assert.Null(Assert.Single(f.Service.PublicMatches).CountdownDeadlineMs);
         f.Ready(player);
