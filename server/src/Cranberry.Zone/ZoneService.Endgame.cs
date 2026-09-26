@@ -131,6 +131,7 @@ public sealed partial class ZoneService
         StopCharacterFire(connection, state);
         StopPlayerBleeding(connection, state);
         ClearHealingHud(connection, state);
+        CancelInventoryCasts(state);
         StopCombatPresentationOnDeath(state);
         state.DeathSent = true;
         CancelVehicleComponentRemoval(connection, state);

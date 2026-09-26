@@ -435,6 +435,7 @@ public sealed partial class ZoneService : ISoeService
             state.PendingClientAdmission = null;
             state.PendingLogout = null;
             state.InteractionGeneration++;
+            CancelInventoryCasts(state);
             LeaveAirdrops(state);
             LeaveSharedLoot(state);
             state.BootstrapCancellation?.Cancel();
@@ -2744,6 +2745,7 @@ public sealed partial class ZoneService : ISoeService
             // previous world's objects were still on the client and skip them.
             state.StreamedLoot.Clear();
             StopCharacterFire(connection, state);
+            CancelInventoryCasts(state);
             state.WorldGeneration++;
             state.Combat.Grenades.Clear();
             state.Combat.Draw.Clear();
@@ -3330,8 +3332,7 @@ public sealed partial class ZoneService : ISoeService
         state.AutoAcceptReplay = false;
         state.InteractionGeneration++;
         state.Combat.Grenades.Clear();
-        state.CraftBusyUntil = 0;
-        state.ShredBusyUntil = 0;
+        CancelInventoryCasts(state);
         CancelVehicleComponentRemoval(connection, state, notify: false);
         CancelMedicalCast(connection, state, "leaving the world", notify: false);
         ClearHealingHud(connection, state);
@@ -6272,29 +6273,33 @@ public sealed partial class ZoneService : ISoeService
         ItemActionResult plan)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
+        DiscardStaleInventoryCasts(state);
+        if (state.DeathSent || state.Hitpoints == 0) return;
         long now = Environment.TickCount64;
-        if (state.PendingVehicleRemoval is not null || state.ShredBusyUntil > now)
+        if (state.PendingVehicleRemoval is not null || state.PendingShred is not null || state.ShredBusyUntil > now)
         {
             SendTunnel(connection, writer =>
                 new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
-            _log.Info($"{connection} inventory: {plan.Option} REFUSED — a shred is already running "
-                + $"for another {state.ShredBusyUntil - now} ms (ItemUseOptions BUSY_MSEC "
+            _log.Info($"{connection} inventory: {plan.Option} REFUSED — a shred is pending "
+                + $"({Math.Max(0, state.ShredBusyUntil - now)} ms until its deadline; ItemUseOptions BUSY_MSEC "
                 + $"{plan.BusyMilliseconds})");
             return;
         }
 
         int duration = Math.Max(plan.BusyMilliseconds, 0);
         state.ShredBusyUntil = now + duration;
-        int interactionGeneration = state.InteractionGeneration;
+        var cast = new PendingInventoryCast(inventory, state.WorldGeneration, state.InteractionGeneration);
+        state.PendingShred = cast;
         bool armed = Later(connection, duration, () =>
         {
-            if (state.InteractionGeneration != interactionGeneration
-                || !ReferenceEquals(inventory, state.Inventory)) return;
+            if (!ReferenceEquals(state.PendingShred, cast)) return;
+            state.PendingShred = null;
+            state.ShredBusyUntil = 0;
+            if (!InventoryCastContextMatches(state, cast) || state.DeathSent || state.Hitpoints == 0) return;
             // The item can be moved during the cast by a forged/late request. ShredTable performs
             // ownership and placement validation again at completion and leaves it untouched on a
             // refusal, exactly as the reference does.
             CraftOutcome outcome = ShredTable.Shred(inventory, plan.ItemGuid);
-            state.ShredBusyUntil = 0;
             ApplyCraft(
                 connection,
                 state,
@@ -6321,6 +6326,7 @@ public sealed partial class ZoneService : ISoeService
 
         if (!armed)
         {
+            state.PendingShred = null;
             state.ShredBusyUntil = 0;
             SendTunnel(connection, writer => new ContainerError(
                 state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
@@ -6354,11 +6360,13 @@ public sealed partial class ZoneService : ISoeService
         ItemActionResult plan)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
+        DiscardStaleInventoryCasts(state);
         long now = Environment.TickCount64;
         if (state.PendingMedicalCast is { } previous
             && (previous.WorldGeneration != state.WorldGeneration || !ReferenceEquals(previous.Inventory, state.Inventory)))
             CancelMedicalCast(connection, state, "world or inventory changed", notify: false);
-        if (state.PendingVehicleRemoval is not null || state.PendingMedicalCast is not null || state.ConsumeBusyUntil > now || state.ShredBusyUntil > now)
+        if (state.PendingVehicleRemoval is not null || state.PendingMedicalCast is not null
+            || state.PendingShred is not null || state.ConsumeBusyUntil > now || state.ShredBusyUntil > now)
         {
             SendTunnel(connection, writer =>
                 new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
@@ -6589,13 +6597,15 @@ public sealed partial class ZoneService : ISoeService
         CraftingOptions crafting)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
+        DiscardStaleInventoryCasts(state);
+        if (state.DeathSent || state.Hitpoints == 0) return;
         long now = Environment.TickCount64;
-        if (state.PendingVehicleRemoval is not null || state.CraftBusyUntil > now)
+        if (state.PendingVehicleRemoval is not null || state.PendingCraft is not null || state.CraftBusyUntil > now)
         {
             SendTunnel(connection, writer =>
                 new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
             _log.Info($"{connection} crafting: recipe {request.RecipeId} REFUSED — a craft is "
-                + $"already running for another {state.CraftBusyUntil - now} ms");
+                + $"pending ({Math.Max(0, state.CraftBusyUntil - now)} ms until its deadline)");
             return;
         }
 
@@ -6624,13 +6634,15 @@ public sealed partial class ZoneService : ISoeService
 
         int duration = (int)Math.Min((long)Math.Max(recipe.BusyMilliseconds, 0) * requested, int.MaxValue);
         state.CraftBusyUntil = now + duration;
-        int interactionGeneration = state.InteractionGeneration;
+        var cast = new PendingInventoryCast(inventory, state.WorldGeneration, state.InteractionGeneration);
+        state.PendingCraft = cast;
         bool armed = Later(connection, duration, () =>
         {
-            if (state.InteractionGeneration != interactionGeneration
-                || !ReferenceEquals(inventory, state.Inventory)) return;
-            CraftOutcome outcome = CraftingService.Craft(inventory, recipe, requested, crafting);
+            if (!ReferenceEquals(state.PendingCraft, cast)) return;
+            state.PendingCraft = null;
             state.CraftBusyUntil = 0;
+            if (!InventoryCastContextMatches(state, cast) || state.DeathSent || state.Hitpoints == 0) return;
+            CraftOutcome outcome = CraftingService.Craft(inventory, recipe, requested, crafting);
             ApplyCraft(
                 connection,
                 state,
@@ -6646,6 +6658,7 @@ public sealed partial class ZoneService : ISoeService
 
         if (!armed)
         {
+            state.PendingCraft = null;
             state.CraftBusyUntil = 0;
             SendTunnel(connection, writer => new RecipeCraftingStatus(recipe.RecipeId, RecipeCraftingState.Ready).WriteTo(writer));
             SendTunnel(connection, writer => new ContainerError(
@@ -9808,11 +9821,11 @@ public sealed partial class ZoneService : ISoeService
 
         /// <summary>
         /// <c>Environment.TickCount64</c> at which the running shred's <c>BUSY_MSEC</c> window ends.
-        /// A second <c>SalvageItem</c> arriving before it is refused (docs/86 edit 6a): the client
-        /// has locked the character out for that long, so a request inside the window did not come
-        /// from the context menu.
+        /// <see cref="PendingShred"/> retains ownership until the deferred callback commits,
+        /// including when the listener dispatches it after this deadline.
         /// </summary>
         public long ShredBusyUntil { get; set; }
+        public PendingInventoryCast? PendingShred { get; set; }
         public PendingVehicleRemoval? PendingVehicleRemoval { get; set; }
         public long ProximityShredSequence { get; set; }
         public Dictionary<ulong, FuelCanDurability> FuelCans { get; } = [];
@@ -9837,11 +9850,11 @@ public sealed partial class ZoneService : ISoeService
         public uint WoundWeapon { get; set; }
 
         /// <summary>
-        /// <c>Environment.TickCount64</c> at which the running craft's cast bar ends (D277). A
-        /// second <c>Command.RecipeStart</c> arriving before it is refused, for the same reason as
-        /// <see cref="ShredBusyUntil"/>: the bar has locked the character out for that long.
+        /// <c>Environment.TickCount64</c> at which the running craft's cast bar ends (D277).
+        /// <see cref="PendingCraft"/> also blocks repeats while the due callback awaits dispatch.
         /// </summary>
         public long CraftBusyUntil { get; set; }
+        public PendingInventoryCast? PendingCraft { get; set; }
 
         /// <summary>
         /// Inventory guid of the weapon in the player's RHand, or 0 when the hand is empty

@@ -144,7 +144,12 @@ public sealed class WornSkinsInWorldTests
         Assert.Equal(runtimeCount, combat.Shooter.WeaponCount);
         Assert.Equal(AmmoOptions.Default.MaxDurability - 5, combat.Shooter.DurabilityOf(weapon.Guid));
         Assert.Equal(1, combat.Shooter.FireModeOf(weapon.Guid));
-        Assert.Same(pending, combat.Reload);
+        if (held)
+        {
+            Assert.Null(combat.Reload);
+            Assert.Null(WeaponFireArm.AdvanceReload(combat, pending, pending.DueAtMs, weapon.Guid, inventory));
+        }
+        else Assert.Same(pending, combat.Reload);
         Assert.Equal(1800, pending.DueAtMs);
         Assert.Equal(12, ammo.Count(reloadingAmmo));
         Assert.Equal(FireVerdict.RateOfFire, combat.Shooter.Fire(

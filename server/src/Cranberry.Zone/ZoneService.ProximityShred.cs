@@ -41,7 +41,8 @@ public sealed partial class ZoneService
             return true;
         }
         if (RefuseInteractionDuringLogout(connection, state)) return true;
-        if (state.ShredBusyUntil > Environment.TickCount64 || state.PendingMedicalCast is not null)
+        DiscardStaleInventoryCasts(state);
+        if (state.PendingShred is not null || state.ShredBusyUntil > Environment.TickCount64 || state.PendingMedicalCast is not null)
         {
             Refuse(ContainerErrorCode.ContainerInUse);
             return true;
@@ -55,13 +56,15 @@ public sealed partial class ZoneService
         int world = state.WorldGeneration, interaction = state.InteractionGeneration;
         long sequence = ++state.ProximityShredSequence;
         state.ShredBusyUntil = Environment.TickCount64 + Math.Max(1, duration);
+        var cast = new PendingInventoryCast(inventory, world, interaction);
+        state.PendingShred = cast;
         bool armed = Later(connection, duration, () =>
         {
-            if (state.ProximityShredSequence != sequence || state.InteractionGeneration != interaction
-                || state.WorldGeneration != world || !ReferenceEquals(state.Inventory, inventory)) return;
+            if (!ReferenceEquals(state.PendingShred, cast)) return;
             try
             {
-                if (state.DeathSent || state.Match != MatchStep.InMatch
+                if (state.ProximityShredSequence != sequence || !InventoryCastContextMatches(state, cast)) return;
+                if (state.DeathSent || state.Hitpoints == 0 || state.Match != MatchStep.InMatch
                     || !state.Loot.TryGet(ground.WorldGuid, out var current)
                     || !WithinPickupReach(state, current.Position, out _)
                     || (bodyBag is not null && (!state.BodyBags.TryGetValue(ground.WorldGuid, out var liveBag)
@@ -101,12 +104,14 @@ public sealed partial class ZoneService
             }
             finally
             {
+                state.PendingShred = null;
                 state.ShredBusyUntil = 0;
-                SendInteractionStops(connection, state);
+                if (InventoryCastContextMatches(state, cast)) SendInteractionStops(connection, state);
             }
         });
         if (!armed)
         {
+            state.PendingShred = null;
             state.ShredBusyUntil = 0;
             Refuse(ContainerErrorCode.ContainerInUse);
             return true;
