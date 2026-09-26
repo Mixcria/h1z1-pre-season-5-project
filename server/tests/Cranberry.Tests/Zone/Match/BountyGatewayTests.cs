@@ -13,6 +13,7 @@ using Cranberry.Zone.HostedGames;
 namespace Cranberry.Tests.Zone.MatchLobby;
 
 /// <summary>Real gateway dispatcher and durable store; these are send-side tests, not UI screenshots.</summary>
+[Collection(GatewayTimerCollection.Name)]
 public sealed partial class BountyGatewayTests
 {
     private sealed class Recorder : IPacketRecorder

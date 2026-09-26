@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using Cranberry.Login;
@@ -37,8 +38,9 @@ public sealed class CharacterIdentityTests
 
         world.Sent.Clear();
         world.Ready();
-        world.Pump(); // auto-match request
-        world.Pump(); // actual ClientBeginZoning and second self record
+        // The session also posts unrelated work. Wait for zoning instead of assuming
+        // the first two timer continuations must be auto-match and ClientBeginZoning.
+        world.Pump(() => world.Sent.Any(p => p[0] == ClientBeginZoning.Opcode));
         Assert.Contains(world.Sent, p => p[0] == ClientBeginZoning.Opcode);
         AssertSelf(world.Sent, world.Admission.Guid, gender, headModel, hairModel, skinTone);
         AssertDress(world.Sent, world.Admission.Guid, headModel, hairModel, skinTone);
@@ -214,10 +216,15 @@ public sealed class CharacterIdentityTests
         }
         public void Dress(string reason) => typeof(ZoneService).GetMethod("SendCharacterAppearance", BindingFlags.Instance | BindingFlags.NonPublic)!
             .Invoke(_zone, [_connection, _connection.Tag!, reason]);
-        public void Pump()
+        public void Pump(Func<bool> done)
         {
-            Assert.True(SpinWait.SpinUntil(() => !_pending.IsEmpty, 5000));
-            Assert.True(_pending.TryDequeue(out var work)); work!();
+            var watch = Stopwatch.StartNew();
+            while (!done() && watch.ElapsedMilliseconds < 5000)
+            {
+                if (_pending.TryDequeue(out var work)) work();
+                else Thread.Sleep(1);
+            }
+            Assert.True(done(), "Expected character zoning did not occur within five seconds.");
         }
         public bool IsEnabled(TransportLogLevel level) => false;
         public void Log(TransportLogLevel level, string message) { }
