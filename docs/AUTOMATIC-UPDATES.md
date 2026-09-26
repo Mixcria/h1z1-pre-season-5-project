@@ -131,3 +131,12 @@ The 0.2.0-preview.1 source change adds the updater, offline publisher, package
 inventory, build/test integration and the local lobby policy above. Client
 binaries and assets are unchanged. Publication remains a separate approval step;
 build success alone is not a playtest.
+
+The first preview exposed a Windows readiness-file race during the GitHub
+process check: replacing the receipt can fail with access denied while the
+parent holds a read/delete-sharing handle. A separate probe reproduced that
+failure with the published Core DLL. Preview 2 corrects the writer so it remains
+compatible with the original entry launcher. The old tag and downloadable files
+are preserved; the corrected package uses release sequence 2. Native lobby
+confirmation remains pending. Final checks and publication status are recorded
+on the updater pull request and releases.

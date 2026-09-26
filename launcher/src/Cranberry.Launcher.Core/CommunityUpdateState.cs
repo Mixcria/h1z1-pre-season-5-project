@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Cranberry.Launcher.Core;
@@ -62,9 +63,29 @@ public sealed class CommunityUpdateStateStore
     internal static void AtomicWrite(string destination, byte[] data)
     {
         string temporary = destination + "." + Guid.NewGuid().ToString("N") + ".new";
-        using (var output = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None,
-            4096, FileOptions.WriteThrough))
-        { output.Write(data); output.Flush(flushToDisk: true); }
-        File.Move(temporary, destination, overwrite: true);
+        bool ownsTemporary = false;
+        try
+        {
+            using (var output = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None,
+                4096, FileOptions.WriteThrough))
+            { ownsTemporary = true; output.Write(data); output.Flush(flushToDisk: true); }
+            // The preview-1 parent briefly holds receipts with Read | Delete sharing. Windows
+            // can still deny this overwrite until it closes the handle. Keep the flushed file
+            // and retry the rename only; the old complete receipt remains readable throughout.
+            var retry = Stopwatch.StartNew();
+            while (true)
+            {
+                try { File.Move(temporary, destination, overwrite: true); break; }
+                catch (Exception error) when (error is IOException or UnauthorizedAccessException
+                    && (error.HResult & 0xffff) is 5 or 32 or 33 && retry.ElapsedMilliseconds < 1500)
+                { Thread.Sleep(25); }
+            }
+        }
+        finally
+        {
+            if (ownsTemporary)
+                try { File.Delete(temporary); }
+                catch (Exception error) when (error is IOException or UnauthorizedAccessException) { }
+        }
     }
 }
