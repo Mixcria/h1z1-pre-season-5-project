@@ -46,8 +46,7 @@ public sealed partial class ZoneService
         CancelMedicalCast(connection, state, "exit match requested");
         CancelVehicleComponentRemoval(connection, state);
         state.InteractionGeneration++;
-        state.CraftBusyUntil = 0;
-        state.ShredBusyUntil = 0;
+        CancelInventoryCasts(state);
         // Use the same native cast bar as bandages, with no medical character animation.
         SendTunnel(connection, new InteractionStart(state.Guid, LogoutDurationMilliseconds,
             ExitMatchStringId, AnimationId: 0).WriteTo);
