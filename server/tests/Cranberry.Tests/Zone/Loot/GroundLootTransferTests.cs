@@ -25,8 +25,8 @@ public sealed class GroundLootTransferTests
             .First(id => ItemUseOptionTable.KindOf(id) == ItemUseOptionKind.LootItem);
         using var w = new PacketWriter();
         w.WriteByte(0xac); w.WriteByte(0x2c); w.WriteUInt32(1); w.WriteUInt32(0);
-        w.WriteUInt32(option); w.WriteUInt64(player.Guid); w.WriteUInt64(ground.WorldGuid);
-        w.WriteUInt64(player.Guid); w.WriteUInt64(ground.WorldGuid); w.WriteByte(0);
+        w.WriteUInt32(option); w.WriteUInt64(player.Guid); w.WriteUInt64(player.Guid);
+        w.WriteUInt64(ground.WorldGuid); w.WriteUInt64(ground.WorldGuid); w.WriteByte(0);
         w.WriteUInt32(1); w.WriteUInt32(1); w.WriteUInt32(3);
         for (int i = 0; i < 4; i++) w.WriteUInt32(0);
         player.Send(w.Written.ToArray());

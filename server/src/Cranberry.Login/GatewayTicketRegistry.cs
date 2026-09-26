@@ -65,6 +65,22 @@ public sealed class GatewayTicketRegistry
         return false;
     }
 
+    /// <summary>
+    /// Invalidates outstanding handoffs after a character is durably deleted. This does not
+    /// disconnect an already admitted gateway session or consume other characters' tickets.
+    /// </summary>
+    public void RevokeCharacter(ulong guid)
+    {
+        lock (_gate)
+        {
+            foreach (string ticket in _tickets.Where(pair => pair.Value.Guid == guid)
+                .Select(pair => pair.Key).ToArray())
+            {
+                _tickets.Remove(ticket);
+            }
+        }
+    }
+
     private void RemoveExpired(DateTimeOffset now)
     {
         foreach (string ticket in _tickets

@@ -33,7 +33,7 @@ public sealed partial class VehicleDamageIntegrationTests
             using var writer = new PacketWriter();
             writer.WriteByte(0xac); writer.WriteByte(0x2c);
             writer.WriteUInt32(1); writer.WriteUInt32(0); writer.WriteUInt32(12);
-            writer.WriteUInt64(session.Guid); writer.WriteUInt64(car.Guid); writer.WriteUInt64(session.Guid);
+            writer.WriteUInt64(session.Guid); writer.WriteUInt64(session.Guid); writer.WriteUInt64(car.Guid);
             writer.WriteUInt64(part.ItemGuid); writer.WriteByte(1);
             session.Deliver(writer.Written.ToArray());
         }

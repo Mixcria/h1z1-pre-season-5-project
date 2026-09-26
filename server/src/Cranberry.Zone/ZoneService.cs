@@ -401,6 +401,8 @@ public sealed partial class ZoneService : ISoeService
         var state = connection.Tag as GatewaySessionState ?? NewSessionState();
         connection.Tag = state;
 
+        if (state.DisconnectHandled) return;
+
         if (!state.Authenticated)
         {
             HandleLogin(connection, state, message);
@@ -424,6 +426,10 @@ public sealed partial class ZoneService : ISoeService
     {
         if (connection.Tag is GatewaySessionState departing)
         {
+            // Replacement admission retires the previous owner immediately. The transport
+            // reports that closed link again later; none of its cleanup may run twice.
+            if (departing.DisconnectHandled) return;
+            departing.DisconnectHandled = true;
             CancelPartyQueuePeers(departing, "party member disconnected");
             DepartBounty(connection, departing);
             PartyLinkClosed(departing);
@@ -500,6 +506,10 @@ public sealed partial class ZoneService : ISoeService
                 + $"ticket='{request.Ticket}' was not issued by this login host");
             return;
         }
+
+        // A character has one owner across peers, vehicles, parties and saved selections.
+        // Finish the old owner's departure before loading or registering the replacement.
+        RetirePreviousCharacterSession(connection, request.Guid);
 
         // The clear LoginRequest has already been delivered. The August client enables RC4
         // immediately after sending it, so the response must consume s2c keystream position 0.
@@ -1200,14 +1210,10 @@ public sealed partial class ZoneService : ISoeService
 
                 case ZoneOpcodes.CommandBase when RecipeStartRequest.Matches(payload):
                 {
-                    // 09 1a Command.RecipeStart (docs/62 §6, docs/115 §5). The framing is CLOSED and
-                    // has been since 2026-08-30: four live requests in host-20260830-131819.log
-                    // (15:40:36.141, 15:48:21.896, 16:04:23.020, 16:19:04.196) all parsed as
-                    // 09 1A 00 | u32 recipeId | u32 count, 11 bytes, shape=U16SubWithCount,
-                    // trailing=0 — which is also the framing the owner's own Z1 reads
-                    // (ZoneCrafting.cs:126-134). docs/62 §6's [BLOCKED] is retired. The reader still
-                    // tries all four framings and accepts only the one whose id names a recipe THIS
-                    // session delivered; anything else is logged whole.
+                    // August serializer 0x1411b41e0 always writes 09 + u16 001a + recipe + count.
+                    // Require that complete eleven-byte frame and a recipe in this session's
+                    // catalogue. See docs/recipe-start-request-20260926.md; earlier speculative
+                    // no-count and one-byte-subtype alternatives are no longer accepted.
                     var state = (GatewaySessionState)connection.Tag!;
                     if (RefuseInteractionDuringLogout(connection, state)) return;
                     CraftingOptions craftOptions = _options.Crafting.Effective;
@@ -1757,11 +1763,8 @@ public sealed partial class ZoneService : ISoeService
                         }
 
                         case SeatChangeRequest.SubOpcode:
-                            // docs/118 §4 (AUDIT-vehicles gap 14): unhandled until this lane, so
-                            // there was no seat change and no seat swap. The body is a CANDIDATE -
-                            // the Mount send path has no per-packet serializer - so every request
-                            // is logged with its full hex and a seat that does not resolve is
-                            // refused rather than acted on.
+                            // Native writer 140e84fc0 sends seat + mode, with no vehicle GUID.
+                            // Resolve ownership from this authenticated occupant.
                             HandleSeatChangeRequest(connection, state, payload, hex);
                             return;
 
@@ -1843,8 +1846,7 @@ public sealed partial class ZoneService : ISoeService
                         // capture from a car at speed is the derivation. (5 = parachuting is the only
                         // value seen so far, from the chute.)
                         VehicleCurrentMoveMode mode = VehicleCurrentMoveMode.Parse(payload);
-                        if (state.Fleet is VehicleFleet moving
-                            && moving.TryGet(mode.VehicleGuid, out MatchVehicle? driven))
+                        if (TryGetVehicleSimulator(state, mode.VehicleGuid, out MatchVehicle? driven))
                         {
                             driven.ReportedMoveMode = mode.MoveMode;
                         }
@@ -1852,9 +1854,9 @@ public sealed partial class ZoneService : ISoeService
                         return;
                     }
 
-                    if (payload[1] == 0x03)
+                    if (payload[1] == VehicleStateData.SubOpcode)
                     {
-                        // Vehicle.StateData: per-part state the driver streams at ~2 Hz. One-way.
+                        HandleVehicleAnimation(connection, state, payload);
                         return;
                     }
 
@@ -2399,6 +2401,10 @@ public sealed partial class ZoneService : ISoeService
             // motion active indefinitely. Do not turn a retained position into a fresh pose.
             if (driven is not null)
             {
+                // Mask 0x10 is native velocity magnitude, despite the historical HorizontalSpeed
+                // name. Retain only an authorized, accepted simulator's deltas for the seat gate.
+                driven.SeatMotion.Observe(update.Movement.State, update.Movement.HorizontalSpeed,
+                    update.Movement.Posture is uint seatPosture && (seatPosture & 0x40) != 0);
                 driven.LastClientTime = update.Movement.ClientTime;
                 driven.MovementVersion = update.Movement.State;
                 if (update.Movement.EffectivePosition is not null)
@@ -5875,6 +5881,14 @@ public sealed partial class ZoneService : ISoeService
     private void HandleItemUseAction(
         SoeConnection connection, GatewaySessionState state, RequestUseItem request)
     {
+        // Native 14162a270 writes the local requester at +14, independently of target/source.
+        // External-container routes run before InventoryActions.Resolve, so validate their
+        // requester here too, before changing cast or skin-selection state.
+        if (request.CharacterGuid != state.Guid)
+        {
+            SendTunnel(connection, new ContainerError(state.Guid, ContainerErrorCode.InteractionValidationFailed).WriteTo);
+            return;
+        }
         if (request.Kind == ItemUseOptionKind.SkinItem)
             state.InventorySkinTargetItemGuid = 0;
         if (state.DeathSent && request.Kind is (ItemUseOptionKind.SkinItem or ItemUseOptionKind.HoodieUp or ItemUseOptionKind.HoodieDown))
@@ -5912,17 +5926,17 @@ public sealed partial class ZoneService : ISoeService
         // CRANBERRY_AMMO_FROM_BAG=0 is D118's world exactly - Reload refills the magazine out of
         // nothing - so unload/reload/unload would mint ammunition and the magazines are withheld,
         // which restores the named refusal verbatim (AmmoOptions.AmmoFromBag).
-        if (request.Kind == ItemUseOptionKind.UnloadWeapon
-            && WeaponFireArm.CancelReload(state.Combat, request.ItemGuid, "unload requested") is { } stopped
-            && stopped.Reply is { } reloadReply)
-        {
-            SendTunnel(connection, writer => writer.WriteRaw(reloadReply));
-        }
-
         ItemActionResult plan = InventoryActions.Resolve(
             inventory,
             request,
             _options.Combat.Ammo.AmmoFromBag ? state.Combat.Shooter : null);
+
+        // Resolve can refuse ownership, option or capacity. Such requests must not end a
+        // valid reload. An accepted unload (including an empty-magazine repaint) rebuilds
+        // the native item, so stop its reload and notify observers before that refresh.
+        if (request.Kind == ItemUseOptionKind.UnloadWeapon
+            && plan.Kind is ItemActionKind.Unload or ItemActionKind.Repaint)
+            StopReloadForItemRefresh(connection, state, plan.ItemGuid, "weapon unloaded");
 
         ApplyInventoryAction(connection, state, inventory, plan);
     }
@@ -6018,6 +6032,15 @@ public sealed partial class ZoneService : ISoeService
             return;
         }
 
+        // These paths send ItemAdd even when the GUID stays the same. August reconstructs
+        // its weapon component in idle state; old reload work must not survive that reset.
+        if (plan.Kind is ItemActionKind.Equip or ItemActionKind.Unequip or ItemActionKind.Repaint)
+        {
+            StopReloadForItemRefresh(connection, state, plan.ItemGuid, "inventory item refreshed");
+            if (plan.DisplacedItemGuid != 0 && !plan.DisplacedToGround)
+                StopReloadForItemRefresh(connection, state, plan.DisplacedItemGuid, "displaced item refreshed");
+        }
+
         bool containerSetChanged =
             (plan.ClearedLoadoutSlotId != 0
                 || plan.BoundLoadoutSlotId != 0
@@ -6037,16 +6060,16 @@ public sealed partial class ZoneService : ISoeService
 
         // 1. The item collection first. The panel resolves (definitionId, slotId) against it
         //    (docs/46 §3), so removing the item from it is what empties both the box and the cell; a
-        //    partial stack is a re-sent ItemAdd for the SAME guid, which FUN_140c35400 applies as a
-        //    change rather than an add (docs/46 §6a).
+        //    partial stack is a re-sent ItemAdd for the SAME guid. FUN_140c35400 reconstructs
+        //    the item before selecting the existing-GUID change notification.
         bool moved = plan.Kind is ItemActionKind.Equip or ItemActionKind.Unequip;
         if (moved || plan.Kind == ItemActionKind.Repaint)
         {
             // WAVE 9. The tile MOVED rather than vanished, so it must be re-announced where it is
             // now. Delete-then-add is his own order (ZoneInventoryActions.TryEquip / .TryUnequip
             // both send ItemDeleteFor then ItemAddCarried/ItemAddEquipped); a Repaint sends only the
-            // add, because nothing about the record changed and FUN_140c35400 treats a re-sent
-            // ItemAdd for a live guid as a change rather than an add (docs/46 §6a).
+            // add. Even for an unchanged record, FUN_140c35400 reconstructs the component;
+            // restore the retained reload counter after the refresh below.
             if (moved && !plan.SwapLoadoutSlots)
             {
                 ulong same = plan.ItemGuid;
@@ -6096,6 +6119,7 @@ public sealed partial class ZoneService : ISoeService
                 if (!plan.SwapLoadoutSlots)
                     SendTunnel(connection, writer => new ItemDelete(state.Guid, row.ItemGuid).WriteTo(writer));
                 SendTunnel(connection, state.Weapons.CreateItemAdd(state.Guid, row));
+                SyncDrawnWeaponReloadCounter(connection, state, bagged);
             }
         }
 
@@ -6273,18 +6297,9 @@ public sealed partial class ZoneService : ISoeService
         ItemActionResult plan)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
-        DiscardStaleInventoryCasts(state);
         if (state.DeathSent || state.Hitpoints == 0) return;
+        if (RefuseOverlappingInventoryCast(connection, state)) return;
         long now = Environment.TickCount64;
-        if (state.PendingVehicleRemoval is not null || state.PendingShred is not null || state.ShredBusyUntil > now)
-        {
-            SendTunnel(connection, writer =>
-                new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
-            _log.Info($"{connection} inventory: {plan.Option} REFUSED — a shred is pending "
-                + $"({Math.Max(0, state.ShredBusyUntil - now)} ms until its deadline; ItemUseOptions BUSY_MSEC "
-                + $"{plan.BusyMilliseconds})");
-            return;
-        }
 
         int duration = Math.Max(plan.BusyMilliseconds, 0);
         state.ShredBusyUntil = now + duration;
@@ -6360,20 +6375,8 @@ public sealed partial class ZoneService : ISoeService
         ItemActionResult plan)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
-        DiscardStaleInventoryCasts(state);
+        if (RefuseOverlappingInventoryCast(connection, state)) return;
         long now = Environment.TickCount64;
-        if (state.PendingMedicalCast is { } previous
-            && (previous.WorldGeneration != state.WorldGeneration || !ReferenceEquals(previous.Inventory, state.Inventory)))
-            CancelMedicalCast(connection, state, "world or inventory changed", notify: false);
-        if (state.PendingVehicleRemoval is not null || state.PendingMedicalCast is not null
-            || state.PendingShred is not null || state.ConsumeBusyUntil > now || state.ShredBusyUntil > now)
-        {
-            SendTunnel(connection, writer =>
-                new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
-            _log.Info($"{connection} inventory: {plan.Option} REFUSED — a cast is already running "
-                + $"for another {Math.Max(state.ConsumeBusyUntil, state.ShredBusyUntil) - now} ms");
-            return;
-        }
 
         if (state.Hitpoints == 0 || state.DeathSent)
         {
@@ -6597,17 +6600,9 @@ public sealed partial class ZoneService : ISoeService
         CraftingOptions crafting)
     {
         if (RefuseInteractionDuringLogout(connection, state)) return;
-        DiscardStaleInventoryCasts(state);
         if (state.DeathSent || state.Hitpoints == 0) return;
+        if (RefuseOverlappingInventoryCast(connection, state)) return;
         long now = Environment.TickCount64;
-        if (state.PendingVehicleRemoval is not null || state.PendingCraft is not null || state.CraftBusyUntil > now)
-        {
-            SendTunnel(connection, writer =>
-                new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo(writer));
-            _log.Info($"{connection} crafting: recipe {request.RecipeId} REFUSED — a craft is "
-                + $"pending ({Math.Max(0, state.CraftBusyUntil - now)} ms until its deadline)");
-            return;
-        }
 
         // PLAN BEFORE ARM. CraftingService.Craft is pure with respect to a refusal - it mutates
         // nothing unless it succeeds - so the cheapest correct preflight is to ask it how many units
@@ -9452,6 +9447,7 @@ public sealed partial class ZoneService : ISoeService
         public WorldStreamStartup WorldStreamStartup { get; } = new();
         public Dictionary<ulong, Armour> PlayerArmour { get; } = [];
         public bool Authenticated { get; set; }
+        public bool DisconnectHandled { get; set; }
         public string AccountId { get; set; } = string.Empty;
         public bool SocialLinked { get; set; }
         public bool VoiceHudLinked { get; set; }

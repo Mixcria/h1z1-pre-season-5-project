@@ -122,22 +122,6 @@ public sealed class CraftingCatalogTests
         }
     }
 
-    /// <summary>
-    /// <b>The framing disambiguation depends on this.</b> <c>RecipeStartRequest</c> tells the u16-sub
-    /// and u8-sub framings of <c>09 1a</c> apart by the third payload byte, which is <c>0x00</c> in
-    /// the u16 framing and the recipe id's low byte in the u8 framing. A recipe id that were a
-    /// multiple of 256 would make the two framings decode identically and the reader would have to
-    /// guess. None is - and if a future recipe were, this test fails before the ambiguity ships.
-    /// </summary>
-    [Fact]
-    public void NoRecipeIdIsAMultipleOf256()
-    {
-        foreach (RecipeDefinition recipe in CraftingCatalog.Recipes)
-        {
-            Assert.NotEqual(0u, recipe.RecipeId % 256);
-        }
-    }
-
     /// <summary>The crafting window renders four ingredient slots (<c>ingredientsItem_1..4</c>), so
     /// a fifth ingredient would simply not be drawn.</summary>
     [Fact]

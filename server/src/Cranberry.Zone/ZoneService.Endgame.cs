@@ -129,6 +129,7 @@ public sealed partial class ZoneService
 
         StopEmote(connection, state, includeSelf: true);
         StopCharacterFire(connection, state);
+        CancelMedicalCast(connection, state, "player died");
         StopPlayerBleeding(connection, state);
         ClearHealingHud(connection, state);
         CancelInventoryCasts(state);

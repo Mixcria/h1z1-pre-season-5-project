@@ -12,5 +12,5 @@ public static class VehicleFullState
     ];
 
     public static LightweightToFullVehicle Create(MatchVehicle car) =>
-        new(car.TransientId, car.Guid, ResourcesFor(car), car.Occupants(), car.EngineOn);
+        new(car.TransientId, car.Guid, ResourcesFor(car), car.Occupants(), car.EngineOn, car.Animation);
 }

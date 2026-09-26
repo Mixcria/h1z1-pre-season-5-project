@@ -134,8 +134,18 @@ public sealed class LoginService : ISoeService
                     // 09 <u64>: the character-select screen's DeleteCharacter(guid). Status 1 makes the
                     // client drop the row; the roster must not list the character afterwards.
                     CharacterDeleteRequest delete = CharacterDeleteRequest.Parse(body);
-                    bool removed = (_accounts is null || _accounts.Owns((string)connection.Tag!, delete.EntityKey))
-                        && _characters.Remove(delete.EntityKey);
+                    bool removed = false;
+                    if (_accounts is null || _accounts.Owns((string)connection.Tag!, delete.EntityKey))
+                    {
+                        try { removed = _characters.Remove(delete.EntityKey); }
+                        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                        {
+                            _log.Warn($"{connection} character deletion could not be saved: {ex.Message}");
+                        }
+                    }
+                    // Login requests are serialized by the login listener. Revoke before the
+                    // success reply; a failed delete must keep the existing handoff valid.
+                    if (removed) _gatewayTickets.RevokeCharacter(delete.EntityKey);
                     using (var writer = new PacketWriter())
                     {
                         new CharacterDeleteReply(delete.EntityKey, removed ? CharacterDeleteReply.Success : CharacterDeleteReply.Failure).WriteTo(writer);
@@ -277,7 +287,19 @@ public sealed class LoginService : ISoeService
         }
 
         payload = payload with { Name = normalizedName };
-        if (!_characters.TryCreateUnique(request.ServerId, payload, out CharacterEntry character))
+        CharacterEntry character;
+        bool created;
+        try
+        {
+            created = _characters.TryCreateUnique(request.ServerId, payload, out character);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            _log.Warn($"{connection} character creation could not be saved: {ex.Message}");
+            SendCharacterCreateFailure(connection);
+            return;
+        }
+        if (!created)
         {
             _log.Warn($"{connection} CharacterCreateRequest refused: name='{normalizedName}' is already in use");
             SendCharacterCreateFailure(connection);

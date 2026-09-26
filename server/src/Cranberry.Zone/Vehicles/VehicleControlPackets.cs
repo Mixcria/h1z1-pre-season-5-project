@@ -228,7 +228,7 @@ public sealed record VehicleStateDamage(ulong VehicleGuid, uint ValueA, uint Val
     }
 }
 
-/// <summary>One element of a vehicle state list: <c>u32 hashKey; u8 value</c>, bucketed by <c>key &amp; 0xf</c>.</summary>
+/// <summary>One native animation state entry: <c>u32 index; u8 value</c>.</summary>
 public readonly record struct VehicleStateEntry(uint Key, byte Value)
 {
     public const int Length = 5;
@@ -239,11 +239,11 @@ public readonly record struct VehicleStateEntry(uint Key, byte Value)
 /// <c>u64 vehicleGuid; u32; i32 nA {u32 key; u8 value}; i32 nB {u32 key; u8 value}</c>,
 /// <b>22 bytes minimum</b>.
 ///
-/// <para>Both list readers (<c>FUN_140a511c0</c>, <c>FUN_140a4cd00</c>) are the same pair
-/// <c>LightweightToFullVehicle 0xdb</c> carries immediately after its <c>u8 engineState; u32</c> —
-/// which identifies that part of the <c>0xdb</c> tail as an embedded vehicle-state block (docs/43
-/// §4.4). Cranberry writes both empty today and the mount works live, so <b>empty is the proven-safe
-/// form</b> and the key space is an open lead (docs/43 §10 row 7).</para>
+/// <para>Bidirectional native animation deltas: list A has boolean indices 0..29; list B has
+/// indices 0..14 and signed bytes representing hundredths, clamped to -100..100. The sender
+/// <c>FUN_140e7f6f0</c> reports changed keys; <c>FUN_140e70f20</c> applies received values.
+/// <c>LightweightToFullVehicle 0xdb</c> embeds the same body after its engine-state byte.
+/// See docs/vehicle-animation-state-20260926.md. The u32 Value remains opaque.</para>
 /// </summary>
 public sealed record VehicleStateData(
     ulong VehicleGuid,
@@ -258,12 +258,23 @@ public sealed record VehicleStateData(
     public int Length => MinimumLength
         + (((ListA?.Count ?? 0) + (ListB?.Count ?? 0)) * VehicleStateEntry.Length);
 
+    public static bool TryParse(ReadOnlySpan<byte> payload,
+        [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out VehicleStateData? state) =>
+        VehicleAnimationCodec.TryParse(payload, out state);
+
     public void WriteTo(PacketWriter w)
     {
         ArgumentNullException.ThrowIfNull(w);
         w.WriteByte(Opcode);
         w.WriteByte(SubOpcode);
         w.WriteUInt64(VehicleGuid);
+        WriteBodyTo(w);
+    }
+
+    /// <summary>The common u32 and two lists embedded in 88/03 and the 0xdb full record.</summary>
+    public void WriteBodyTo(PacketWriter w)
+    {
+        ArgumentNullException.ThrowIfNull(w);
         w.WriteUInt32(Value);
         WriteList(w, ListA);   // FUN_140a511c0
         WriteList(w, ListB);   // FUN_140a4cd00
@@ -477,32 +488,20 @@ public sealed record VehicleOccupantState(
 }
 
 /// <summary>
-/// c2s <c>Mount.SeatChangeRequest</c> (base 0x70, u8 sub 0x0a) — <b>the body is a CANDIDATE, not a
-/// derivation.</b>
-///
-/// <para>
-/// The packet is registered at 1148 (<c>0xa007000 MountBasePacket::cSeatChangeRequest</c>) and the
-/// mount dispatcher <c>FUN_140c9fee0</c> puts <c>0x0a</c> in the client-to-server set, but the
-/// Command/Mount send path has no per-packet serializer — the same reason docs/36 gives for
-/// <c>09 07 InteractRequest</c> — so nothing in the binary states the field order. This reads the
-/// obvious mirror of <c>70 01 MountRequest</c>, <c>u64 guid; u32 seat</c>, and <b>every parse is
-/// logged with its full hex whether it is acted on or not</b>, so the first live seat-key press is
-/// the derivation (docs/43 §5.3, blocker 2).
-/// </para>
-/// <para>
-/// The plausibility gate is what makes acting on a guess safe: a seat index that does not resolve
-/// on the vehicle the player is actually sitting in is refused and logged, so a wrong guess costs a
-/// log line rather than a teleport into seat 1,633,772,861.
-/// </para>
+/// c2s <c>Mount.SeatChangeRequest</c>: <c>u8 70; u8 0a; u32 seat; u8 mode</c>, seven bytes.
+/// August sender 0x141594e10 builds the request; 0x140e84eb0 calls its serializer 0x140e84fc0.
+/// There is no GUID: the authenticated occupant identifies the vehicle. Mode is the sender's
+/// third control argument; its original server semantics are not yet established.
+/// See docs/vehicle-seat-request-20260926.md for exact-build evidence and remaining policy limits.
 /// </summary>
-public sealed record SeatChangeRequest(ulong Guid, uint Seat, ReadOnlyMemory<byte> Raw)
+public sealed record SeatChangeRequest(uint Seat, byte Mode, ReadOnlyMemory<byte> Raw)
 {
     public const byte Opcode = ZoneOpcodes.MountBase;
 
     public const byte SubOpcode = 0x0a;
 
-    /// <summary>Head plus the two candidate fields. The client may send more; trailing bytes are kept.</summary>
-    public const int MinimumLength = 14;
+    /// <summary>Native writer length. Extra bytes remain available in Raw for inspection.</summary>
+    public const int MinimumLength = 7;
 
     public static bool TryParse(ReadOnlySpan<byte> payload, out SeatChangeRequest? request)
     {
@@ -514,14 +513,17 @@ public sealed record SeatChangeRequest(ulong Guid, uint Seat, ReadOnlyMemory<byt
 
         var reader = new PacketReader(payload);
         reader.Skip(2);
-        request = new SeatChangeRequest(reader.ReadUInt64(), reader.ReadUInt32(), payload.ToArray());
+        request = new SeatChangeRequest(reader.ReadUInt32(), reader.ReadByte(), payload.ToArray());
         return true;
     }
 }
 
 /// <summary>
 /// <c>Mount.SeatChangeResponse</c> (base 0x70, u8 sub 0x0b; parser <c>FUN_140c9e360</c>):
-/// <c>u64 rider; u64 mount; identity(36 B); u32; u32; u32</c>, <b>66 bytes</b>.
+/// <c>u64 rider; u64 mount; identity(36 B); u32 seat; u32 status; u32 isDriver</c>, <b>66 bytes</b>.
+/// Dispatcher 0x140c9fee0 applies the response only when status (offset58) is 1; consumer
+/// 0x140c3b4f0 uses the final field (offset62) for driver ownership and changes the seat/camera.
+/// See docs/vehicle-seat-request-20260926.md. The C# argument order is not the wire order.
 /// </summary>
 public sealed record SeatChangeResponse(
     ulong Rider,
@@ -543,8 +545,8 @@ public sealed record SeatChangeResponse(
         w.WriteUInt64(Mount);
         MountIdentityCodec.WriteEmpty(w);
         w.WriteUInt32(Seat);
-        w.WriteUInt32(IsDriver);
         w.WriteUInt32(Status);
+        w.WriteUInt32(IsDriver);
     }
 }
 

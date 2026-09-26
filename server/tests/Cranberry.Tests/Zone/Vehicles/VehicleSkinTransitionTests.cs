@@ -359,7 +359,7 @@ public sealed class VehicleSkinTransitionTests
         public void Ready() { Car.LastInteractionMs = long.MinValue; Car.LastSeatChangeMs = long.MinValue; }
         public void Exit(SoeConnection c) => Deliver(c, w => { w.WriteByte(0x70); w.WriteByte(3); w.WriteByte(0); });
         public void ChangeSeat(SoeConnection c, uint seat) => Deliver(c, w =>
-        { w.WriteByte(0x70); w.WriteByte(0x0a); w.WriteUInt64(Car.Guid); w.WriteUInt32(seat); });
+        { w.WriteByte(0x70); w.WriteByte(0x0a); w.WriteUInt32(seat); w.WriteByte(0); });
         public void Select(SoeConnection c, uint item) => Deliver(c, w =>
         { w.WriteByte(0xf2); w.WriteByte(2); w.WriteUInt32(1); w.WriteUInt32(1); w.WriteUInt32(item); });
         public void Unset(SoeConnection c) => Deliver(c, w =>

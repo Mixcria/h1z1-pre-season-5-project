@@ -140,6 +140,21 @@ public sealed partial class ZoneService
             + $"({_peers.Count} session(s) on this host) — {_options.Peers.Describe()}");
     }
 
+    private void RetirePreviousCharacterSession(SoeConnection replacement, ulong characterGuid)
+    {
+        // Use the admitted connection registry: an interest sweep may already have removed
+        // a closed peer, while its transport departure callback is still pending.
+        foreach (var previous in _accountSessions.Where(pair => !ReferenceEquals(pair.Key, replacement)
+            && pair.Value.Authenticated && pair.Value.Guid == characterGuid).ToArray())
+        {
+            previous.Key.Disconnect();
+            OnDisconnected(previous.Key, DisconnectCause.Replaced);
+            // Save is coalesced in the background. Carry the current selection into the
+            // immediate replacement instead of loading an older file before that save lands.
+            _wardrobes[characterGuid] = previous.Value.Wardrobe;
+        }
+    }
+
     /// <summary>
     /// Link-close hook: drop this session and tell everyone who could see it. <c>0f 01</c> goes out
     /// BEFORE the ids are dropped from the registry, which is the same ordering rule

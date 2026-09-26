@@ -1,3 +1,4 @@
+using Cranberry.Transport;
 using Cranberry.Zone.Inventory;
 
 namespace Cranberry.Zone;
@@ -26,6 +27,29 @@ public sealed partial class ZoneService
             state.PendingShred = null;
             state.ShredBusyUntil = 0;
         }
+    }
+
+    // August cf02 replaces one subject-owned timer; cf03 has no cast identifier and
+    // clears that same timer (140ccfd50 / 140ccff80 -> 140cd0d90). Refuse overlap as
+    // server policy, preserving the current owner until its callback actually runs.
+    // This does not establish the original server's refuse/queue/interrupt policy.
+    private bool RefuseOverlappingInventoryCast(SoeConnection connection, GatewaySessionState state)
+    {
+        DiscardStaleInventoryCasts(state);
+        if (state.PendingMedicalCast is { } medical
+            && (medical.WorldGeneration != state.WorldGeneration
+                || !ReferenceEquals(medical.Inventory, state.Inventory)))
+            CancelMedicalCast(connection, state, "world or inventory changed", notify: false);
+
+        long now = Environment.TickCount64;
+        if (state.PendingCraft is null && state.PendingShred is null
+            && state.PendingMedicalCast is null && state.PendingVehicleRemoval is null
+            && state.CraftBusyUntil <= now && state.ShredBusyUntil <= now && state.ConsumeBusyUntil <= now)
+            return false;
+
+        SendTunnel(connection, new ContainerError(state.Guid, ContainerErrorCode.ContainerInUse).WriteTo);
+        _log.Info($"{connection} inventory: timed action refused because another cast still owns the interaction timer");
+        return true;
     }
 
     private static void CancelInventoryCasts(GatewaySessionState state)

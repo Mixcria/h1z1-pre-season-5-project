@@ -17,7 +17,7 @@ namespace Cranberry.Tests.Zone.Crafting;
 
 // Exercise the live gateway handler and its real delayed dispatcher. An expired
 // animation deadline does not mean the listener has committed the inventory work.
-public sealed class PendingInventoryCastTests
+public sealed partial class PendingInventoryCastTests
 {
     [Fact]
     public async Task ElapsedCraftAwaitingDispatcherStillOwnsTheCast()
@@ -273,6 +273,8 @@ public sealed class PendingInventoryCastTests
         public long Count(uint definition) => Inventory.Items.Values.Where(i => i.DefinitionId == definition)
             .Sum(i => (long)i.Count);
         public void DisableDispatcher() => _service.Post = null;
+        public void EnableDispatcher() => _service.Post = action => _completed.Writer.TryWrite(action);
+        public ZoneService.VehicleTestSession VehicleSession => _service.ForVehicleTest(_connection);
         public void CraftBandage()
         {
             using var packet = new PacketWriter();

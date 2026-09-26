@@ -81,7 +81,7 @@ public sealed partial class VehicleDamageIntegrationTests
         var car = session.EnterMatchWithCar(family, asDriver: false);
         var position = car.Position;
         int mark = recorder.Sent.Count;
-        session.Deliver(SeatChange(car.Guid, 0));
+        session.Deliver(SeatChange(0));
         var sent = From(recorder, mark).ToArray();
         Assert.Single(Sub8(sent, 0x0f, 0x3b));
         Assert.DoesNotContain(sent, p => p[1] == 0x11 && p[2] == 0x23 && p[3] == 0);

@@ -3,10 +3,12 @@ using Cranberry.Protocol;
 namespace Cranberry.Zone;
 
 /// <summary>
-/// <c>CharacterState.InteractionStart</c>. August shifts the March server's family base from
-/// <c>0xd0</c> to registered <c>0xcf</c>; sub 2 and the 65-byte body are unchanged. A non-zero
-/// duration draws the center-screen interaction timer and <see cref="AnimationId"/> plays the
-/// associated character animation.
+/// <c>CharacterState.InteractionStart</c>. The August dispatcher routes cf02 to
+/// 140ccfd50, whose record reader is 140a30370. It replaces one subject-owned
+/// interaction state; 140cd0d90 publishes its localized label and duration through
+/// UpdateCharacterStateTimerDataSource. See docs/interaction-ownership-20260926.md.
+/// The established writer remains 67 bytes; the native empty-string reader consumes
+/// 66 bytes and tolerates the trailing zero. This is not an original-server capture.
 /// </summary>
 public sealed record InteractionStart(
     ulong CharacterGuid,
@@ -32,7 +34,8 @@ public sealed record InteractionStart(
         writer.WriteUInt32(StringId);
         writer.WriteUInt32(AnimationId);
 
-        // extraData (4 x u32), empty UseOptionItemId string, empty useOptionString.
+        // Native tail: four u32 fields and one empty length-prefixed string (20 bytes).
+        // Preserve the existing extra zero padding byte; no second string is decoded.
         for (int index = 0; index < 21; index++)
         {
             writer.WriteByte(0);
@@ -41,24 +44,12 @@ public sealed record InteractionStart(
 }
 
 /// <summary>
-/// <c>CharacterState.InteractionStop</c> — <b>10 bytes</b>: the two-byte header and the character
-/// guid, and nothing else.
-/// <para>
-/// <b>Derived from the owner's own admin capture</b>, not from any schema: the friend's server
-/// answers every completed cast with two of these, and all six instances are byte-identical apart
-/// from the guid —
-/// <c>packets_1119_53544.log:6960/:6964</c>, <c>:7446/:7447</c> and <c>:8009/:8010</c>, each pair
-/// 8–9 ms apart, each <c>d0 03</c> + the same <c>u64</c> the <c>d0 02</c> before it carried. August
-/// shifts the family base from <c>0xd0</c> to registered <c>0xcf</c>, the same shift
-/// <see cref="InteractionStart"/> already makes.
-/// </para>
-/// <para>
-/// <b>Why it matters mechanically.</b> A cast bar's duration and its animation are two different
-/// clocks. Shred's bar runs 1,000 ms (<c>ItemUseOptions</c> row 6 <c>BUSY_MSEC</c>) while animation
-/// 10's <c>InteractionAnimations</c> row is <c>Action / ActionEnd / EXPIRE_MSEC 2000</c>, so without
-/// an explicit stop the character keeps playing the shred for a second after the item has already
-/// changed. <c>ActionEnd</c> is what cuts it short and this is the packet that fires it.
-/// </para>
+/// <c>CharacterState.InteractionStop</c>: 10 bytes, two one-byte header fields and
+/// a character GUID. Verified by August handler 140ccff80 (subject router 140cd07c0).
+/// It clears the same current record used by InteractionStart, then publishes zero
+/// duration. There is no cast-kind or instance token to distinguish an older stop
+/// from a newer start. This trace does not establish original duplicate-stop counts
+/// or whether the original server refused, queued, or interrupted competing actions.
 /// </summary>
 public sealed record InteractionStop(ulong CharacterGuid)
 {

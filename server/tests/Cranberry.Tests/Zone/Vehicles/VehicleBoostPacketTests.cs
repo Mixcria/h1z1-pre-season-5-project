@@ -224,9 +224,9 @@ public sealed class VehicleBoostPacketTests
             echo);
     }
 
-    /// <summary>The Add form is shorter and still parses — only the head and the two ids are read.</summary>
+    /// <summary>The former 30-byte shortcut omits mandatory August Add fields.</summary>
     [Fact]
-    public void TheAddRequestParsesFromTheMinimumForm()
+    public void TheLegacyThirtyByteAddShortcutIsRefused()
     {
         byte[] wire = Convert.FromHexString(
             "9E01"
@@ -234,13 +234,9 @@ public sealed class VehicleBoostPacketTests
             + "0500000000000071"
             + "02000000000000D0");
 
-        Assert.Equal(EffectRequest.MinimumLength, wire.Length);
-        Assert.Equal(30, EffectRequest.MinimumLength);
-
-        Assert.True(EffectRequest.TryParse(wire, out EffectRequest? request));
-        Assert.True(request!.IsAdd);
-        Assert.False(request.IsRemove);
-        Assert.Equal(90_000u, request.Head.EffectId1);
+        Assert.Equal(30, wire.Length);
+        Assert.False(EffectRequest.TryParse(wire, out EffectRequest? request));
+        Assert.Null(request);
     }
 
     [Fact]

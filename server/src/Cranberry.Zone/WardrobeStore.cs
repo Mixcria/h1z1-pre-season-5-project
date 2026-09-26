@@ -53,10 +53,20 @@ public sealed class WardrobeStore : IDisposable
     private readonly string? _root;
     private readonly Action<string> _log;
     private readonly int _coalesceMs;
-    private readonly ConcurrentDictionary<ulong, AugustWardrobeState> _dirty = new();
+    // The work queue may release a revision before its file is committed. Keep the latest
+    // unsaved revision readable throughout that interval, including failed writes. There is
+    // one pending revision per character, rather than an ever-growing history of changes.
+    private sealed class PendingSave(AugustWardrobeState state)
+    {
+        public AugustWardrobeState State { get; } = state;
+    }
+
+    private readonly ConcurrentDictionary<ulong, PendingSave> _dirty = new();
+    private readonly ConcurrentDictionary<ulong, PendingSave> _pending = new();
     private readonly SemaphoreSlim _writerGate = new(1, 1);
     private readonly object _drainGate = new();
     private Task _writer = Task.CompletedTask;
+    private bool _drainScheduled;
     private bool _disposed;
 
     /// <summary>Saves that reached the disk.</summary>
@@ -114,12 +124,20 @@ public sealed class WardrobeStore : IDisposable
     public static string FileNameFor(ulong characterGuid) => $"w-{characterGuid:x16}.json";
 
     /// <summary>
-    /// The state for <paramref name="characterGuid"/>, restored from disk when a file exists.
-    /// Never throws and never returns null: an unreadable or corrupt file yields a fresh state and
-    /// one log line, because losing a wardrobe must not cost a login.
+    /// The latest pending state for <paramref name="characterGuid"/>, or its committed file when
+    /// no save is pending. Never returns null: with no pending state, an unreadable or corrupt
+    /// file yields a fresh state and one log line, because losing a wardrobe must not cost a login.
     /// </summary>
     public AugustWardrobeState Load(ulong characterGuid)
     {
+        // Admission must not block on a writer's fsync, or restore an older file while a
+        // departure save is queued/in flight. Successful commit removes this entry only
+        // after the atomic replacement; an I/O failure leaves the latest selection readable.
+        if (_pending.TryGetValue(characterGuid, out PendingSave? pending))
+        {
+            return pending.State;
+        }
+
         var state = new AugustWardrobeState();
         if (_root is null)
         {
@@ -190,13 +208,21 @@ public sealed class WardrobeStore : IDisposable
     public void Save(ulong characterGuid, AugustWardrobeState state)
     {
         ArgumentNullException.ThrowIfNull(state);
-        if (_root is null || _disposed)
+        if (_root is null)
         {
             return;
         }
 
-        _dirty[characterGuid] = state;
-        ScheduleDrain();
+        lock (_drainGate)
+        {
+            if (_disposed) return;
+            // A new marker is required even when the same mutable wardrobe object is saved
+            // again: completion of an earlier snapshot must not discard the later save.
+            var pending = new PendingSave(state);
+            _pending[characterGuid] = pending;
+            _dirty[characterGuid] = pending;
+            ScheduleDrain();
+        }
     }
 
     /// <summary>
@@ -225,44 +251,58 @@ public sealed class WardrobeStore : IDisposable
             // Drain() never throws; this is belt and braces around Wait itself.
         }
 
-        Drain();
+        Drain(retryPending: true);
     }
 
     public void Dispose()
     {
-        if (_disposed)
+        lock (_drainGate)
         {
-            return;
+            if (_disposed) return;
+            _disposed = true;
         }
 
-        _disposed = true;
         FlushPending();
         _writerGate.Dispose();
     }
 
     private void ScheduleDrain()
     {
-        lock (_drainGate)
+        // Save holds _drainGate. The worker relinquishes scheduling ownership under that
+        // same lock, so a save arriving after a key was drained cannot be stranded.
+        if (_drainScheduled) return;
+        _drainScheduled = true;
+        _writer = Task.Run(async () =>
         {
-            if (!_writer.IsCompleted)
+            try
             {
-                // A drain is already pending; it will pick this entry up when it runs.
-                return;
-            }
-
-            _writer = Task.Run(async () =>
-            {
-                if (_coalesceMs > 0)
+                while (true)
                 {
-                    await Task.Delay(_coalesceMs).ConfigureAwait(false);
-                }
+                    if (_coalesceMs > 0)
+                    {
+                        await Task.Delay(_coalesceMs).ConfigureAwait(false);
+                    }
 
-                Drain();
-            });
-        }
+                    Drain();
+                    lock (_drainGate)
+                    {
+                        if (!_disposed && !_dirty.IsEmpty) continue;
+                        _drainScheduled = false;
+                        return;
+                    }
+                }
+            }
+            catch
+            {
+                // An unexpected observer/logging exception must not leave the scheduler
+                // permanently owned by a faulted task. Normal I/O failures are handled below.
+                lock (_drainGate) _drainScheduled = false;
+                throw;
+            }
+        });
     }
 
-    private void Drain()
+    private void Drain(bool retryPending = false)
     {
         if (_root is null)
         {
@@ -272,11 +312,24 @@ public sealed class WardrobeStore : IDisposable
         _writerGate.Wait();
         try
         {
+            if (retryPending)
+            {
+                // Wait for in-flight commits before requeueing failed revisions. Requeueing
+                // earlier would write an already-active successful save a second time.
+                lock (_drainGate)
+                {
+                    foreach (var pending in _pending)
+                        _dirty.TryAdd(pending.Key, pending.Value);
+                }
+            }
+
             foreach (ulong guid in _dirty.Keys)
             {
-                if (_dirty.TryRemove(guid, out AugustWardrobeState? state))
+                if (_dirty.TryRemove(guid, out PendingSave? pending) && WriteOne(guid, pending.State))
                 {
-                    WriteOne(guid, state);
+                    // Conditional removal cannot discard a newer Save queued during this
+                    // write, even when both revisions refer to the same wardrobe object.
+                    ((ICollection<KeyValuePair<ulong, PendingSave>>)_pending).Remove(new(guid, pending));
                 }
             }
         }
@@ -286,7 +339,7 @@ public sealed class WardrobeStore : IDisposable
         }
     }
 
-    private void WriteOne(ulong characterGuid, AugustWardrobeState state)
+    private bool WriteOne(ulong characterGuid, AugustWardrobeState state)
     {
         string file = Path.Combine(_root!, FileNameFor(characterGuid));
         string temporary = file + ".tmp";
@@ -314,6 +367,7 @@ public sealed class WardrobeStore : IDisposable
 
             File.Move(temporary, file, overwrite: true);
             Saves++;
+            return true;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException
             or JsonException or NotSupportedException)
@@ -321,6 +375,7 @@ public sealed class WardrobeStore : IDisposable
             _log($"wardrobe store: SAVE FAILED for character {characterGuid} "
                 + $"({exception.Message}). The previous file on disk is intact; this change lives "
                 + "only in memory.");
+            return false;
         }
     }
 

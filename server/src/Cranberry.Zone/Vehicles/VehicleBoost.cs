@@ -106,8 +106,8 @@ public static class AugustVehicleBoostFacts
 }
 
 /// <summary>
-/// The 12-byte <c>abilityEffectData</c> head that opens every sub of the <c>0x9e</c> Effects
-/// family: <c>u32 unknownDword1; u32 abilityEffectId1; u32 abilityEffectId2</c>.
+/// The 12-byte <c>abilityEffectData</c> head shared by runtime Add/Remove requests in the
+/// <c>0x9e</c> Effects family: <c>u32 unknownDword1; u32 abilityEffectId1; u32 abilityEffectId2</c>.
 /// </summary>
 public readonly record struct EffectHead(uint Dword1, uint EffectId1, uint EffectId2)
 {
@@ -115,33 +115,12 @@ public readonly record struct EffectHead(uint Dword1, uint EffectId1, uint Effec
 }
 
 /// <summary>
-/// <b><c>9e 01 Effect.AddEffect</c> / <c>9e 03 Effect.RemoveEffect</c> — the packets the car boost
-/// actually runs on in August.</b>
-///
-/// <code>
-/// u8  0x9e            cPacketIdEffectsBase      (registrations-1148.json 0x9e00)
-/// u8  0x01 | 0x03     AddEffect | RemoveEffect
-/// u32 unknownDword1
-/// u32 abilityEffectId1    the CLIENT-effect id  (90000 / 90068 / 90069 / 90193)
-/// u32 abilityEffectId2    the SERVER-effect id  (100023 / 110268 / 110270 / 120654)
-/// u64 targetCharacterData.characterId   the PLAYER
-/// u64 targetCharacterId                 the VEHICLE
-/// u64 guid2                             0
-/// f32 x4  unknownVector1                0
-///                                                   = 54 bytes for the Remove form
-/// </code>
-///
-/// <para>
-/// <b>Not <c>0x9f</c>.</b> The brief's opcode map is a 1087 map: at 1148 <c>0x9f00</c> is
-/// <c>cPacketIdRewardBuffsBase</c> and has nothing to do with vehicles, while <c>0x9e00</c> is
-/// <c>cPacketIdEffectsBase</c> and the August receive dispatcher has <c>case 0x9e</c>. The owner's
-/// Z1 runs the same boost on 1087's <c>0x9f</c>; under the 1087→1148 minus-one base shift — the one
-/// the owner's own admin capture confirms on his own bytes, <c>cVehicleOwner</c> arriving as
-/// <c>89 01</c> where August's is <c>88 01</c> — that is August's <c>0x9e</c>. The <b>sub</b>
-/// numbers 01/03 and the field order are the owner's, from his own click session's bytes
-/// (<c>C:\Z1\Server\Zone\ZoneVehicleEffects.cs:164-186</c>), adopted under D53; the Effects family
-/// registers only its base in 1148, so the subs are <b>[I]</b> until one live press confirms them.
-/// </para>
+/// August <c>9e01</c> Add and <c>9e03</c> Remove requests, used by vehicle effects and punch
+/// animation reports. Exact readers <c>140ce9e70</c> and <c>140cea390</c> establish distinct
+/// bodies: Add has source/target GUIDs at +18/+38 and a property flag at +70 (71-byte minimum);
+/// Remove has source/target at +14/+22 followed by a GUID and float4 (54-byte minimum).
+/// A zero Add flag requires all five property lists. See docs/effect-request-20260926.md.
+/// Other Effects subtypes have no action in this parser; their layouts are not inferred here.
 /// </summary>
 public sealed record EffectRequest(
     byte Sub,
@@ -157,11 +136,14 @@ public sealed record EffectRequest(
 
     public const byte RemoveSub = 0x03;
 
-    /// <summary>Head plus both character ids — the shortest form this server can act on.</summary>
-    public const int MinimumLength = 2 + EffectHead.Length + 8 + 8;
+    /// <summary>The shortest supported complete request, the Remove form.</summary>
+    public const int MinimumLength = RemoveLength;
+
+    /// <summary>Complete fixed Add body including its simple-properties flag.</summary>
+    public const int AddLength = 2 + EffectHead.Length + 4 + 8 + 4 + 8 + 8 + 8 + 16 + 1;
 
     /// <summary>The full <c>Remove</c> form: head, both ids, a guid and a float4.</summary>
-    public const int RemoveLength = MinimumLength + 8 + 16;
+    public const int RemoveLength = 2 + EffectHead.Length + 8 + 8 + 8 + 16;
 
     public bool IsAdd => Sub == AddSub;
 
@@ -175,26 +157,67 @@ public sealed record EffectRequest(
             return false;
         }
 
-        var reader = new PacketReader(payload);
-        reader.Skip(1);
-        byte sub = reader.ReadByte();
-        var head = new EffectHead(reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32());
-        // August AddEffect (140ce9e70) includes actor type, transient and an extra guid.
-        // RemoveEffect (140cea390) is the compact 54-byte form. Reading both alike made
-        // live adds target 0x0000000100000000 instead of the car; releases decoded correctly.
-        if (sub == AddSub && payload.Length >= 71)
+        byte sub = payload[1];
+        if (sub != AddSub && sub != RemoveSub) return false;
+        if (sub == AddSub && payload.Length < AddLength) return false;
+
+        try
         {
-            reader.Skip(4);
-            ulong actor = reader.ReadUInt64();
-            reader.Skip(4 + 8);
-            ulong targetActor = reader.ReadUInt64();
-            request = new EffectRequest(sub, head, actor, targetActor);
+            var reader = new PacketReader(payload[2..]);
+            var head = new EffectHead(reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32());
+            ulong source;
+            ulong target;
+            if (sub == AddSub)
+            {
+                reader.Skip(4); // actor kind
+                source = reader.ReadUInt64();
+                reader.Skip(4 + 8); // transient and ancillary GUID
+                target = reader.ReadUInt64();
+                reader.Skip(8 + 16); // ancillary GUID and float4
+                if (!reader.ReadBool()) SkipProperties(ref reader);
+            }
+            else
+            {
+                source = reader.ReadUInt64();
+                target = reader.ReadUInt64();
+                reader.Skip(8 + 16);
+            }
+
+            // These native readers do not require exact exhaustion; retain trailing-byte tolerance.
+            request = new EffectRequest(sub, head, source, target);
             return true;
         }
-        ulong source = reader.ReadUInt64();
-        ulong target = reader.ReadUInt64();
-        request = new EffectRequest(sub, head, source, target);
-        return true;
+        catch (PacketFormatException)
+        {
+            return false;
+        }
+    }
+
+    private static void SkipProperties(ref PacketReader reader)
+    {
+        // Exact August readers: 140caa4e0, 140caa680, 140caad30, 140caa9f0, 140caa820.
+        foreach (int width in new[] { 8, 8, 12, 20 })
+        {
+            int count = ReadPropertyCount(ref reader, width);
+            reader.Skip(count * width);
+        }
+
+        int strings = ReadPropertyCount(ref reader, 8); // ID plus signed byte length, at minimum.
+        for (int i = 0; i < strings; i++)
+        {
+            reader.Skip(4);
+            int length = reader.ReadInt32();
+            reader.Skip(length); // Native 140b78f60 rejects negative or truncated lengths.
+        }
+    }
+
+    private static int ReadPropertyCount(ref PacketReader reader, int entryBytes)
+    {
+        int count = reader.ReadInt32();
+        if (count <= 0) return 0; // Native lists loop only for positive signed counts.
+        if (count > reader.Remaining / entryBytes)
+            throw new PacketFormatException("Effects property count exceeds the available bytes.");
+        return count;
     }
 
     /// <summary>
@@ -311,9 +334,10 @@ public sealed record VehicleActivateBoostFailed(ulong VehicleGuid)
 /// client draws when a car boosts past it; the driver's own client already knows, having pressed
 /// the key.
 ///
-/// <para>Registered at 1148 as <c>0x15000f00 cCharacterPacketIdAddEffectTagCompositeEffect</c>,
-/// with the identical sub number to 1087; the body is the owner's own
-/// (<c>C:\Z1\Server\Zone\ZoneVehicles.cs:1175-1196</c>) under D53.</para>
+/// <para>Exact August readers <c>140c24430</c> → <c>140c20cb0</c> establish this 38-byte layout:
+/// common subject, tag key, effect ID, two GUIDs and final u32. The existing writer uses the
+/// composite ID as its tag key; unused fields retain their existing values. See
+/// docs/vehicle-boost-replication-20260926.md for evidence and semantic limits.</para>
 /// </summary>
 public sealed record AddEffectTagCompositeEffect(ulong CharacterGuid, uint EffectId)
 {
@@ -339,8 +363,9 @@ public sealed record AddEffectTagCompositeEffect(ulong CharacterGuid, uint Effec
 
 /// <summary>
 /// <c>0f 16 Character.RemoveEffectTagCompositeEffect</c> — <c>u8 0x0f; u8 0x16; u64 characterGuid;
-/// u32 effectId; u32 newEffectId</c>, <b>18 bytes</b>. Registered at 1148 as <c>0x16000f00</c>;
-/// body from the owner's own <c>ZoneVehicles.cs:1199-1214</c> under D53.
+/// u32 tagKey; u32 replacement</c>, <b>18 bytes</b>. Exact August reader <c>140c24e90</c>
+/// establishes the layout. The existing writer uses the composite ID as tag key and zero
+/// replacement; see docs/vehicle-boost-replication-20260926.md.
 /// </summary>
 public sealed record RemoveEffectTagCompositeEffect(ulong CharacterGuid, uint EffectId)
 {
